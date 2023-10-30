@@ -5,4 +5,6 @@ module com.example.projectcookmanager {
 
     opens com.example.projectcookmanager to javafx.fxml;
     exports com.example.projectcookmanager;
+    exports com.example.projectcookmanager.DataBases;
+    opens com.example.projectcookmanager.DataBases to javafx.fxml;
 }

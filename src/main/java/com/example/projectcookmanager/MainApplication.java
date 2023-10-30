@@ -1,12 +1,15 @@
 package com.example.projectcookmanager;
 
+import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.util.List;
+
+import static com.example.projectcookmanager.DataBases.DBAllRecipes.*;
 
 public class MainApplication extends Application {
     @Override
@@ -20,9 +23,8 @@ public class MainApplication extends Application {
 
     public static void main(String[] args) {
 
-        new  DataBase().selectAll();
-        new  DataBase().insert("Стейк", "Второе блюдо");
-        new  DataBase().selectAll();
+        List<Recipe> recipes = new DBAllRecipes().SelectAll();
+        //new DBAllRecipes().insert("Гусь", "Нам нямка");
 
         launch();
 
