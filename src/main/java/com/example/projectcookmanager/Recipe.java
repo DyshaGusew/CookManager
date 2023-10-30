@@ -61,4 +61,26 @@ public class Recipe {
         this.imagesStageLinks = imagesStageLinks;
         this.textStages = textStages;
     }
+    public Recipe(String name, String category, int timeCooking, String mainImageLink, int totalCalories, int protein, int fat,
+                  int carbohydrate, float rating, String[] ingredientsName, String[] ingredientsMass,
+                  String[] imagesStageLinks, String[] textStages){
+        this.name = name;
+        this.category = category;
+        this.timeCooking = timeCooking;
+        this.mainImageLink = mainImageLink;
+        this.totalCalories = totalCalories;
+        this.protein = protein;
+        this.fat = fat;
+        this.carbohydrate = carbohydrate;
+        if(rating > 5.0f){
+            this.rating = 5.0f;
+        }
+        else  {
+            this.rating = rating;
+        }
+        this.ingredientsName = ingredientsName;
+        this.ingredientsMass = ingredientsMass;
+        this.imagesStageLinks = imagesStageLinks;
+        this.textStages = textStages;
+    }
 }

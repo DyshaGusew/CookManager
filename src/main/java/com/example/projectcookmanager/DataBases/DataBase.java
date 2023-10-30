@@ -13,16 +13,16 @@ public abstract class DataBase {
     };
 
     //Получение по имени и ID, получение вообще всего
-    public abstract Recipe Select(int id);
-    public abstract Recipe Select(String name);
+    public abstract Recipe Read(int id);
+    public abstract Recipe Read(String name);
 
-    public abstract List<Recipe> SelectAll();
+    public abstract List<Recipe> ReadAll();
 
     //Добавление нового рецепта
-    public abstract void Insert(Recipe recipe);
+    public abstract void Write(Recipe recipe);
 
     //Удаление по имени и ID
-    public abstract void Delete(Recipe recipe);
+    public abstract void Delete(String name);
     public abstract void Delete(int id);
 
     //Обновление по имени и ID

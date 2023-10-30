@@ -9,8 +9,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.projectcookmanager.DataBases.DBAllRecipes.*;
-
 public class MainApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -23,8 +21,13 @@ public class MainApplication extends Application {
 
     public static void main(String[] args) {
 
-        List<Recipe> recipes = new DBAllRecipes().SelectAll();
+        //List<Recipe> recipes = new DBAllRecipes().SelectAll();
         //new DBAllRecipes().insert("Гусь", "Нам нямка");
+        //Recipe rec = new Recipe("Гусь", "sdf", 20, "2", 250, 10, 5, 15, 2.5f, new String[]{"Сало", "лук", "гусь"}, new String[]{"200гр", "2шт", "1кг"}, new String[]{"2_1", "2_2", "2_3"}, new String[]{"Размораживаем гуся, готовим элементы", "Режем все", "Фигачим в духовку"});
+
+        //Recipe rec2 = new DBAllRecipes().Select("НЕ Гусь");
+        //rec2.name = "НdfвамвамссчмчсмsdfЕ Гусь";
+       // new DBAllRecipes().Insert(rec2);
 
         launch();
 
