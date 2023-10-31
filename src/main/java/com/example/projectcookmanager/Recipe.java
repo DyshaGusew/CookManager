@@ -1,18 +1,18 @@
 package com.example.projectcookmanager;
 
-public class Recipe {
-    //Имя, категория, время готовки, ссылка на главное фото рецепта, калории
+import java.util.List;
+
+public class Recipe extends Entity {
+    //ИД, имя, основное описание, категория, время готовки, ссылка на главное фото рецепта, калории
     public int id;
     public String name;
+    public String mainInfo;
     public String category;
     public int timeCooking;   //В минутах
     public String mainImageLink;
-    public int totalCalories;   //В ккал
 
-    //Белки жиры углеводы          В граммах
-    public int protein;
-    public int fat;
-    public int carbohydrate;
+    //Продукты
+    public List<Product> products;
 
     //Оценка
     private float rating;
@@ -31,54 +31,45 @@ public class Recipe {
     }
 
     //Массивы названий ингридиентов и их количества
-    public String[] ingredientsName;
     public String[] ingredientsMass;
 
     //Массив ссылок на картинки и их описаний (этапы приготовления)
     public String[] imagesStageLinks;
     public String[] textStages;
 
-    public Recipe(int id, String name, String category, int timeCooking, String mainImageLink, int totalCalories, int protein, int fat,
-                  int carbohydrate, float rating, String[] ingredientsName, String[] ingredientsMass,
+    public Recipe(int id, String name, String mainInfo, String category, int timeCooking, String mainImageLink, List<Product> products, float rating, String[] ingredientsMass,
                   String[] imagesStageLinks, String[] textStages){
         this.id = id;
         this.name = name;
+        this.mainInfo = mainInfo;
         this.category = category;
         this.timeCooking = timeCooking;
         this.mainImageLink = mainImageLink;
-        this.totalCalories = totalCalories;
-        this.protein = protein;
-        this.fat = fat;
-        this.carbohydrate = carbohydrate;
+        this.products = products;
         if(rating > 5.0f){
             this.rating = 5.0f;
         }
         else  {
             this.rating = rating;
         }
-        this.ingredientsName = ingredientsName;
         this.ingredientsMass = ingredientsMass;
         this.imagesStageLinks = imagesStageLinks;
         this.textStages = textStages;
     }
-    public Recipe(String name, String category, int timeCooking, String mainImageLink, int totalCalories, int protein, int fat,
-                  int carbohydrate, float rating, String[] ingredientsName, String[] ingredientsMass,
+    public Recipe(String name, String mainInfo, String category, int timeCooking, String mainImageLink, List<Product> products, float rating, String[] ingredientsMass,
                   String[] imagesStageLinks, String[] textStages){
         this.name = name;
+        this.mainInfo = mainInfo;
         this.category = category;
         this.timeCooking = timeCooking;
         this.mainImageLink = mainImageLink;
-        this.totalCalories = totalCalories;
-        this.protein = protein;
-        this.fat = fat;
-        this.carbohydrate = carbohydrate;
+        this.products = products;
         if(rating > 5.0f){
             this.rating = 5.0f;
         }
         else  {
             this.rating = rating;
         }
-        this.ingredientsName = ingredientsName;
         this.ingredientsMass = ingredientsMass;
         this.imagesStageLinks = imagesStageLinks;
         this.textStages = textStages;
