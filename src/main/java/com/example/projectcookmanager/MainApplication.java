@@ -30,9 +30,10 @@ public class MainApplication extends Application {
         gg.add(new DBAllProducts().Read(9));
         gg.add(new DBAllProducts().Read(7));
 
-        Recipe rec = new Recipe("ГусьСвинья228", "Гусенок под соусом", "Жарdfgое", 80, "dsf", gg, 10.5f, new String[]{"200гр", "2шт", "1кг"}, new String[]{"2_1", "2_2", "2_3"}, new String[]{"Размораживаем гуся, готовим элементы", "Режем все", "Фигачим в духовку"});
+        Recipe rec = new Recipe("ГусьСвинья2228", "Гусенок под соусом", "Жарdfgое", 80, "dsf", gg, 10.5f, new String[]{"200гр", "2шт", "1кг"}, new String[]{"2_1", "2_2", "2_3"}, new String[]{"Размораживаем гуся, готовим элементы", "Режем все", "Фигачим в духовку"});
 
-        //Recipe rec2 = new DBAllRecipes().Read("НЕ Гусь");
+       // new DBAllRecipes().Write(rec);
+       // Recipe rec2 = new DBAllRecipes().Read("ГусьСвинья2228");
         //rec2.name = "НdfвамвамссчмчсмsdfЕ Гусь";
         //new DBAllRecipes().Write(rec2);
         //List<Recipe> recipes = new  DBAllRecipes().ReadOfParam("category", "Второе блюдо");
@@ -42,10 +43,13 @@ public class MainApplication extends Application {
         //List<Product> pr = new DBAllProducts().ReadAllOfRecipe(2);
 
         //new DBAllRecipes().Write(rec);
-        new  DBAllProducts().UpdateProdRec(new DBAllRecipes().Read("ГусьСвинья228"), gg);
+       // new  DBAllProducts().UpdateProdRec(new DBAllRecipes().Read("ГусьСвинья228"), gg);
        // new DBAllRecipes().Update("ГусьСвинья8", rec);
        // new DBAllRecipes().Delete("НdfвамвамссчмчсмsdfЕ Гусь");
-       // new DBAllRecipes().Write(rec);
+        String str[] = new String[2];
+        str[0] = "Специи";
+        str[1] = "Говядина";
+        List<Recipe> recipes = new DBAllRecipes().ReadOfName("ди");
         launch();
 
     }

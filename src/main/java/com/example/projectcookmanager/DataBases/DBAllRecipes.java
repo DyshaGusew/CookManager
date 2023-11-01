@@ -156,7 +156,7 @@ public class DBAllRecipes extends DataBase {
     }
 
     //Получение массива, содержащего определенный параметр
-    public List<Recipe> ReadOfParam(String param, String nameParam){
+    public List<Recipe> ReadOfParam(String param, String valueParam){
         String sql = "SELECT * FROM " + nameTable + " WHERE " + param + " LIKE ?";
         List<Recipe> recipes = new ArrayList<Recipe>();
 
@@ -166,7 +166,7 @@ public class DBAllRecipes extends DataBase {
         try {
             Connection conn = this.connect();
             statement = conn.prepareStatement(sql);
-            statement.setString(1, nameParam);
+            statement.setString(1, valueParam);
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -197,6 +197,7 @@ public class DBAllRecipes extends DataBase {
         }
         return recipes;
     }
+
     //Получение массива, отсортированного по какому-либо параметру
     public List<Recipe> ReadOfSort(String sortParam){
         String sql = "SELECT * FROM " + nameTable + " ORDER BY " + sortParam;
@@ -236,6 +237,88 @@ public class DBAllRecipes extends DataBase {
         return recipes;
     }
 
+    //Поиск по имени
+    public List<Recipe> ReadOfName(String valueName){
+
+        String sql = "SELECT * FROM "+ nameTable +" WHERE name LIKE '%" + valueName + "%'";
+        List<Recipe> recipes = new ArrayList<Recipe>();
+
+        valueName = valueName.substring(0,1).toUpperCase() + valueName.substring(1).toLowerCase();
+
+        for(int i = 0; i < 2; i++){
+            if(i == 1){
+                valueName = valueName.toLowerCase();
+            }
+            sql = "SELECT * FROM "+ nameTable +" WHERE name LIKE '%" + valueName + "%'";
+
+            try {
+                Connection conn = this.connect();
+                Statement stmt = conn.createStatement();
+                ResultSet resultSet = stmt.executeQuery(sql);
+
+                while (resultSet.next()) {
+                    String[] ingredientsMass = resultSet.getString("ingredientsMass").split(";");
+                    String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
+                    String[] textStages = resultSet.getString("textStages").split(";");
+
+                    recipes.add(new Recipe(
+                            resultSet.getInt("id"),
+                            resultSet.getString("name"),
+                            resultSet.getString("mainInfo"),
+                            resultSet.getString("category"),
+                            resultSet.getInt("timeCooking"),
+                            resultSet.getString("mainImageLink"),
+                            new DBAllProducts().ReadAllOfRecipe(resultSet.getInt("id")),
+                            resultSet.getFloat("rating"),
+                            ingredientsMass,
+                            imagesStageLinks,
+                            textStages));
+                }
+                if (resultSet != null) resultSet.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            }
+            catch (SQLException e) {
+                System.out.println(e.getMessage());
+                recipes = null;
+            }
+        }
+
+
+        return recipes;
+    }
+
+    //Поиск по наличию указанного(ых) ингридиента(ов)
+    public List<Recipe> ReadOfIngrids(String[] nameIngrids){
+        List<Recipe> allRecipes = new  DBAllRecipes().ReadAll();
+
+        List<Recipe> trueRecipes = new ArrayList<Recipe>();
+        for (Recipe rec : allRecipes){
+
+            List<Product> allProdsOfRec = new DBAllProducts().ReadAllOfRecipe(rec.id);
+            boolean ingridsOfRec = true;
+            for(int i = 0; i < nameIngrids.length; i++)
+            {
+                boolean ingridOfRec = false;
+                for (Product prod : allProdsOfRec)
+                {
+                    if(nameIngrids[i].equals(prod.name)){
+                        ingridOfRec = true;
+                        break;
+                    }
+                }
+                if(ingridOfRec == false){
+                    ingridsOfRec = false;
+                    break;
+                }
+            }
+            if(ingridsOfRec == true){
+                trueRecipes.add(rec);
+            }
+
+        }
+        return trueRecipes;
+    }
 
     public void Write(Recipe recipe) {
         String sql = "INSERT INTO " + nameTable + "(name, category, mainInfo, timeCooking, mainImageLink, rating, ingredientsMass, imagesStageLinks, textStages) VALUES(?,?,?,?,?,?,?,?,?)";

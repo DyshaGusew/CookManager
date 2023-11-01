@@ -1,5 +1,7 @@
 package com.example.projectcookmanager;
 
+import com.example.projectcookmanager.DataBases.DBAllProducts;
+
 import java.util.List;
 
 public class Recipe extends Entity {
@@ -9,6 +11,8 @@ public class Recipe extends Entity {
     public String mainInfo;
     public String category;
     public int timeCooking;   //В минутах
+
+    public int calories;
     public String mainImageLink;
 
     //Продукты
@@ -46,6 +50,7 @@ public class Recipe extends Entity {
         this.timeCooking = timeCooking;
         this.mainImageLink = mainImageLink;
         this.products = products;
+        this.calories = valueCalories(products);
         if(rating > 5.0f){
             this.rating = 5.0f;
         }
@@ -64,6 +69,8 @@ public class Recipe extends Entity {
         this.timeCooking = timeCooking;
         this.mainImageLink = mainImageLink;
         this.products = products;
+        this.calories = valueCalories(products);
+
         if(rating > 5.0f){
             this.rating = 5.0f;
         }
@@ -73,5 +80,14 @@ public class Recipe extends Entity {
         this.ingredientsMass = ingredientsMass;
         this.imagesStageLinks = imagesStageLinks;
         this.textStages = textStages;
+    }
+
+    static public int valueCalories(List<Product> products){
+        int valueCalories = 0;
+        for(Product product : products){
+            Product thisProd = new DBAllProducts().Read(product.name);
+            valueCalories += (thisProd.protein * 4) + (thisProd.fat * 9) + (thisProd.carbohydrate * 4);
+        }
+        return valueCalories;
     }
 }

@@ -1,5 +1,9 @@
 package com.example.projectcookmanager;
 
+import com.example.projectcookmanager.DataBases.DBAllProducts;
+
+import java.util.List;
+
 public class Product extends Entity {
     public int id;
     public String name;
@@ -21,4 +25,6 @@ public class Product extends Entity {
         this.fat = fat;
         this.carbohydrate = carbohydrate;
     }
+
+
 }
