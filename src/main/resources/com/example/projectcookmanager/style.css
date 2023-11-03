@@ -1,0 +1,64 @@
+.SidePanelAnchor{
+    -fx-background-color:#f9f4d6;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+}
+
+.InnerPlane {
+    -fx-background-color: #d4a373;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-style: solid;
+    -fx-border-color: #bc6c25;
+}
+
+.CategoryBtn {
+    -fx-background-color: #faedcd;
+    fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 50px;
+    -fx-background-radius: 50px;
+    -fx-border-style: solid;
+}
+
+.mouse-moved:hover {
+    -fx-background-color: #ccd5ae;
+}
+
+.newReceiptBtn {
+    -fx-background-color: #a3b18a;
+}
+
+.mouse-movedReceiptBtn:hover {
+    -fx-background-color: #588157;
+}
+
+.mouse-movedNextBtn:hover {
+    -fx-background-color: #a3b18a;
+}
+
+.NextBtn {
+    -fx-background-color: #ccd5ae;
+}
+
+.Shadow {
+    -fx-effect: dropShadow(three-pass-box, rgba(0,0,0,0), 10, 0, 0, 10);
+}
+
+.transparent {
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.scroll-pane {
+    -fx-background-color: #ccd5ae;
+}
+
+.dishCard {
+    -fx-background-color: #f9f4d6;
+}
+
+.full-receipt {
+    -fx-background-color: #e9edc9;
+}

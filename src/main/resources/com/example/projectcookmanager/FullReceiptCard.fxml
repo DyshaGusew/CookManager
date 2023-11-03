@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="689.0" styleClass="full-receipt" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.FullReceiptCardController">
+   <children>
+      <VBox layoutX="5.0" layoutY="244.0" prefHeight="200.0" prefWidth="682.0">
+         <children>
+            <Label prefHeight="30.0" prefWidth="236.0" text="Описание приготовления:">
+               <font>
+                  <Font name="Arial Black" size="15.0" />
+               </font>
+            </Label>
+            <ListView fx:id="cookingDescriptionList" prefHeight="200.0" prefWidth="200.0" styleClass="full-receipt" />
+         </children>
+      </VBox>
+      <ImageView fx:id="recipeImage" fitHeight="200.0" fitWidth="320.0" layoutX="58.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/yaichnica_obichnaya-384161.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="recipeName" layoutX="58.0" layoutY="4.0" prefHeight="32.0" prefWidth="300.0" text="Яичница обычная" wrapText="true">
+         <font>
+            <Font name="Arial Black" size="22.0" />
+         </font>
+      </Label>
+      <VBox layoutX="371.0" layoutY="37.0" prefHeight="200.0" prefWidth="310.0">
+         <children>
+            <Label text="Состав / Ингредиенты:">
+               <font>
+                  <Font name="Arial Black" size="19.0" />
+               </font>
+            </Label>
+            <ListView fx:id="IngredientsList" prefHeight="200.0" prefWidth="200.0" styleClass="full-receipt" />
+         </children>
+      </VBox>
+   </children>
+</Pane>
