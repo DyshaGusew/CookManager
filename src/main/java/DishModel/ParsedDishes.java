@@ -7,7 +7,6 @@ public class ParsedDishes {
     private String name;
     private String imageUrl;
     private String ratingUrl;
-    private DishCard.DishCategory category;
 
     public String getName() {
         return name;
@@ -31,14 +30,6 @@ public class ParsedDishes {
 
     public void setRatingUrl(String ratingUrl) {
         this.ratingUrl = ratingUrl;
-    }
-
-    public DishCard.DishCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(DishCard.DishCategory category) {
-        this.category = category;
     }
 
     public List<ParsedDishes> parseData() {

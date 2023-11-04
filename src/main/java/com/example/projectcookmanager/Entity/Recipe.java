@@ -1,4 +1,4 @@
-package com.example.projectcookmanager;
+package com.example.projectcookmanager.Entity;
 
 import com.example.projectcookmanager.DataBases.DBAllProducts;
 

@@ -1,8 +1,7 @@
 package com.example.projectcookmanager.DataBases;
 
-import com.example.projectcookmanager.Entity;
-import com.example.projectcookmanager.Product;
-import com.example.projectcookmanager.Recipe;
+import com.example.projectcookmanager.Entity.Product;
+import com.example.projectcookmanager.Entity.Recipe;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -196,6 +195,10 @@ public class DBAllRecipes extends DataBase {
             recipes = null;
         }
         return recipes;
+    }
+
+    public List<Recipe> ReadOfCategory(String valueCategory){
+        return ReadOfParam("category", valueCategory);
     }
 
     //Получение массива, отсортированного по какому-либо параметру

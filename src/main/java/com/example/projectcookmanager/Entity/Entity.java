@@ -1,4 +1,4 @@
-package com.example.projectcookmanager;
+package com.example.projectcookmanager.Entity;
 
 public class Entity {
     public int id;

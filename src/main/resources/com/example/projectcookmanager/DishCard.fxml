@@ -9,11 +9,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane fx:id="dishBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="106.0" prefWidth="400.0" style="-fx-background-radius: 15;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.DishCardController">
+<Pane fx:id="dishBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="106.0" prefWidth="400.0" style="-fx-background-radius: 15;" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.DishCardController">
    <children>
       <ImageView fx:id="dishImage" fitHeight="106.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../img/yaichnica_obichnaya-384161.jpg" />
+            <Image url="@../../../img/MainImage/yaichnica_obichnaya-384161.jpg" />
          </image>
       </ImageView>
       <VBox alignment="CENTER" layoutX="160.0" layoutY="1.0" prefHeight="45.0" prefWidth="238.0">
@@ -26,7 +26,7 @@
          </children></VBox>
       <ImageView fx:id="rating" fitHeight="128.0" fitWidth="160.0" layoutX="185.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../img/4stars.png" />
+            <Image url="@../../../img/Other/4stars.png" />
          </image>
       </ImageView>
       <Button fx:id="nextBtn" alignment="CENTER" contentDisplay="TOP" layoutX="336.0" layoutY="59.0" mnemonicParsing="false" onAction="#ShowFullReceipt" stylesheets="@style.css" text="Далее">

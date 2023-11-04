@@ -23,8 +23,20 @@
     -fx-border-style: solid;
 }
 
+.CategoryBtnNull {
+    -fx-background-color: rgb(210, 162, 115);
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-color: #b37234;
+}
+
 .mouse-moved:hover {
     -fx-background-color: #ccd5ae;
+}
+
+.mouse-moved-all:hover {
+    -fx-background-color: rgba(217, 217, 217, 0.63);
 }
 
 .newReceiptBtn {

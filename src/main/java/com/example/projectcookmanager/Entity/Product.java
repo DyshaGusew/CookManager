@@ -1,8 +1,4 @@
-package com.example.projectcookmanager;
-
-import com.example.projectcookmanager.DataBases.DBAllProducts;
-
-import java.util.List;
+package com.example.projectcookmanager.Entity;
 
 public class Product extends Entity {
     public int id;

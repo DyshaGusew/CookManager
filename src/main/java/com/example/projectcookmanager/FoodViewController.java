@@ -1,7 +1,9 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
-import DishModel.ParsedDishes;
+//import DishModel.Recipe;
+import com.example.projectcookmanager.DataBases.DBAllRecipes;
+import com.example.projectcookmanager.Entity.Recipe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,11 +19,15 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class FoodViewController implements Initializable {
 
+
+    @FXML
+    private Button allDishBtn;
 
     @FXML
     private Button bakeryBtn;
@@ -64,9 +70,17 @@ public class FoodViewController implements Initializable {
 
     private List<DishCard> recentlyAdded;
 
+    //Текущий список рецептов
+    private List<Recipe> thisRecipes;
+
+    //Все, что появится в начале
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        recentlyAdded = new ArrayList<>(recentlyAdded());
+        //Делаем в перемешанном порядке
+        thisRecipes = new DBAllRecipes().ReadAll();
+        Collections.reverse(thisRecipes);
+
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         int column = 0;
         int row = 1;
         try {
@@ -91,6 +105,7 @@ public class FoodViewController implements Initializable {
         }
     }
 
+    //Обновление показанных рецептов
     private void updateScrollPane(List<DishCard> filteredDishes) {
         dishContainer.getChildren().clear();
 
@@ -118,125 +133,106 @@ public class FoodViewController implements Initializable {
         }
     }
 
-    //Добавление блюд ручками
-    private List<DishCard> recentlyAdded() {
+    //Создание списка карт в зависимости от поданного на них списка рецептов из бд
+    private List<DishCard> CreateDishCardList(List<Recipe> recipes) {
+        thisRecipes = recipes;
+        //recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         List<DishCard> dishCardList = new ArrayList<>();
-        DishCard dishCard = new DishCard();
-        dishCard.setName("Яичница обычная");
-        dishCard.setImageUrl("/img/yaichnica_obichnaya-384161.jpg");
-        dishCard.setRatingUrl("/img/4stars.png");
-        dishCard.setCategory(DishCard.DishCategory.HotDishes);
 
-        dishCardList.add(dishCard);
+        for(Recipe rec : recipes){
+            DishCard dishCard = new DishCard();
+            dishCard.setName(rec.name);
+            dishCard.setImageUrl(rec.mainImageLink);
+            dishCard.setRatingUrl(rec.getRating());
 
-        dishCard = new DishCard();
-        dishCard.setName("Узбекский плов");
-        dishCard.setImageUrl("/img/uzbekskii_plov-4860.jpg");
-        dishCard.setRatingUrl("/img/4stars.png");
-        dishCard.setCategory(DishCard.DishCategory.HotDishes);
-
-        dishCardList.add(dishCard);
-
-        dishCard = new DishCard();
-        dishCard.setName("Мясо по-французски");
-        dishCard.setImageUrl("/img/quotmyaso_po-francuzskiquot_iz_kurinogo_farsha-44773.jpg");
-        dishCard.setRatingUrl("/img/5stars.png");
-        dishCard.setCategory(DishCard.DishCategory.Snack);
-
-        dishCardList.add(dishCard);
-
-        dishCard = new DishCard();
-        dishCard.setName("Плов с курицей в мультиварке");
-        dishCard.setImageUrl("/img/plov_s_kuricei_v_multivarke-53899.jpg");
-        dishCard.setRatingUrl("/img/4stars.png");
-        dishCard.setCategory(DishCard.DishCategory.Snack);
-
-        dishCardList.add(dishCard);
-
-        dishCard = new DishCard();
-        dishCard.setName("Мясо по-французски с картофелем");
-        dishCard.setImageUrl("/img/myaso_po-francuzski_s_kartofelem-45684.jpg");
-        dishCard.setRatingUrl("/img/4stars.png");
-        dishCard.setCategory(DishCard.DishCategory.Drinks);
-
-        dishCardList.add(dishCard);
-
+            dishCardList.add(dishCard);
+        }
         return  dishCardList;
     }
 
     //Добавление блюд парсером
-    private List<DishCard> recentlyAdded(List<ParsedDishes> parsedData) {
-        List<DishCard> dishCardList = new ArrayList<>();
+//    private List<DishCard> recentlyAdded(List<ParsedDishes> parsedData) {
+//        List<DishCard> dishCardList = new ArrayList<>();
+//
+//        for (ParsedDishes parsedItem : parsedData) {
+//            DishCard dishCard = new DishCard();
+//            dishCard.setName(parsedItem.getName());
+//            dishCard.setImageUrl(parsedItem.getImageUrl());
+//           // dishCard.setRatingUrl(parsedItem.getRatingUrl());
+//
+//            dishCardList.add(dishCard);
+//        }
+//
+//        return dishCardList;
+//    }
 
-        for (ParsedDishes parsedItem : parsedData) {
-            DishCard dishCard = new DishCard();
-            dishCard.setName(parsedItem.getName());
-            dishCard.setImageUrl(parsedItem.getImageUrl());
-            dishCard.setRatingUrl(parsedItem.getRatingUrl());
-            dishCard.setCategory(parsedItem.getCategory());
+    @FXML
+    void ShowLastAll(ActionEvent event) {
+        thisRecipes = new DBAllRecipes().ReadAll();
+        Collections.reverse(thisRecipes);
 
-            dishCardList.add(dishCard);
-        }
-
-        return dishCardList;
-    }
-
-    public List<DishCard> getDishesByCategory(DishCard.DishCategory category) {
-        List<DishCard> filteredDishes = new ArrayList<>();
-        for (DishCard dish : recentlyAdded) {
-            if (dish.getCategory().equals(category)) {
-                filteredDishes.add(dish);
-            }
-        }
-        return filteredDishes;
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+        //List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
+        updateScrollPane(recentlyAdded);
     }
 
     @FXML
     void ShowBakery(ActionEvent event) {
-        DishCard.DishCategory category = DishCard.DishCategory.Bakery;
-        List<DishCard> filteredDishes = getDishesByCategory(category);
-        updateScrollPane(filteredDishes);
+        thisRecipes = new DBAllRecipes().ReadOfCategory("Выпечка");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Выпечка"));
+        updateScrollPane(recentlyAdded);
     }
 
     @FXML
     void ShowDesserts(ActionEvent event) {
-        DishCard.DishCategory category = DishCard.DishCategory.Dessert;
-        List<DishCard> filteredDishes = getDishesByCategory(category);
-        updateScrollPane(filteredDishes);
+        thisRecipes = new DBAllRecipes().ReadOfCategory("Десерты");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Десерты"));
+        updateScrollPane(recentlyAdded);
     }
 
     @FXML
     void ShowDrinks(ActionEvent event) {
-        DishCard.DishCategory category = DishCard.DishCategory.Drinks;
-        List<DishCard> filteredDishes = getDishesByCategory(category);
-        updateScrollPane(filteredDishes);
+        thisRecipes = new DBAllRecipes().ReadOfCategory("Напитки");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Напитки"));
+        updateScrollPane(recentlyAdded);
     }
 
     @FXML
     void ShowHotDishes(ActionEvent event) {
-        DishCard.DishCategory category = DishCard.DishCategory.HotDishes;
-        List<DishCard> filteredDishes = getDishesByCategory(category);
-        updateScrollPane(filteredDishes);
+        thisRecipes = new DBAllRecipes().ReadOfCategory("Вторые блюда");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Вторые блюда"));
+        updateScrollPane(recentlyAdded);
     }
 
     @FXML
     void ShowSalades(ActionEvent event) {
-        DishCard.DishCategory category = DishCard.DishCategory.Salade;
-        List<DishCard> filteredDishes = getDishesByCategory(category);
-        updateScrollPane(filteredDishes);
+        thisRecipes = new DBAllRecipes().ReadOfCategory( "Салаты");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+
+       // List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
+
+        updateScrollPane(recentlyAdded);
     }
 
     @FXML
     void ShowSnacks(ActionEvent event) {
-        DishCard.DishCategory category = DishCard.DishCategory.Snack;
-        List<DishCard> filteredDishes = getDishesByCategory(category);
-        updateScrollPane(filteredDishes);
+        thisRecipes = new DBAllRecipes().ReadOfCategory("Закуски");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+
+       // List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
+        updateScrollPane(recentlyAdded);
     }
 
     @FXML
     void ShowSoups(ActionEvent event) {
-        DishCard.DishCategory category = DishCard.DishCategory.Soup;
-        List<DishCard> filteredDishes = getDishesByCategory(category);
-        updateScrollPane(filteredDishes);
+        thisRecipes = new DBAllRecipes().ReadOfCategory("Супы");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+
+       // List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
+        updateScrollPane(recentlyAdded);
     }
 }

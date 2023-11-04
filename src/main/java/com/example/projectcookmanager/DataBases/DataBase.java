@@ -1,10 +1,8 @@
 package com.example.projectcookmanager.DataBases;
 
-import com.example.projectcookmanager.Entity;
-import com.example.projectcookmanager.Recipe;
+import com.example.projectcookmanager.Entity.Entity;
 
 import java.sql.Connection;
-import java.util.List;
 
 public abstract class DataBase {
     private Connection conn;

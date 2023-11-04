@@ -1,7 +1,7 @@
 package com.example.projectcookmanager.DataBases;
 
-import com.example.projectcookmanager.Product;
-import com.example.projectcookmanager.Recipe;
+import com.example.projectcookmanager.Entity.Product;
+import com.example.projectcookmanager.Entity.Recipe;
 
 import java.sql.*;
 import java.util.ArrayList;

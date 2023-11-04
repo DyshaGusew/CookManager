@@ -8,21 +8,6 @@ public class DishCard {
     private String imageUrl;
     private static DishCard selectedDish;
     private Button nextButton;
-    private DishCategory category;
-
-    public enum DishCategory {
-        HotDishes,
-        Salade,
-        Snack,
-        Soup,
-        Bakery,
-        Dessert,
-        Drinks
-    }
-
-    public DishCategory getCategory() {
-        return category;
-    }
 
     public void setSelected() {
         selectedDish = this;
@@ -30,10 +15,6 @@ public class DishCard {
 
     public static DishCard getSelectedDish() {
         return selectedDish;
-    }
-
-    public void setCategory(DishCategory category) {
-        this.category = category;
     }
 
     public String getName() {
@@ -48,15 +29,30 @@ public class DishCard {
         return ratingUrl;
     }
 
-    public void setRatingUrl(String ratingUrl) {
-        this.ratingUrl = ratingUrl;
+    public void setRatingUrl(float rating)
+    {
+        if(rating <= 1.4){
+            this.ratingUrl = "/img/Other/1star.png";
+        }
+        if(rating <= 2.4 && rating >= 1.5){
+            this.ratingUrl = "/img/Other/2stars.png";
+        }
+        if(rating <= 3.4 && rating >= 2.5){
+            this.ratingUrl = "/img/Other/3stars.png";
+        }
+        if(rating <= 4.4 && rating >= 3.5){
+            this.ratingUrl = "/img/Other/4stars.png";
+        }
+        if(rating >= 4.5){
+            this.ratingUrl = "/img/Other/5stars.png";
+        }
     }
 
     public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl(String nameRec) {
+        this.imageUrl = "/img/MainImage/" + nameRec;
     }
 }
