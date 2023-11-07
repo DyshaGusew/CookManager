@@ -11,7 +11,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DBAllRecipes extends DataBase {
     private Connection conn = null;
@@ -254,17 +257,27 @@ public class DBAllRecipes extends DataBase {
                     String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
                     String[] textStages = resultSet.getString("textStages").split(";");
 
-                    recipes.add(new Recipe(
-                            resultSet.getInt("id"),
-                            resultSet.getString("name"),
-                            resultSet.getString("mainInfo"),
-                            resultSet.getString("category"),
-                            resultSet.getInt("timeCooking"),
-                            resultSet.getString("mainImageLink"),
-                            new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
-                            resultSet.getFloat("rating"),
-                            imagesStageLinks,
-                            textStages));
+                    boolean flag = false;
+                    for (Recipe recipe : recipes){
+                        if(recipe.id == resultSet.getInt("id")){
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if(!flag){
+                        recipes.add(new Recipe(
+                                resultSet.getInt("id"),
+                                resultSet.getString("name"),
+                                resultSet.getString("mainInfo"),
+                                resultSet.getString("category"),
+                                resultSet.getInt("timeCooking"),
+                                resultSet.getString("mainImageLink"),
+                                new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
+                                resultSet.getFloat("rating"),
+                                imagesStageLinks,
+                                textStages));
+                    }
+
                 }
                 if (resultSet != null) resultSet.close();
                 if (stmt != null) stmt.close();

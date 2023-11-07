@@ -10,18 +10,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import org.w3c.dom.events.MouseEvent;
 
+import java.io.Console;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static java.lang.System.out;
 
 public class FoodViewController implements Initializable {
 
@@ -61,6 +66,10 @@ public class FoodViewController implements Initializable {
 
     @FXML
     private TextField SearchZoneByName;
+
+    @FXML
+    private ComboBox<String> ShortBut;
+
 
     @FXML
     private TextField SearchZoneByIngridient;
@@ -103,6 +112,28 @@ public class FoodViewController implements Initializable {
         catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @FXML
+    void SearchOfName(){
+        if(!SearchZoneByName.getText().equals("")){
+            thisRecipes = new DBAllRecipes().ReadOfName(SearchZoneByName.getText());
+        }
+        else{
+            thisRecipes = new DBAllRecipes().ReadAll();
+        }
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+        updateScrollPane(recentlyAdded);
+    }
+
+    @FXML
+    void NameNull(){
+        thisRecipes = new DBAllRecipes().ReadAll();
+        //Collections.reverse(thisRecipes);
+
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+        updateScrollPane(recentlyAdded);
+
     }
 
     //Обновление показанных рецептов
@@ -168,6 +199,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowLastAll(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadAll();
         Collections.reverse(thisRecipes);
 
@@ -178,6 +210,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowBakery(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Выпечка");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
        // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Выпечка"));
@@ -186,6 +219,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowDesserts(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Десерты");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
        // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Десерты"));
@@ -194,6 +228,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowDrinks(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Напитки");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
        // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Напитки"));
@@ -202,6 +237,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowHotDishes(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Вторые блюда");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
        // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Вторые блюда"));
@@ -210,6 +246,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowSalades(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory( "Салаты");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
 
@@ -220,6 +257,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowSnacks(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Закуски");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
 
@@ -229,6 +267,7 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowSoups(ActionEvent event) {
+        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Супы");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
 

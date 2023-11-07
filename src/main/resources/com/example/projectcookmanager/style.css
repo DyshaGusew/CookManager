@@ -43,6 +43,11 @@
     -fx-background-color: #a3b18a;
 }
 
+.shortBtn {
+    -fx-background-color: #a3b18a;
+    -fx-font-family: "Arial Black"; -fx-font-size: 13;
+}
+
 .mouse-movedReceiptBtn:hover {
     -fx-background-color: #588157;
 }
