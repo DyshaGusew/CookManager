@@ -1,6 +1,7 @@
 package com.example.projectcookmanager.DataBases;
 
 import com.example.projectcookmanager.Entity.Product;
+import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
 
 import java.sql.DriverManager;
@@ -41,7 +42,6 @@ public class DBAllRecipes extends DataBase {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()){
-                String[] ingredientsMass = resultSet.getString("ingredientsMass").split(";");
                 String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
                 String[] textStages = resultSet.getString("textStages").split(";");
                 getRecipe = new  Recipe(
@@ -51,9 +51,8 @@ public class DBAllRecipes extends DataBase {
                         resultSet.getString("category"),
                         resultSet.getInt("timeCooking"),
                         resultSet.getString("mainImageLink"),
-                        new DBAllProducts().ReadAllOfRecipe(resultSet.getInt("id")),
+                        new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
                         resultSet.getFloat("rating"),
-                        ingredientsMass,
                         imagesStageLinks,
                         textStages);
             }
@@ -85,7 +84,6 @@ public class DBAllRecipes extends DataBase {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()){
-                String[] ingredientsMass = resultSet.getString("ingredientsMass").split(";");
                 String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
                 String[] textStages = resultSet.getString("textStages").split(";");
                 getRecipe = new  Recipe(
@@ -95,9 +93,8 @@ public class DBAllRecipes extends DataBase {
                         resultSet.getString("category"),
                         resultSet.getInt("timeCooking"),
                         resultSet.getString("mainImageLink"),
-                        new DBAllProducts().ReadAllOfRecipe(resultSet.getInt("id")),
+                        new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
                         resultSet.getFloat("rating"),
-                        ingredientsMass,
                         imagesStageLinks,
                         textStages);
             }
@@ -126,7 +123,6 @@ public class DBAllRecipes extends DataBase {
             ResultSet resultSet = stmt.executeQuery(sql);
 
             while (resultSet.next()) {
-                String[] ingredientsMass = resultSet.getString("ingredientsMass").split(";");
                 String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
                 String[] textStages = resultSet.getString("textStages").split(";");
 
@@ -137,9 +133,8 @@ public class DBAllRecipes extends DataBase {
                         resultSet.getString("category"),
                         resultSet.getInt("timeCooking"),
                         resultSet.getString("mainImageLink"),
-                        new DBAllProducts().ReadAllOfRecipe(resultSet.getInt("id")),
+                        new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
                         resultSet.getFloat("rating"),
-                        ingredientsMass,
                         imagesStageLinks,
                         textStages));
             }
@@ -169,7 +164,6 @@ public class DBAllRecipes extends DataBase {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                String[] ingredientsMass = resultSet.getString("ingredientsMass").split(";");
                 String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
                 String[] textStages = resultSet.getString("textStages").split(";");
 
@@ -180,9 +174,8 @@ public class DBAllRecipes extends DataBase {
                         resultSet.getString("category"),
                         resultSet.getInt("timeCooking"),
                         resultSet.getString("mainImageLink"),
-                        new DBAllProducts().ReadAllOfRecipe(resultSet.getInt("id")),
+                        new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
                         resultSet.getFloat("rating"),
-                        ingredientsMass,
                         imagesStageLinks,
                         textStages));
             }
@@ -212,7 +205,6 @@ public class DBAllRecipes extends DataBase {
             ResultSet resultSet = stmt.executeQuery(sql);
 
             while (resultSet.next()) {
-                String[] ingredientsMass = resultSet.getString("ingredientsMass").split(";");
                 String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
                 String[] textStages = resultSet.getString("textStages").split(";");
 
@@ -223,9 +215,8 @@ public class DBAllRecipes extends DataBase {
                         resultSet.getString("category"),
                         resultSet.getInt("timeCooking"),
                         resultSet.getString("mainImageLink"),
-                        new DBAllProducts().ReadAllOfRecipe(resultSet.getInt("id")),
+                        new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
                         resultSet.getFloat("rating"),
-                        ingredientsMass,
                         imagesStageLinks,
                         textStages));
             }
@@ -243,7 +234,7 @@ public class DBAllRecipes extends DataBase {
     //Поиск по имени
     public List<Recipe> ReadOfName(String valueName){
 
-        String sql = "SELECT * FROM "+ nameTable +" WHERE name LIKE '%" + valueName + "%'";
+        String sql;// = "SELECT * FROM "+ nameTable +" WHERE name LIKE '%" + valueName + "%'";
         List<Recipe> recipes = new ArrayList<Recipe>();
 
         valueName = valueName.substring(0,1).toUpperCase() + valueName.substring(1).toLowerCase();
@@ -260,7 +251,6 @@ public class DBAllRecipes extends DataBase {
                 ResultSet resultSet = stmt.executeQuery(sql);
 
                 while (resultSet.next()) {
-                    String[] ingredientsMass = resultSet.getString("ingredientsMass").split(";");
                     String[] imagesStageLinks = resultSet.getString("imagesStageLinks").split(";");
                     String[] textStages = resultSet.getString("textStages").split(";");
 
@@ -271,9 +261,8 @@ public class DBAllRecipes extends DataBase {
                             resultSet.getString("category"),
                             resultSet.getInt("timeCooking"),
                             resultSet.getString("mainImageLink"),
-                            new DBAllProducts().ReadAllOfRecipe(resultSet.getInt("id")),
+                            new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
                             resultSet.getFloat("rating"),
-                            ingredientsMass,
                             imagesStageLinks,
                             textStages));
                 }
@@ -298,7 +287,7 @@ public class DBAllRecipes extends DataBase {
         List<Recipe> trueRecipes = new ArrayList<Recipe>();
         for (Recipe rec : allRecipes){
 
-            List<Product> allProdsOfRec = new DBAllProducts().ReadAllOfRecipe(rec.id);
+            List<Product> allProdsOfRec = new DBRecConnectProd().ReadAllOfRecipe(rec.id);
             boolean ingridsOfRec = true;
             for(int i = 0; i < nameIngrids.length; i++)
             {
@@ -324,24 +313,23 @@ public class DBAllRecipes extends DataBase {
     }
 
     public void Write(Recipe recipe) {
-        String sql = "INSERT INTO " + nameTable + "(name, category, mainInfo, timeCooking, mainImageLink, rating, ingredientsMass, imagesStageLinks, textStages) VALUES(?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO " + nameTable + "(name, category, mainInfo, timeCooking, mainImageLink, rating, imagesStageLinks, textStages) VALUES(?,?,?,?,?,?,?,?)";
 
         try{
             Connection conn = this.connect();
             PreparedStatement prepStat = conn.prepareStatement(sql);
             prepStat.setString(1, recipe.name);
-            prepStat.setString(2, recipe.category);
-            prepStat.setString(3, recipe.mainInfo);
-            prepStat.setInt(4, recipe.timeCooking);
-            prepStat.setString(5, recipe.mainImageLink);
+            prepStat.setString(2, recipe.getCategory());
+            prepStat.setString(3, recipe.getMainInfo());
+            prepStat.setInt(4, recipe.getTimeCooking());
+            prepStat.setString(5, recipe.getMainImageLink());
             prepStat.setFloat(6, recipe.getRating());
-            prepStat.setString(7, String.join(";", recipe.ingredientsMass));
-            prepStat.setString(8, String.join(";", recipe.imagesStageLinks));
-            prepStat.setString(9, String.join(";", recipe.textStages));
+            prepStat.setString(7, String.join(";", recipe.imagesStageLinks));
+            prepStat.setString(8, String.join(";", recipe.textStages));
             prepStat.executeUpdate();
 
 
-            new DBAllProducts().WriteProductRecipe(recipe.products,recipe.name);
+            new DBRecConnectProd().WriteProductRecipe(recipe.getProducts(),recipe.name);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -352,7 +340,7 @@ public class DBAllRecipes extends DataBase {
     public void Delete(String name) {
         String sql = "DELETE FROM " + nameTable + " WHERE name = ?";
         Recipe thisRec = new DBAllRecipes().Read(name);
-        new  DBAllProducts().DeleteProdRec(thisRec.id);
+        new  DBRecConnectProd().DeleteProdRec(thisRec.id);
         try {
             Connection conn = this.connect();
             PreparedStatement prepStat = conn.prepareStatement(sql);
@@ -377,7 +365,7 @@ public class DBAllRecipes extends DataBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        new  DBAllProducts().DeleteProdRec(id);
+        new  DBRecConnectProd().DeleteProdRec(id);
     }
 
 
@@ -388,7 +376,6 @@ public class DBAllRecipes extends DataBase {
                 + "timeCooking = ? ,"
                 + "mainImageLink = ? ,"
                 + "rating = ? ,"
-                + "ingredientsMass = ? ,"
                 + "imagesStageLinks = ? ,"
                 + "textStages = ? "
                 + "WHERE id = ?";
@@ -398,21 +385,20 @@ public class DBAllRecipes extends DataBase {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             // set the corresponding param
             pstmt.setString(1, newRecipe.name);
-            pstmt.setString(2, newRecipe.mainInfo);
-            pstmt.setString(3, newRecipe.category);
-            pstmt.setInt(4, newRecipe.timeCooking);
-            pstmt.setString(5, newRecipe.mainImageLink);
+            pstmt.setString(2, newRecipe.getMainInfo());
+            pstmt.setString(3, newRecipe.getCategory());
+            pstmt.setInt(4, newRecipe.getTimeCooking());
+            pstmt.setString(5, newRecipe.getMainImageLink());
             pstmt.setFloat(6, newRecipe.getRating());
-            pstmt.setString(7, String.join(";", newRecipe.ingredientsMass));
-            pstmt.setString(8, String.join(";",newRecipe.imagesStageLinks));
-            pstmt.setString(9, String.join(";",newRecipe.textStages));
-            pstmt.setInt(10, Read(name).id);
+            pstmt.setString(7, String.join(";",newRecipe.imagesStageLinks));
+            pstmt.setString(8, String.join(";",newRecipe.textStages));
+            pstmt.setInt(9, Read(name).id);
             // update
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        new  DBAllProducts().UpdateProdRec(newRecipe, newRecipe.products);
+        new  DBRecConnectProd().UpdateProdRec(newRecipe, newRecipe.getProducts());
     }
 
     public void Update(int id, Recipe newRecipe) {
@@ -422,7 +408,6 @@ public class DBAllRecipes extends DataBase {
                 + "timeCooking = ? ,"
                 + "mainImageLink = ? ,"
                 + "rating = ? ,"
-                + "ingredientsMass = ? ,"
                 + "imagesStageLinks = ? ,"
                 + "textStages = ? "
                 + "WHERE id = ?";
@@ -432,21 +417,20 @@ public class DBAllRecipes extends DataBase {
 
             // set the corresponding param
             pstmt.setString(1, newRecipe.name);
-            pstmt.setString(2, newRecipe.mainInfo);
-            pstmt.setString(3, newRecipe.category);
-            pstmt.setInt(4, newRecipe.timeCooking);
-            pstmt.setString(5, newRecipe.mainImageLink);
+            pstmt.setString(2, newRecipe.getMainInfo());
+            pstmt.setString(3, newRecipe.getCategory());
+            pstmt.setInt(4, newRecipe.getTimeCooking());
+            pstmt.setString(5, newRecipe.getMainImageLink());
             pstmt.setFloat(6, newRecipe.getRating());
-            pstmt.setString(7, String.join(";", newRecipe.ingredientsMass));
-            pstmt.setString(8, String.join(";",newRecipe.imagesStageLinks));
-            pstmt.setString(9, String.join(";",newRecipe.textStages));
-            pstmt.setInt(10, id);
+            pstmt.setString(7, String.join(";",newRecipe.imagesStageLinks));
+            pstmt.setString(8, String.join(";",newRecipe.textStages));
+            pstmt.setInt(9, id);
             // update
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        new DBAllProducts().UpdateProdRec(newRecipe, newRecipe.products);
+        new  DBRecConnectProd().UpdateProdRec(newRecipe, newRecipe.getProducts());
     }
 
 }

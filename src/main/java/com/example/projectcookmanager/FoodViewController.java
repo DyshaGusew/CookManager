@@ -142,7 +142,7 @@ public class FoodViewController implements Initializable {
         for(Recipe rec : recipes){
             DishCard dishCard = new DishCard();
             dishCard.setName(rec.name);
-            dishCard.setImageUrl(rec.mainImageLink);
+            dishCard.setImageUrl(rec.getMainImageLink());
             dishCard.setRatingUrl(rec.getRating());
 
             dishCardList.add(dishCard);

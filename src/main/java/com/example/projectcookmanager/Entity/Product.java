@@ -1,26 +1,25 @@
 package com.example.projectcookmanager.Entity;
 
-public class Product extends Entity {
-    public int id;
-    public String name;
-    public int protein;
-    public int fat;
-    public int carbohydrate;
+//Обычный продукт из рецепта
+public class Product extends ProductPattern{
+    //Масса в грамах
+    private float mass;
 
-    public Product(int id, String name, int protein, int fat, int carbohydrate){
-        this.id = id;
-        this.name = name;
-        this.protein = protein;
-        this.fat = fat;
-        this.carbohydrate = carbohydrate;
+    public void setMass(float mass) {
+        this.mass = mass;
     }
 
-    public Product(String name, int protein, int fat, int carbohydrate){
-        this.name = name;
-        this.protein = protein;
-        this.fat = fat;
-        this.carbohydrate = carbohydrate;
+    public float getMass() {
+        return mass;
     }
 
+    public Product(int id, String name, float protein, float fat, float carbohydrate, float mass){
+        super(id, name, protein, fat, carbohydrate);
+        setMass(mass);
+    }
 
+    public Product(String name, float protein, float fat, float carbohydrate, float mass){
+        super(name, protein, fat, carbohydrate);
+        setMass(mass);
+    }
 }
