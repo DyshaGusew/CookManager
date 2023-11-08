@@ -4,6 +4,8 @@ import DishModel.DishCard;
 //import DishModel.Recipe;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.Entity.Recipe;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,10 +23,7 @@ import org.w3c.dom.events.MouseEvent;
 import java.io.Console;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -68,6 +67,7 @@ public class FoodViewController implements Initializable {
     private TextField SearchZoneByName;
 
     @FXML
+
     private ComboBox<String> ShortBut;
 
 
@@ -77,16 +77,25 @@ public class FoodViewController implements Initializable {
     @FXML
     private Button CreateNewReceiptBtn;
 
+    @FXML
+    private Button ReturnArrayBut;
+
     private List<DishCard> recentlyAdded;
 
     //Текущий список рецептов
     private List<Recipe> thisRecipes;
+    private String thisCategory;
 
     //Все, что появится в начале
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //Заполняю комбо бокс
+        ObservableList<String> categories = FXCollections.observableArrayList("Новизна", "Время приготовления", "Рейтинг", "Каллорийность");
+        ShortBut.setItems(categories);
+
         //Делаем в перемешанном порядке
         thisRecipes = new DBAllRecipes().ReadAll();
+        thisCategory = "all";
         Collections.reverse(thisRecipes);
 
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
@@ -114,27 +123,7 @@ public class FoodViewController implements Initializable {
         }
     }
 
-    @FXML
-    void SearchOfName(){
-        if(!SearchZoneByName.getText().equals("")){
-            thisRecipes = new DBAllRecipes().ReadOfName(SearchZoneByName.getText());
-        }
-        else{
-            thisRecipes = new DBAllRecipes().ReadAll();
-        }
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-        updateScrollPane(recentlyAdded);
-    }
 
-    @FXML
-    void NameNull(){
-        thisRecipes = new DBAllRecipes().ReadAll();
-        //Collections.reverse(thisRecipes);
-
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-        updateScrollPane(recentlyAdded);
-
-    }
 
     //Обновление показанных рецептов
     private void updateScrollPane(List<DishCard> filteredDishes) {
@@ -196,11 +185,96 @@ public class FoodViewController implements Initializable {
 //
 //        return dishCardList;
 //    }
+    @FXML
+    void ClickSearchOfName(){
+        ShortBut.setValue("Новизна");
+        ReturnArrayBut.setText("▼");
+    }
 
     @FXML
-    void ShowLastAll(ActionEvent event) {
+    void SearchOfName(){
+        List<Recipe> newList;
+        if(!SearchZoneByName.getText().equals("")){
+            newList = new DBAllRecipes().ReadOfName(SearchZoneByName.getText());
+        }
+        else{
+            newList = new DBAllRecipes().ReadAll();
+        }
+        thisRecipes = new ArrayList<Recipe>();
+
+        if(!thisCategory.equals("all")){
+            for (Recipe rec : newList){
+                if(rec.getCategory().equals(thisCategory)){
+                    thisRecipes.add(rec);
+                }
+            }
+            Collections.reverse(thisRecipes);
+        }
+        else {
+            thisRecipes = newList;
+
+        }
+
+
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+        updateScrollPane(recentlyAdded);
+        //
+    }
+
+
+    @FXML
+    void SortOfParams(ActionEvent event){
+        List<Recipe> newList;
+
+        switch (ShortBut.getValue()){
+            case "Новизна":
+                newList = new DBAllRecipes().ReadOfSort("id");
+                break;
+            case "Время приготовления":
+                newList = new DBAllRecipes().ReadOfSort("timeCooking");
+                break;
+            case "Рейтинг":
+                newList = new DBAllRecipes().ReadOfSort("rating");
+                break;
+            case "Каллорийность":
+                newList = new DBAllRecipes().ReadOfSort("id");
+                break;
+            default:
+                newList = new DBAllRecipes().ReadOfSort("id");
+        }
+
+
+        thisRecipes = new ArrayList<Recipe>();
+
+        //Если категория не содержит всех категорий, то
+        if(!thisCategory.equals("all")){
+            for(Recipe elem: newList){
+                if(elem.getCategory().equals(thisCategory)){
+                    thisRecipes.add(elem);
+                }
+            }
+        }
+        else {
+            thisRecipes = newList;
+        }
+        Collections.reverse(thisRecipes);
+
         SearchZoneByName.setText("");
-        thisRecipes = new DBAllRecipes().ReadAll();
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+        // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Выпечка"));
+        updateScrollPane(recentlyAdded);
+
+    }
+
+    @FXML
+    void ShowListReturn(ActionEvent event) {
+        SearchZoneByName.setText("");
+        if(ReturnArrayBut.getText().equals("▲")){
+            ReturnArrayBut.setText("▼");
+        }
+        else{
+            ReturnArrayBut.setText("▲");
+        }
         Collections.reverse(thisRecipes);
 
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
@@ -209,69 +283,72 @@ public class FoodViewController implements Initializable {
     }
 
     @FXML
+    void ShowLastAll(ActionEvent event) {
+        thisCategory = "all";
+        thisRecipes = new DBAllRecipes().ReadAll();
+        ClickButCategories();
+    }
+
+    @FXML
     void ShowBakery(ActionEvent event) {
-        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Выпечка");
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Выпечка"));
-        updateScrollPane(recentlyAdded);
+        thisCategory = "Выпечка";
+        ClickButCategories();
     }
 
     @FXML
     void ShowDesserts(ActionEvent event) {
-        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Десерты");
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Десерты"));
-        updateScrollPane(recentlyAdded);
+        thisCategory = "Десерты";
+        ClickButCategories();
     }
 
     @FXML
     void ShowDrinks(ActionEvent event) {
-        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Напитки");
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Напитки"));
-        updateScrollPane(recentlyAdded);
+        thisCategory = "Напитки";
+        ClickButCategories();
     }
 
     @FXML
     void ShowHotDishes(ActionEvent event) {
-        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Вторые блюда");
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-       // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Вторые блюда"));
-        updateScrollPane(recentlyAdded);
+        thisCategory = "Вторые блюда";
+        ClickButCategories();
     }
 
     @FXML
     void ShowSalades(ActionEvent event) {
-        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory( "Салаты");
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-
-       // List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
-
-        updateScrollPane(recentlyAdded);
+        thisCategory = "Салаты";
+        ClickButCategories();
     }
 
     @FXML
     void ShowSnacks(ActionEvent event) {
-        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Закуски");
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-
-       // List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
-        updateScrollPane(recentlyAdded);
+        thisCategory = "Закуски";
+        ClickButCategories();
     }
 
     @FXML
     void ShowSoups(ActionEvent event) {
-        SearchZoneByName.setText("");
         thisRecipes = new DBAllRecipes().ReadOfCategory("Супы");
-        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+        thisCategory = "Супы";
+        ClickButCategories();
+    }
 
-       // List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
+    private void BaseView(){
+        ShortBut.setValue("Новизна");
+        ReturnArrayBut.setText("▼");
+        SearchZoneByName.setText("");
+    }
+
+    private void ClickButCategories(){
+        BaseView();
+
+        Collections.reverse(thisRecipes);
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         updateScrollPane(recentlyAdded);
     }
 }

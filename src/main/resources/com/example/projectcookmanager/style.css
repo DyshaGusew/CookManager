@@ -48,6 +48,13 @@
     -fx-font-family: "Arial Black"; -fx-font-size: 13;
 }
 
+.shortBtn:hover {
+    -fx-background-color: #588157;
+}
+/*.input .text-field{*/
+/*    -fx-prompt-text-fill: #588157;*/
+/*}*/
+
 .mouse-movedReceiptBtn:hover {
     -fx-background-color: #588157;
 }

@@ -138,9 +138,9 @@
       </VBox>
       <Pane prefHeight="611.0" prefWidth="696.0">
          <children>
-            <Pane layoutY="14.0" prefHeight="74.0" prefWidth="696.0" styleClass="transparent" stylesheets="@style.css">
+            <Pane layoutY="14.0" prefHeight="83.0" prefWidth="696.0" styleClass="transparent" stylesheets="@style.css">
                <children>
-                  <TextField fx:id="SearchZoneByName" layoutX="473.0" layoutY="39.0" onKeyReleased="#SearchOfName" promptText="Название:">
+                  <TextField fx:id="SearchZoneByName" layoutX="473.0" layoutY="39.0" onKeyReleased="#SearchOfName" onMouseClicked="#ClickSearchOfName" promptText="Название:">
                      <font>
                         <Font name="Arial Black" size="11.0" />
                      </font>
@@ -150,7 +150,7 @@
                         <Image url="@../../../img/free-icon-search-2997940.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="CreateNewReceiptBtn" layoutX="63.0" layoutY="37.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" stylesheets="@style.css" text="Новый рецепт">
+                  <Button fx:id="CreateNewReceiptBtn" layoutX="42.0" layoutY="37.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="145.0" stylesheets="@style.css" text="Новый рецепт">
                      <font>
                         <Font name="Arial Black" size="13.0" />
                      </font>
@@ -164,10 +164,23 @@
                         <Font name="Arial Black" size="11.0" />
                      </font>
                   </TextField>
-                  <ComboBox fx:id="ShortBut" layoutX="237.0" layoutY="37.0" prefHeight="28.0" prefWidth="176.0" promptText="Отсортировать по" styleClass="shortBtn" />
+                  <Label layoutX="201.0" layoutY="26.0" prefHeight="28.0" prefWidth="185.0" style="-fx-background-color: #a3b18a; -fx-background-radius: 4;" text="  Отсортировать по:" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Black" size="13.0" />
+                     </font></Label>
+                  <ComboBox fx:id="ShortBut" layoutX="201.0" layoutY="50.0" onAction="#SortOfParams" prefHeight="28.0" prefWidth="185.0" promptText="Новизна" styleClass="shortBtn" />
+                  <Button fx:id="ReturnArrayBut" layoutX="398.0" layoutY="37.0" mnemonicParsing="false" onAction="#ShowListReturn" prefHeight="28.0" prefWidth="24.0" stylesheets="@style.css" text="▼" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Black" size="13.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="mouse-movedReceiptBtn" />
+                        <String fx:value="newReceiptBtn" />
+                     </styleClass>
+                  </Button>
                </children>
             </Pane>
-            <HBox layoutX="2.0" layoutY="145.0" prefHeight="450.0" prefWidth="689.0">
+            <HBox layoutX="2.0" layoutY="113.0" prefHeight="482.0" prefWidth="689.0">
                <children>
                   <ScrollPane prefHeight="405.0" prefWidth="510.0" HBox.hgrow="ALWAYS">
                      <content>
