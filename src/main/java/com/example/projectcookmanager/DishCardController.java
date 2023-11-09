@@ -17,6 +17,9 @@ public class DishCardController {
     private Label dishName;
 
     @FXML
+    private Label dishTime;
+
+    @FXML
     private ImageView dishImage;
 
     private FullReceiptCardController fullRecipeController;
@@ -35,6 +38,7 @@ public class DishCardController {
         dishImage.setFitWidth(165);
         dishImage.setFitHeight(106);
         dishName.setText(dish.getName());
+        dishTime.setText(dish.getTime());
         Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
         rating.setImage(ratingImage);
     }

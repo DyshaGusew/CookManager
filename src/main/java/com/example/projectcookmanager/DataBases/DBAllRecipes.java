@@ -326,7 +326,7 @@ public class DBAllRecipes extends DataBase {
     }
 
     public void Write(Recipe recipe) {
-        String sql = "INSERT INTO " + nameTable + "(name, category, mainInfo, timeCooking, mainImageLink, rating, imagesStageLinks, textStages) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO " + nameTable + "(name, category, mainInfo, calories, timeCooking, mainImageLink, rating, imagesStageLinks, textStages) VALUES(?,?,?,?,?,?,?,?,?)";
 
         try{
             Connection conn = this.connect();
@@ -334,11 +334,12 @@ public class DBAllRecipes extends DataBase {
             prepStat.setString(1, recipe.name);
             prepStat.setString(2, recipe.getCategory());
             prepStat.setString(3, recipe.getMainInfo());
-            prepStat.setInt(4, recipe.getTimeCooking());
-            prepStat.setString(5, recipe.getMainImageLink());
-            prepStat.setFloat(6, recipe.getRating());
-            prepStat.setString(7, String.join(";", recipe.imagesStageLinks));
-            prepStat.setString(8, String.join(";", recipe.textStages));
+            prepStat.setFloat(4, recipe.getCalories());
+            prepStat.setInt(5, recipe.getTimeCooking());
+            prepStat.setString(6, recipe.getMainImageLink());
+            prepStat.setFloat(7, recipe.getRating());
+            prepStat.setString(8, String.join(";", recipe.imagesStageLinks));
+            prepStat.setString(9, String.join(";", recipe.textStages));
             prepStat.executeUpdate();
 
 

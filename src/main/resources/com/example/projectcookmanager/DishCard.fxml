@@ -21,17 +21,27 @@
                </font>
             </Label>
          </children></VBox>
-      <ImageView fx:id="rating" fitHeight="128.0" fitWidth="160.0" layoutX="185.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="rating" fitHeight="128.0" fitWidth="160.0" layoutX="188.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../img/Other/4stars.png" />
          </image>
       </ImageView>
-      <Button fx:id="nextBtn" alignment="CENTER" contentDisplay="TOP" layoutX="336.0" layoutY="59.0" mnemonicParsing="false" onAction="#ShowFullReceipt" stylesheets="@style.css" text="Далее">
+      <Button fx:id="nextBtn" alignment="CENTER" contentDisplay="TOP" layoutX="336.0" layoutY="53.0" mnemonicParsing="false" onAction="#ShowFullReceipt" stylesheets="@style.css" text="Далее">
          <styleClass>
             <String fx:value="NextBtn" />
             <String fx:value="mouse-movedNextBtn" />
          </styleClass>
       </Button>
+      <Label fx:id="dishTime" layoutX="252.0" layoutY="81.0" text="30 мин">
+         <font>
+            <Font name="Arial Black" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="22.0" fitWidth="20.0" layoutX="228.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/icon-time.png" />
+         </image>
+      </ImageView>
    </children>
    <styleClass>
       <String fx:value="Shadow" />

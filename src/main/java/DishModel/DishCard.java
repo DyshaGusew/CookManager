@@ -4,6 +4,7 @@ import javafx.scene.control.Button;
 
 public class DishCard {
     private String name;
+    private String time;
     private String ratingUrl;
     private String imageUrl;
     private static DishCard selectedDish;
@@ -15,6 +16,45 @@ public class DishCard {
 
     public static DishCard getSelectedDish() {
         return selectedDish;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        if(time < 60){
+            this.time = String.valueOf(time) + " мин";
+        }
+        else {
+            float n = time/60.0f*10;
+            int result = (int)Math.round(n);
+
+            String form;
+            if (time % 60 == 0) {
+                switch (time){
+                    case 60:
+                        form = " час";
+                        break;
+                    case 120:
+                        form = " часа";
+                        break;
+                    case 180:
+                        form = " часа";
+                        break;
+                    case 240:
+                        form = " часа";
+                        break;
+                    default:
+                        form = " часов";
+                }
+            }
+            else {
+                form = " часа";
+            }
+            this.time = String.valueOf((float) result/10) + form;
+        }
+
     }
 
     public String getName() {

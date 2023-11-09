@@ -162,6 +162,7 @@ public class FoodViewController implements Initializable {
         for(Recipe rec : recipes){
             DishCard dishCard = new DishCard();
             dishCard.setName(rec.name);
+            dishCard.setTime(rec.getTimeCooking());
             dishCard.setImageUrl(rec.getMainImageLink());
             dishCard.setRatingUrl(rec.getRating());
 
@@ -227,9 +228,9 @@ public class FoodViewController implements Initializable {
         List<Recipe> newList;
 
         switch (ShortBut.getValue()){
-            case "Новизна":
-                newList = new DBAllRecipes().ReadOfSort("id");
-                break;
+//            case "Новизна":
+//                newList = new DBAllRecipes().ReadOfSort("id");
+//                break;
             case "Время приготовления":
                 newList = new DBAllRecipes().ReadOfSort("timeCooking");
                 break;
@@ -237,7 +238,7 @@ public class FoodViewController implements Initializable {
                 newList = new DBAllRecipes().ReadOfSort("rating");
                 break;
             case "Каллорийность":
-                newList = new DBAllRecipes().ReadOfSort("id");
+                newList = new DBAllRecipes().ReadOfSort("calories");
                 break;
             default:
                 newList = new DBAllRecipes().ReadOfSort("id");
@@ -249,7 +250,8 @@ public class FoodViewController implements Initializable {
         //Если категория не содержит всех категорий, то
         if(!thisCategory.equals("all")){
             for(Recipe elem: newList){
-                if(elem.getCategory().equals(thisCategory)){
+
+                if(elem.getCategory().equals(thisCategory) && elem.name.contains(SearchZoneByName.getText())){
                     thisRecipes.add(elem);
                 }
             }
