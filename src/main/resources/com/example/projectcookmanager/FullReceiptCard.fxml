@@ -2,43 +2,86 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="689.0" styleClass="full-receipt" stylesheets="@style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.FullReceiptCardController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="651.0" prefWidth="601.0" styleClass="dishCard" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.FullReceiptCardController">
    <children>
-      <VBox layoutX="5.0" layoutY="244.0" prefHeight="200.0" prefWidth="682.0">
-         <children>
-            <Label prefHeight="30.0" prefWidth="236.0" text="Описание приготовления:">
-               <font>
-                  <Font name="Arial Black" size="15.0" />
-               </font>
-            </Label>
-            <ListView fx:id="cookingDescriptionList" prefHeight="200.0" prefWidth="200.0" styleClass="full-receipt" />
-         </children>
-      </VBox>
-      <ImageView fx:id="recipeImage" fitHeight="200.0" fitWidth="320.0" layoutX="58.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../img/MainImage/yaichnica_obichnaya-384161.jpg" />
-         </image>
-      </ImageView>
-      <Label fx:id="recipeName" layoutX="58.0" layoutY="4.0" prefHeight="32.0" prefWidth="300.0" text="Яичница обычная" wrapText="true">
+      <TextArea fx:id="decriptionArea" editable="false" layoutX="31.0" layoutY="347.0" prefHeight="200.0" prefWidth="263.0" />
+      <Label layoutX="31.0" layoutY="314.0" text="Описание приготовления:">
          <font>
-            <Font name="Arial Black" size="22.0" />
+            <Font name="Arial Black" size="16.0" />
          </font>
       </Label>
-      <VBox layoutX="371.0" layoutY="37.0" prefHeight="200.0" prefWidth="310.0">
+      <ImageView fx:id="choosenImage" fitHeight="188.0" fitWidth="268.0" layoutX="43.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/free-icon-cloche-5498449.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="dishName" layoutX="44.0" layoutY="27.0" text="Яичница Обычная">
+         <font>
+            <Font name="Arial Black" size="18.0" />
+         </font>
+      </Label>
+      <VBox layoutX="250.0" layoutY="54.0" prefHeight="103.0" prefWidth="143.0" spacing="12.0">
          <children>
-            <Label text="Состав / Ингредиенты:">
+            <Label text="Категория:">
                <font>
-                  <Font name="Arial Black" size="19.0" />
+                  <Font name="Arial Black" size="18.0" />
                </font>
             </Label>
-            <ListView fx:id="IngredientsList" prefHeight="200.0" prefWidth="200.0" styleClass="full-receipt" />
+            <Label prefHeight="27.0" prefWidth="222.0" text="Каллории:">
+               <font>
+                  <Font name="Arial Black" size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="49.0" prefHeight="27.0" prefWidth="222.0" text="Ингредиенты:">
+               <font>
+                  <Font name="Arial Black" size="18.0" />
+               </font>
+            </Label>
          </children>
       </VBox>
+      <Label fx:id="dishCategoryLabel" layoutX="364.0" layoutY="54.0" text="Горячие блюда" textFill="#ff8400">
+         <font>
+            <Font name="Arial Black" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="rating" fitHeight="128.0" fitWidth="160.0" layoutX="314.0" layoutY="261.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/Other/4stars.png" />
+         </image>
+      </ImageView>
+      <HBox layoutX="482.0" layoutY="314.0">
+         <children>
+            <ImageView fx:id="time" fitHeight="22.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/icon-time.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="dishTime" text="30 мин">
+               <font>
+                  <Font name="Arial Black" size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Label fx:id="dishCalloriesLabel" layoutX="363.0" layoutY="93.0" text="120 гр" textFill="#ff8400">
+         <font>
+            <Font name="Arial Black" size="18.0" />
+         </font>
+      </Label>
+      <ScrollPane fx:id="stepsScroll" layoutX="301.0" layoutY="347.0" prefHeight="200.0" prefWidth="291.0">
+         <content>
+            <VBox prefHeight="197.0" prefWidth="288.0" />
+         </content>
+      </ScrollPane>
+      <ListView fx:id="listViewOfIngredients" layoutX="241.0" layoutY="159.0" prefHeight="128.0" prefWidth="350.0" />
    </children>
 </Pane>

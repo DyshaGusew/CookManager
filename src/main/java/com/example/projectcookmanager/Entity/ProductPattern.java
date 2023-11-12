@@ -35,6 +35,4 @@ public class ProductPattern extends Entity {
         setFat(fat);
         setCarbohydrate(carbohydrate);
     }
-
-
 }

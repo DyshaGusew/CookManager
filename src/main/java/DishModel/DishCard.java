@@ -7,6 +7,8 @@ public class DishCard {
     private String time;
     private String ratingUrl;
     private String imageUrl;
+
+    private String timeImageUrl;
     private static DishCard selectedDish;
     private Button nextButton;
 
@@ -94,5 +96,13 @@ public class DishCard {
 
     public void setImageUrl(String nameRec) {
         this.imageUrl = "/img/MainImage/" + nameRec;
+    }
+
+    public String getTimeImageUrl() {
+        return timeImageUrl;
+    }
+
+    public void setTimeImageUrl(String timeImageUrl) {
+        this.timeImageUrl = timeImageUrl;
     }
 }

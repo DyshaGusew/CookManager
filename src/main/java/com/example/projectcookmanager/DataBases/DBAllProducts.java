@@ -4,6 +4,7 @@ import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 //БД для работы со всеми продуктами, просто их список
@@ -57,6 +58,7 @@ public class DBAllProducts extends DataBase {
 
         return getProductPattern;
     }
+
     public ProductPattern Read(String name) {
         String sql = "SELECT * FROM " + nameTable + " WHERE name = ?";
 
@@ -94,8 +96,6 @@ public class DBAllProducts extends DataBase {
         return getProductPattern;
     }
 
-
-
     public void Write(ProductPattern productPattern) {
         String sql = "INSERT INTO " + nameTable + "(name, protein, fat, carbohydrate) VALUES(?,?,?,?)";
 
@@ -112,9 +112,6 @@ public class DBAllProducts extends DataBase {
             System.out.println(e.getMessage());
         }
     }
-
-
-
 
     public void Delete(String name) {
         String sql = "DELETE FROM " + nameTable + " WHERE name = ?";
@@ -141,8 +138,6 @@ public class DBAllProducts extends DataBase {
         }
     }
 
-
-
     public void Update(String name, ProductPattern newProductPattern) {
         String sql = "UPDATE " + nameTable + " SET name = ? , "
                 + "protein = ? ,"
@@ -165,6 +160,7 @@ public class DBAllProducts extends DataBase {
             System.out.println(e.getMessage());
         }
     }
+
     public void Update(int id, ProductPattern newProductPattern) {
         String sql = "UPDATE " + nameTable + " SET name = ? , "
                 + "protein = ? ,"
@@ -188,7 +184,28 @@ public class DBAllProducts extends DataBase {
         }
     }
 
+    public List<ProductPattern> ReadAll() {
+        String sql = "SELECT * FROM " + nameTable;
+        List<ProductPattern> allProducts = new ArrayList<>();
 
+        try (Connection conn = this.connect();
+             Statement statement = conn.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
 
+            while (resultSet.next()) {
+                ProductPattern productPattern = new ProductPattern(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getFloat("protein"),
+                        resultSet.getFloat("fat"),
+                        resultSet.getFloat("carbohydrate"));
 
+                allProducts.add(productPattern);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return allProducts;
+    }
 }

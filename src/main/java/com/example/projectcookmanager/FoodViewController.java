@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.w3c.dom.events.MouseEvent;
 
 import java.io.Console;
@@ -28,8 +32,6 @@ import java.util.*;
 import static java.lang.System.out;
 
 public class FoodViewController implements Initializable {
-
-
     @FXML
     private Button allDishBtn;
 
@@ -123,8 +125,6 @@ public class FoodViewController implements Initializable {
         }
     }
 
-
-
     //Обновление показанных рецептов
     private void updateScrollPane(List<DishCard> filteredDishes) {
         dishContainer.getChildren().clear();
@@ -171,21 +171,6 @@ public class FoodViewController implements Initializable {
         return  dishCardList;
     }
 
-    //Добавление блюд парсером
-//    private List<DishCard> recentlyAdded(List<ParsedDishes> parsedData) {
-//        List<DishCard> dishCardList = new ArrayList<>();
-//
-//        for (ParsedDishes parsedItem : parsedData) {
-//            DishCard dishCard = new DishCard();
-//            dishCard.setName(parsedItem.getName());
-//            dishCard.setImageUrl(parsedItem.getImageUrl());
-//           // dishCard.setRatingUrl(parsedItem.getRatingUrl());
-//
-//            dishCardList.add(dishCard);
-//        }
-//
-//        return dishCardList;
-//    }
     @FXML
     void ClickSearchOfName(){
         ShortBut.setValue("Новизна");
@@ -216,12 +201,9 @@ public class FoodViewController implements Initializable {
 
         }
 
-
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         updateScrollPane(recentlyAdded);
-        //
     }
-
 
     @FXML
     void SortOfParams(ActionEvent event){
@@ -244,7 +226,6 @@ public class FoodViewController implements Initializable {
                 newList = new DBAllRecipes().ReadOfSort("id");
         }
 
-
         thisRecipes = new ArrayList<Recipe>();
 
         //Если категория не содержит всех категорий, то
@@ -265,7 +246,6 @@ public class FoodViewController implements Initializable {
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Выпечка"));
         updateScrollPane(recentlyAdded);
-
     }
 
     @FXML
@@ -352,5 +332,24 @@ public class FoodViewController implements Initializable {
         Collections.reverse(thisRecipes);
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         updateScrollPane(recentlyAdded);
+    }
+
+    @FXML
+    void OpenNewReceiptCard(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewReceiptCard.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Создание рецепта");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }

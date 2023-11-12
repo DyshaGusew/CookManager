@@ -1,39 +1,55 @@
 package DishModel;
 
+import javafx.scene.control.ListView;
+
 public class FullReceiptCard {
     private String nameDish;
     private String imageUrl;
 
-    private String ingredients;
+    private ListView<?> ingredients;
 
     private String recipeDescription;
 
-    public String getNameDish() {
-        return nameDish;
+    private String stepsDescription;
+
+    private String rating;
+
+    private String dishTime;
+
+    private String dishCalories;
+
+    private String dishCategory;
+
+    public void dishCategory(String dishCategory) {
+        this.dishCategory = dishCategory;
+    }
+
+    public void setStepsDescription(String stepsDescription) {
+        this.stepsDescription = stepsDescription;
+    }
+
+    public void dishCalories(String dishCalories) {
+        this.dishCalories = dishCalories;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public void setDishTime(String dishTime) {
+        this.dishTime = dishTime;
+    }
+
+    public void setIngredients(ListView<?> ingredients) {
+        this.ingredients = ingredients;
     }
 
     public void setNameDish(String nameDish) {
         this.nameDish = nameDish;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public String getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(String ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getRecipeDescription() {
-        return recipeDescription;
     }
 
     public void setRecipeDescription(String recipeDescription) {

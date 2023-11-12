@@ -86,3 +86,31 @@
 .full-receipt {
     -fx-background-color: #e9edc9;
 }
+
+.createBtn {
+    -fx-background-color: #a7c957;
+}
+
+.createBtn-hover:hover {
+    -fx-background-color: #6a994e;
+}
+
+.exitBtn {
+    -fx-background-color: #e63946;
+}
+
+.exitBtn-hover:hover {
+    -fx-background-color: #d00000;
+}
+
+.showBtn {
+    -fx-background-color: #f48c06;
+}
+
+.showBtn-hover:hover {
+    -fx-background-color: #e85d04;
+}
+
+.imageView {
+    -fx-border-color: #001219;
+}

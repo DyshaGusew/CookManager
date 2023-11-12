@@ -30,7 +30,6 @@ public class DBAllRecipes extends DataBase {
         return conn;
     }
 
-
     public Recipe Read(int id){
         String sql = "SELECT * FROM " + nameTable + " WHERE id = ?";
         Recipe getRecipe = null;
@@ -73,6 +72,7 @@ public class DBAllRecipes extends DataBase {
 
         return getRecipe;
     }
+
     public Recipe Read(String name) {
         String sql = "SELECT * FROM " + nameTable + " WHERE name = ?";
 
@@ -114,7 +114,6 @@ public class DBAllRecipes extends DataBase {
         }
         return getRecipe;
     }
-
 
     public List<Recipe> ReadAll(){
         String sql = "SELECT * FROM " + nameTable;
@@ -289,7 +288,6 @@ public class DBAllRecipes extends DataBase {
             }
         }
 
-
         return recipes;
     }
 
@@ -350,7 +348,6 @@ public class DBAllRecipes extends DataBase {
         }
     }
 
-
     public void Delete(String name) {
         String sql = "DELETE FROM " + nameTable + " WHERE name = ?";
         Recipe thisRec = new DBAllRecipes().Read(name);
@@ -366,8 +363,8 @@ public class DBAllRecipes extends DataBase {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
+
     public void Delete(int id) {
         String sql = "DELETE FROM " + nameTable + " WHERE id = ?";
         try {
@@ -381,7 +378,6 @@ public class DBAllRecipes extends DataBase {
         }
         new  DBRecConnectProd().DeleteProdRec(id);
     }
-
 
     public void Update(String name, Recipe newRecipe) {
         String sql = "UPDATE " + nameTable + " SET name = ? , "
@@ -446,5 +442,4 @@ public class DBAllRecipes extends DataBase {
         }
         new  DBRecConnectProd().UpdateProdRec(newRecipe, newRecipe.getProducts());
     }
-
 }

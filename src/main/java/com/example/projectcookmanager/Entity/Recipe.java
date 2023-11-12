@@ -15,8 +15,6 @@ public class Recipe extends Entity {
     private float fat;
     private float protein;
     private float carbohydrate;
-
-
     private String mainImageLink;
 
     //Продукты
@@ -40,17 +38,12 @@ public class Recipe extends Entity {
         this.category = category;
     }
 
-
     public int getTimeCooking() {
         return timeCooking;
     }
     public void setTimeCooking(int timeCooking) {
         this.timeCooking = timeCooking;
     }
-
-
-
-
 
     public float getProtein() {
         return protein;
@@ -128,8 +121,6 @@ public class Recipe extends Entity {
             this.rating = rating;
         }
     }
-
-
 
     //Массивы названий ингридиентов и их количества
 
