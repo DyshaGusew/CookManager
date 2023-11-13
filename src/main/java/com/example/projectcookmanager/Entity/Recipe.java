@@ -15,13 +15,19 @@ public class Recipe extends Entity {
     private float fat;
     private float protein;
     private float carbohydrate;
-    private String mainImageLink;
+    private String mainImageLink;  //Основное описание рецепта
+
+    //Оценка
+    private float rating;
 
     //Продукты
     private List<Product> products;
 
-    //Оценка
-    private float rating;
+    //Массив ссылок на картинки и их описаний (этапы приготовления)
+    private List<String> imagesStageLinks;
+    private List<String> textStages;
+
+
 
     public String getMainInfo() {
         return mainInfo;
@@ -85,8 +91,8 @@ public class Recipe extends Entity {
 
     }
 
-    public float getCalories() {
-        return calories;
+    public int getCalories() {
+        return (int)calories;
     }
     public void setCalories(float protein, float fat, float carbohydrate) {
 
@@ -122,14 +128,24 @@ public class Recipe extends Entity {
         }
     }
 
-    //Массивы названий ингридиентов и их количества
+    public void setTextStages(List<String> textStages) {
+        this.textStages = textStages;
+    }
 
-    //Массив ссылок на картинки и их описаний (этапы приготовления)
-    public String[] imagesStageLinks;
-    public String[] textStages;
+    public List<String> getTextStages() {
+        return textStages;
+    }
+
+    public void setImagesStageLinks(List<String> imagesStageLinks) {
+        this.imagesStageLinks = imagesStageLinks;
+    }
+
+    public List<String> getImagesStageLinks() {
+        return imagesStageLinks;
+    }
 
     public Recipe(int id, String name, String mainInfo, String category, int timeCooking, String mainImageLink, List<Product> products, float rating,
-                  String[] imagesStageLinks, String[] textStages){
+                  List<String> imagesStageLinks, List<String> textStages){
         this.id = id;
         this.name = name;
         setMainInfo(mainInfo);
@@ -142,11 +158,11 @@ public class Recipe extends Entity {
         setProtein(products);
         setCalories(getProtein(), getFat(), getCarbohydrate());
         setRating(rating);
-        this.imagesStageLinks = imagesStageLinks;
-        this.textStages = textStages;
+        setImagesStageLinks(imagesStageLinks);
+        setTextStages(textStages);
     }
     public Recipe(String name, String mainInfo, String category, int timeCooking, String mainImageLink, List<Product> products, float rating,
-                  String[] imagesStageLinks, String[] textStages){
+                  List<String> imagesStageLinks, List<String> textStages){
         this.name = name;
         setMainInfo(mainInfo);
         setCategory(category);
@@ -158,8 +174,8 @@ public class Recipe extends Entity {
         setProtein(products);
         setCalories(getProtein(), getFat(), getCarbohydrate());
         setRating(rating);
-        this.imagesStageLinks = imagesStageLinks;
-        this.textStages = textStages;
+        setImagesStageLinks(imagesStageLinks);
+        setTextStages(textStages);
     }
 
     //Вес всего блюда
@@ -170,6 +186,7 @@ public class Recipe extends Entity {
             }
         return valueAspect;
     }
+
     //Подсчет углеводов, белков и жиров в конкретном рецепте
     static private float valueAspect(String nameAspect, List<Product> products){
         float valueAspect = 0;

@@ -3,12 +3,14 @@ package com.example.projectcookmanager;
 import DishModel.DishCard;
 import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
+import com.example.projectcookmanager.DataBases.DBRecConnectProd;
 import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -17,6 +19,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.List;
@@ -27,7 +32,7 @@ public class FullReceiptCardController {
     private ImageView choosenImage;
 
     @FXML
-    private TextArea decriptionArea;
+    private Label descriptionArea;
 
     @FXML
     private Label dishCalloriesLabel;
@@ -48,10 +53,16 @@ public class FullReceiptCardController {
     private ListView<String> listViewOfIngredients;
 
     @FXML
+    private ListView<String> listViewOfMass;
+
+    @FXML
     private ImageView rating;
 
     @FXML
     private ScrollPane stepsScroll;
+
+    @FXML
+    private ScrollPane stepsScrollInfo;
 
     private DBAllRecipes dbAllRecipes = new DBAllRecipes();
 
@@ -60,46 +71,73 @@ public class FullReceiptCardController {
         Recipe recipe = dbAllRecipes.Read(dish.getName());
         dishName.setText(dish.getName());
         choosenImage.setImage(new Image((getClass().getResourceAsStream(dish.getImageUrl()))));
-        choosenImage.setFitWidth(200);
-        choosenImage.setFitHeight(200);
+        choosenImage.setFitWidth(205);
+        choosenImage.setFitHeight(206);
         rating.setImage(new Image((getClass().getResourceAsStream(dish.getRatingUrl()))));
         dishTime.setText(dish.getTime());
 
-        decriptionArea.setText(recipe.getMainInfo());
-        dishCalloriesLabel.setText(String.valueOf(recipe.getCalories()));
+        descriptionArea.setText(recipe.getMainInfo());
+        dishCalloriesLabel.setText(String.valueOf(recipe.getCalories()) + " Ккал");
         dishCategoryLabel.setText(recipe.getCategory());
 
         VBox stepsVbox = new VBox();
-        stepsVbox.setSpacing(10);
 
-        for (int i = 0; i < recipe.textStages.length; i++) {
-            String stepText = recipe.textStages[i];
-            String imageUrl = recipe.imagesStageLinks[i];
 
-            HBox stepBox = new HBox();
+        for (int i = 0; i < recipe.getTextStages().size(); i++) {
 
-            Text stepTextNode = new Text(stepText);
+            String stepText = recipe.getTextStages().get(i);
+            String imageUrl = recipe.getImagesStageLinks().get(i);
 
-            //ImageView stepImageNode = new ImageView(new Image(imageUrl));
-//            stepImageNode.setFitWidth(100);
-//            stepImageNode.setFitHeight(100);
+            //HBox stepBox = new HBox();
 
-            stepBox.getChildren().addAll(stepTextNode);
+            Label stepTextNode = new Label(stepText);
+            stepTextNode.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+            stepTextNode.setMaxWidth(270);
+            stepTextNode.setWrapText(true);
+            stepTextNode.setPadding(new Insets(2, 0, 0, 5));
 
-            stepsVbox.getChildren().add(stepBox);
+            ImageView stepImageNode = new ImageView(new Image(getClass().getResourceAsStream("/img/StageRecipe/" + imageUrl)));
+            stepImageNode.setFitWidth(250);
+            stepImageNode.setFitHeight(250);
+
+            stepsVbox.getChildren().add(stepTextNode);
+
+            ImageView stepImageNode1 = new ImageView();
+            stepImageNode1.setFitWidth(5);
+            stepImageNode1.setFitHeight(5);
+            stepsVbox.getChildren().add(stepImageNode1);
+
+            stepsVbox.getChildren().add(stepImageNode);
+
+            stepImageNode = new ImageView();
+            stepImageNode.setFitWidth(20);
+            stepImageNode.setFitHeight(20);
+
+            stepsVbox.getChildren().add(stepImageNode);
+           // stepsVbox.setSpacing(50);
         }
 
         stepsScroll.setContent(null);
 
         stepsScroll.setContent(stepsVbox);
 
-        DBAllProducts dbAllProducts = new DBAllProducts();
-        List<ProductPattern> allProducts = dbAllProducts.ReadAll();
+        stepsScrollInfo.setContent(null);
+
+        stepsScrollInfo.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        stepsScrollInfo.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+
+        stepsScrollInfo.setContent(descriptionArea);
+
+        List<Product> allProductsRecipe = new DBRecConnectProd().ReadAllOfRecipe(dbAllRecipes.Read(dish.getName()).id);
 
         ObservableList<String> ingredientNames = FXCollections.observableArrayList();
-        for (ProductPattern productPattern : allProducts) {
-            ingredientNames.add(productPattern.name);
+        ObservableList<String> ingredientMass = FXCollections.observableArrayList();
+
+        for (Product product : allProductsRecipe) {
+            ingredientNames.add(product.name);
+            ingredientMass.add(Float.toString(product.getMass()) + " гр");
         }
         listViewOfIngredients.setItems(ingredientNames);
+        listViewOfMass.setItems(ingredientMass);
     }
 }
