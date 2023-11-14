@@ -103,13 +103,14 @@ public class FoodViewController implements Initializable {
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         int column = 0;
         int row = 1;
+        int i = 0;
         try {
             for (DishCard dish : recentlyAdded) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("DishCard.fxml"));
                 Pane dishBox = fxmlLoader.load();
                 DishCardController dishCardController = fxmlLoader.getController();
-                dishCardController.SetData(dish);
+                dishCardController.SetData(dish, thisRecipes.get(i));
 
                 if (column == 1) {
                     column = 0;
@@ -118,6 +119,7 @@ public class FoodViewController implements Initializable {
 
                 dishContainer.add(dishBox, column++, row);
                 GridPane.setMargin(dishBox, new Insets(5));
+                i++;
             }
         }
         catch (IOException e) {
@@ -132,13 +134,14 @@ public class FoodViewController implements Initializable {
         int column = 0;
         int row = 1;
 
+        int i = 0;
         for (DishCard dish : filteredDishes) {
             try {
                 FXMLLoader fxmlLoader = new FXMLLoader();
                 fxmlLoader.setLocation(getClass().getResource("DishCard.fxml"));
                 Pane dishBox = fxmlLoader.load();
                 DishCardController dishCardController = fxmlLoader.getController();
-                dishCardController.SetData(dish);
+                dishCardController.SetData(dish, thisRecipes.get(i));
 
                 if (column == 1) {
                     column = 0;
@@ -147,6 +150,7 @@ public class FoodViewController implements Initializable {
 
                 dishContainer.add(dishBox, column++, row);
                 GridPane.setMargin(dishBox, new Insets(5));
+                i++;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -163,6 +167,7 @@ public class FoodViewController implements Initializable {
             DishCard dishCard = new DishCard();
             dishCard.setName(rec.name);
             dishCard.setTime(rec.getTimeCooking());
+            dishCard.setCalories(rec.getCalories());
             dishCard.setImageUrl(rec.getMainImageLink());
             dishCard.setRatingUrl(rec.getRating());
 

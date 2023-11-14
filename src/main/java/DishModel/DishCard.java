@@ -8,6 +8,7 @@ public class DishCard {
     private String ratingUrl;
     private String imageUrl;
 
+    private String calories;
     private String timeImageUrl;
     private static DishCard selectedDish;
     private Button nextButton;
@@ -96,6 +97,14 @@ public class DishCard {
 
     public void setImageUrl(String nameRec) {
         this.imageUrl = "/img/MainImage/" + nameRec;
+    }
+
+    public void setCalories(int calories) {
+        this.calories = String.valueOf(calories) + " Ккал";
+    }
+
+    public String getCalories() {
+        return calories;
     }
 
     public String getTimeImageUrl() {

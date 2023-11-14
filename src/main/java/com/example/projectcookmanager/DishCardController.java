@@ -1,6 +1,10 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
+import com.example.projectcookmanager.DataBases.DBAllRecipes;
+import com.example.projectcookmanager.DataBases.DBBasketRecipes;
+import com.example.projectcookmanager.DataBases.DBFavoritesRecipes;
+import com.example.projectcookmanager.Entity.Recipe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -26,28 +30,43 @@ public class DishCardController {
     private Label dishTime;
 
     @FXML
+    private Label dishCalories;
+
+
+    @FXML
     private ImageView dishImage;
 
     @FXML
     private Button nextBtn;
 
     @FXML
+    private Button likeBtn;
+
+    @FXML
+    private Button basketBtn;
+
+    @FXML
     private ImageView rating;
 
     private DishCard dishCard;
 
+    private Recipe thisRecipe;
+
     private FullReceiptCardController fullReceiptCardController;
 
-    public void SetData(DishCard dish) {
+    public void SetData(DishCard dish, Recipe recipe) {
+
         Image image = new Image(getClass().getResourceAsStream(dish.getImageUrl()));
         dishImage.setImage(image);
         dishImage.setFitWidth(165);
         dishImage.setFitHeight(106);
         dishName.setText(dish.getName());
         dishTime.setText(dish.getTime());
+        dishCalories.setText(dish.getCalories());
         Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
         rating.setImage(ratingImage);
 
+        thisRecipe = recipe;
         dishCard = dish;
     }
 
@@ -69,5 +88,17 @@ public class DishCardController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void AddLikeRecipe(ActionEvent event) {
+        new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
+
+    }
+
+    @FXML
+    void AddBasketRecipe(ActionEvent event) {
+        new DBBasketRecipes().WriteInBasket(thisRecipe);
+    }
+
 }
 
