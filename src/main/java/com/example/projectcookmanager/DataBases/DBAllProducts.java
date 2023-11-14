@@ -159,6 +159,7 @@ public class DBAllProducts extends DataBase {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        //new DBAllRecipes().Update(name, new DBAllRecipes().Read(name));
     }
 
     public void Update(int id, ProductPattern newProductPattern) {
@@ -182,6 +183,7 @@ public class DBAllProducts extends DataBase {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        //new DBAllRecipes().Update(id, new DBAllRecipes().Read(id));
     }
 
     public List<ProductPattern> ReadAll() {

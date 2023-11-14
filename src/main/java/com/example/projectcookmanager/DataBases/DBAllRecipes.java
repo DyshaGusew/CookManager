@@ -321,10 +321,10 @@ public class DBAllRecipes extends DataBase {
             prepStat.setInt(5, recipe.getTimeCooking());
             prepStat.setString(6, recipe.getMainImageLink());
             prepStat.setFloat(7, recipe.getRating());
-            new DBRecipeStages().WriteStagesRecipe(recipe.name, recipe.getTextStages(), recipe.getImagesStageLinks());
+
             prepStat.executeUpdate();
 
-
+            new DBRecipeStages().WriteStagesRecipe(recipe.name, recipe.getTextStages(), recipe.getImagesStageLinks());
             new DBRecConnectProd().WriteProductRecipe(recipe.getProducts(),recipe.name);
 
         } catch (SQLException e) {
@@ -370,6 +370,7 @@ public class DBAllRecipes extends DataBase {
         String sql = "UPDATE " + nameTable + " SET name = ? , "
                 + "mainInfo = ? ,"
                 + "category = ? ,"
+                + "calories = ? ,"
                 + "timeCooking = ? ,"
                 + "mainImageLink = ? ,"
                 + "rating = ? "
@@ -382,11 +383,12 @@ public class DBAllRecipes extends DataBase {
             pstmt.setString(1, newRecipe.name);
             pstmt.setString(2, newRecipe.getMainInfo());
             pstmt.setString(3, newRecipe.getCategory());
-            pstmt.setInt(4, newRecipe.getTimeCooking());
-            pstmt.setString(5, newRecipe.getMainImageLink());
-            pstmt.setFloat(6, newRecipe.getRating());
+            pstmt.setFloat(4, newRecipe.getCalories());
+            pstmt.setInt(5, newRecipe.getTimeCooking());
+            pstmt.setString(6, newRecipe.getMainImageLink());
+            pstmt.setFloat(7, newRecipe.getRating());
             new DBRecipeStages().UpdateStagesRec(name, newRecipe.getTextStages(), newRecipe.getImagesStageLinks());
-            pstmt.setInt(7, Read(name).id);
+            pstmt.setInt(8, Read(name).id);
             // update
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -399,6 +401,7 @@ public class DBAllRecipes extends DataBase {
         String sql = "UPDATE " + nameTable + " SET name = ? , "
                 + "mainInfo = ? ,"
                 + "category = ? ,"
+                + "calories = ? ,"
                 + "timeCooking = ? ,"
                 + "mainImageLink = ? ,"
                 + "rating = ? "
@@ -411,16 +414,18 @@ public class DBAllRecipes extends DataBase {
             pstmt.setString(1, newRecipe.name);
             pstmt.setString(2, newRecipe.getMainInfo());
             pstmt.setString(3, newRecipe.getCategory());
-            pstmt.setInt(4, newRecipe.getTimeCooking());
-            pstmt.setString(5, newRecipe.getMainImageLink());
-            pstmt.setFloat(6, newRecipe.getRating());
-            new DBRecipeStages().UpdateStagesRec(id, newRecipe.getTextStages(), newRecipe.getImagesStageLinks());
-            pstmt.setInt(7, id);
+            pstmt.setFloat(4, newRecipe.getCalories());
+            pstmt.setInt(5, newRecipe.getTimeCooking());
+            pstmt.setString(6, newRecipe.getMainImageLink());
+            pstmt.setFloat(7, newRecipe.getRating());
+            //
+            pstmt.setInt(8, id);
             // update
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        new  DBRecConnectProd().UpdateProdRec(newRecipe, newRecipe.getProducts());
+        new DBRecConnectProd().UpdateProdRec(newRecipe, newRecipe.getProducts());
+        new DBRecipeStages().UpdateStagesRec(id, newRecipe.getTextStages(), newRecipe.getImagesStageLinks());
     }
 }

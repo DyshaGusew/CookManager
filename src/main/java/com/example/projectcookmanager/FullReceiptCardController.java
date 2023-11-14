@@ -47,6 +47,15 @@ public class FullReceiptCardController {
     private Label dishTime;
 
     @FXML
+    private Label fitLabel;
+
+    @FXML
+    private Label carLabel;
+
+    @FXML
+    private Label proteinLabel;
+
+    @FXML
     private ImageView time;
 
     @FXML
@@ -79,6 +88,10 @@ public class FullReceiptCardController {
         descriptionArea.setText(recipe.getMainInfo());
         dishCalloriesLabel.setText(String.valueOf(recipe.getCalories()) + " Ккал");
         dishCategoryLabel.setText(recipe.getCategory());
+
+        fitLabel.setText(Integer.toString((int)recipe.getFat()));
+        proteinLabel.setText(Integer.toString((int)recipe.getProtein()));
+        carLabel.setText(Integer.toString((int)recipe.getCarbohydrate()));
 
         VBox stepsVbox = new VBox();
 

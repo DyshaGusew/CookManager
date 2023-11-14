@@ -77,6 +77,7 @@ public class DBRecConnectProd {
                 System.out.println(e.getMessage());
             }
         }
+        new DBAllRecipes().Update(nameRecipes, new DBAllRecipes().Read(nameRecipes));
     }
 
     public void DeleteProdRec(int idRec) {
