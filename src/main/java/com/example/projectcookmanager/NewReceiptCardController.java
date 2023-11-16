@@ -4,13 +4,16 @@ import DishModel.DishCard;
 import DishModel.FullReceiptCard;
 import DishModel.StepData;
 import com.example.projectcookmanager.DataBases.DBAllProducts;
+import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
+import com.example.projectcookmanager.Entity.Recipe;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -19,11 +22,16 @@ import javafx.scene.control.MenuButton;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+
 
 public class NewReceiptCardController {
     private String dishName;
     private String selectedCategory;
-    private List<String> selectedIngredients;
+    private List<String> selectedIngredients = new ArrayList<String>();
     private String description;
     private List<StepData> stepsData = new ArrayList<>();
     private String selectedTime;
@@ -154,15 +162,31 @@ public class NewReceiptCardController {
 
             checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
 
+
+
             dishIngredientsMenu.getItems().add(checkmenuItem);
         }
     }
 
     private void handleIngredientSelection(CheckMenuItem selectedMenuItem) {
-        System.out.println("Selected ingredient: " + selectedMenuItem.getText());
+        if(selectedMenuItem.selectedProperty().get()){
+            selectedMenuItem.setDisable(false);
+        }
+        if(selectedMenuItem.isSelected()){
+            selectedIngredients.add(selectedMenuItem.getText());
+        }
+        else{
+            if(selectedIngredients != null){
+                for(String el : selectedIngredients){
+                    if(el == selectedMenuItem.getText()){
+                        selectedIngredients.remove(el);
+                    }
+                }
+            }
 
-        selectedMenuItem.setDisable(true);
+        }
     }
+
 
     @FXML
     void dishIngredientsMenuClicked(ActionEvent event) {
@@ -259,6 +283,49 @@ public class NewReceiptCardController {
 
     @FXML
     void CreateNewDish(ActionEvent event) {
+        String name = dishNameField.getText();
+        String mainInfo = descriptionArea.getText();
+        String category = categoryCondition.getText();
+        int time = hoursSpinner.getValue() * 60 + minutesSpinner.getValue();
+        Image mainImage = choosenImage.getImage();  //Должна быть ссылка на файл и сохранение в папку этого файла
+
+        List<Product> productList = new ArrayList<>();
+        for(String ingrid : selectedIngredients){
+           ProductPattern productPattern = new DBAllProducts().Read(ingrid);
+           Product prod = new Product(productPattern.name, productPattern.getProtein(), productPattern.getFat(), productPattern.getCarbohydrate(), 100);
+           productList.add(prod);
+        };
+
+        float rating = 3.0f;
+        switch (ratingLabel.getText()){
+            case "*":
+                rating = 1.0f;
+                break;
+            case "**":
+                rating = 2.0f;
+                break;
+            case "***":
+                rating = 3.0f;
+                break;
+            case "****":
+                rating = 4.0f;
+                break;
+            case "*****":
+                rating = 5.0f;
+                break;
+        }
+
+        List<String> StepDescription = new ArrayList<String>();
+        List<String> StepImage = new ArrayList<String>();
+        int numSteps = stepsVBox.getChildren().size();
+
+        for(int i = 0; i<numSteps; i++){
+            StepDescription.add(stepsData.get(i).getStepDescription());
+            StepImage.add(stepsData.get(i).getStepImagePath());   //Причем сохранять изображения тоже надо
+        }
+
+
+        //Recipe newRecipe = new Recipe()
     }
 
 
