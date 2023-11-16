@@ -3,6 +3,7 @@ package com.example.projectcookmanager;
 import DishModel.DishCard;
 import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
+import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
 import javafx.collections.FXCollections;
@@ -82,6 +83,8 @@ public class FoodViewController implements Initializable {
 
     @FXML
     private Button favoriteStorage;
+
+    private List<String> selectedIngredients = new ArrayList<>();
 
     public static List<DishCard> recentlyAdded = new ArrayList<DishCard>();
 
@@ -262,6 +265,25 @@ public class FoodViewController implements Initializable {
         updateScrollPane(recentlyAdded);
     }
 
+    private void handleIngredientSelection(CheckMenuItem selectedMenuItem) {
+        System.out.println("Selected ingredient: " + selectedMenuItem.getText());
+
+        selectedMenuItem.setDisable(false);
+
+        if(selectedMenuItem.isSelected()){
+            selectedIngredients.add(selectedMenuItem.getText());
+        }
+        else {
+            if (selectedIngredients != null) {
+                for (String el : selectedIngredients) {
+                    if (el == selectedMenuItem.getText()) {
+                        selectedIngredients.remove(el);
+                    }
+                }
+            }
+        }
+    }
+
     private void handleIngredientsSearchMenu() {
         searchByIngredient.getItems().clear();
 
@@ -290,7 +312,23 @@ public class FoodViewController implements Initializable {
     private void handleIngredientSearchSelection(CheckMenuItem selectedMenuItem) {
         System.out.println("Selected ingredient: " + selectedMenuItem.getText());
 
+        if(selectedMenuItem.isSelected()){
+            selectedIngredients.add(selectedMenuItem.getText());
+        }
+        else {
+            if (selectedIngredients != null) {
+                for (String el : selectedIngredients) {
+                    if (el == selectedMenuItem.getText()) {
+                        selectedIngredients.remove(el);
+                        break;
+                    }
+                }
+            }
+        }
         selectedMenuItem.setDisable(false);
+        thisRecipes = new DBAllRecipes().ReadOfIngrids(selectedIngredients);
+        ClickButCategories();
+
     }
 
     @FXML
@@ -399,6 +437,7 @@ public class FoodViewController implements Initializable {
             stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
                 @Override
                 public void handle(WindowEvent windowEvent) {
+                    updateScrollPane(recentlyAdded);
                     thisCategory = "all";
                     thisRecipes = new DBAllRecipes().ReadAll();
                     ClickButCategories();

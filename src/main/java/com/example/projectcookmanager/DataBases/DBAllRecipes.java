@@ -277,7 +277,7 @@ public class DBAllRecipes extends DataBase {
     }
 
     //Поиск по наличию указанного(ых) ингридиента(ов)
-    public List<Recipe> ReadOfIngrids(String[] nameIngrids){
+    public List<Recipe> ReadOfIngrids(List<String> nameIngrids){
         List<Recipe> allRecipes = new  DBAllRecipes().ReadAll();
 
         List<Recipe> trueRecipes = new ArrayList<Recipe>();
@@ -285,12 +285,12 @@ public class DBAllRecipes extends DataBase {
 
             List<Product> allProdsOfRec = new DBRecConnectProd().ReadAllOfRecipe(rec.id);
             boolean ingridsOfRec = true;
-            for(int i = 0; i < nameIngrids.length; i++)
+            for(int i = 0; i < nameIngrids.size(); i++)
             {
                 boolean ingridOfRec = false;
                 for (Product prod : allProdsOfRec)
                 {
-                    if(nameIngrids[i].equals(prod.name)){
+                    if(nameIngrids.get(i).equals(prod.name)){
                         ingridOfRec = true;
                         break;
                     }

@@ -177,6 +177,7 @@ public class NewReceiptCardController {
                 for (String el : selectedIngredients) {
                     if (el == selectedMenuItem.getText()) {
                         selectedIngredients.remove(el);
+                        break;
                     }
                 }
             }
