@@ -399,4 +399,3 @@ public class FoodViewController implements Initializable {
         }
     }
 }
-

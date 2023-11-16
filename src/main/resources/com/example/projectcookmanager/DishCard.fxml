@@ -39,7 +39,7 @@
       <HBox layoutX="220.0" layoutY="42.0" />
       <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="172.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
          <image>
-                  <Image url="@../../../img/icon-time.png" />
+            <Image url="@../../../img/icon-time.png" />
          </image>
       </ImageView>
       <Label fx:id="dishTime" layoutX="205.0" layoutY="40.0" text="30 мин">

@@ -224,9 +224,9 @@
                   <ScrollPane prefHeight="405.0" prefWidth="510.0" HBox.hgrow="ALWAYS">
                      <content>
                         <GridPane fx:id="dishContainer" prefHeight="0.0" prefWidth="0.0">
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
                         </GridPane>
                      </content>
                   </ScrollPane>
