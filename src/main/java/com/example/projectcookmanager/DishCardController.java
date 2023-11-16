@@ -1,7 +1,6 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
-import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.DataBases.DBBasketRecipes;
 import com.example.projectcookmanager.DataBases.DBFavoritesRecipes;
 import com.example.projectcookmanager.Entity.Recipe;
@@ -16,8 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import com.example.projectcookmanager.FoodViewController;
 
 import java.io.IOException;
+import java.util.List;
 
 public class DishCardController {
     @FXML
@@ -32,7 +33,6 @@ public class DishCardController {
     @FXML
     private Label dishCalories;
 
-
     @FXML
     private ImageView dishImage;
 
@@ -41,6 +41,10 @@ public class DishCardController {
 
     @FXML
     private Button likeBtn;
+
+    @FXML
+    private ImageView heartImage;
+
 
     @FXML
     private Button basketBtn;
@@ -55,7 +59,6 @@ public class DishCardController {
     private FullReceiptCardController fullReceiptCardController;
 
     public void SetData(DishCard dish, Recipe recipe) {
-
         Image image = new Image(getClass().getResourceAsStream(dish.getImageUrl()));
         dishImage.setImage(image);
         dishImage.setFitWidth(165);
@@ -91,8 +94,19 @@ public class DishCardController {
 
     @FXML
     void AddLikeRecipe(ActionEvent event) {
-        new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
+//        boolean isFavorite = isRecipeFavorite(thisRecipe);
+//        if (isFavorite) {
+//            new DBFavoritesRecipes().Delete(thisRecipe.id);
+//            heartImage.setImage(new Image("/img/icons8-black-50.png"));
+//        } else {
+//            new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
+//            heartImage.setImage(new Image("/img/icons8-heart-green.png"));
+//        }
+    }
 
+    private boolean isRecipeFavorite(Recipe recipe) {
+        List<Recipe> favoriteRecipes = new DBFavoritesRecipes().ReadAllOnFavorite();
+        return favoriteRecipes.contains(recipe);
     }
 
     @FXML

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane fx:id="dishBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="440.0" style="-fx-background-radius: 15;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.DishCardController">
+<Pane fx:id="dishBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="440.0" style="-fx-background-radius: 15;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.DishCardController">
    <children>
       <ImageView fx:id="dishImage" fitHeight="106.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -55,9 +59,9 @@
       </Label>
       <Button fx:id="likeBtn" layoutX="182.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddLikeRecipe" prefHeight="48.0" prefWidth="62.0">
          <graphic>
-            <ImageView fitHeight="40.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="heartImage" fitHeight="40.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../img/img-like.png" />
+                  <Image url="@../../../img/icons8-heart-black-50.png" />
                </image>
             </ImageView>
          </graphic>
@@ -68,9 +72,9 @@
       </Button>
       <Button fx:id="basketBtn" layoutX="258.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddBasketRecipe" prefHeight="48.0" prefWidth="62.0">
          <graphic>
-            <ImageView fitHeight="42.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="42.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../img/img-buscet.png" />
+                  <Image url="@../../../img/icons8-add-to-basket-shop-96.png" />
                </image>
             </ImageView>
          </graphic>

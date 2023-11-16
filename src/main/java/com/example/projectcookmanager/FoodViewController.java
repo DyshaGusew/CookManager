@@ -1,8 +1,9 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
-//import DishModel.Recipe;
+import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
+import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,23 +14,19 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.w3c.dom.events.MouseEvent;
 
-import java.io.Console;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
-
-import static java.lang.System.out;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.ResourceBundle;
 
 public class FoodViewController implements Initializable {
     @FXML
@@ -72,15 +69,17 @@ public class FoodViewController implements Initializable {
 
     private ComboBox<String> ShortBut;
 
-
     @FXML
-    private TextField SearchZoneByIngridient;
+    private MenuButton searchByIngredient;
 
     @FXML
     private Button CreateNewReceiptBtn;
 
     @FXML
     private Button ReturnArrayBut;
+
+    @FXML
+    private Button favoriteStorage;
 
     private List<DishCard> recentlyAdded;
 
@@ -91,6 +90,13 @@ public class FoodViewController implements Initializable {
     //Все, что появится в начале
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        InitializeCards();
+
+        handleIngredientsSearchMenu();
+    }
+
+    public void InitializeCards()
+    {
         //Заполняю комбо бокс
         ObservableList<String> categories = FXCollections.observableArrayList("Новизна", "Время приготовления", "Рейтинг", "Каллорийность");
         ShortBut.setItems(categories);
@@ -126,6 +132,7 @@ public class FoodViewController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
 
     //Обновление показанных рецептов
     private void updateScrollPane(List<DishCard> filteredDishes) {
@@ -253,6 +260,37 @@ public class FoodViewController implements Initializable {
         updateScrollPane(recentlyAdded);
     }
 
+    private void handleIngredientsSearchMenu() {
+        searchByIngredient.getItems().clear();
+
+        DBAllProducts dbAllProducts = new DBAllProducts();
+        List<ProductPattern> allProducts = dbAllProducts.ReadAll();
+
+        for (ProductPattern productPattern : allProducts) {
+            CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
+
+            checkmenuItem.setOnAction(event -> handleIngredientSearchSelection(checkmenuItem));
+
+            searchByIngredient.getItems().add(checkmenuItem);
+        }
+    }
+
+    @FXML
+    void OpenFavorites(ActionEvent event) {
+        OpenNewScene("FavoriteDishes.fxml", "Любимые блюда");
+    }
+
+    @FXML
+    void OpenBasket(ActionEvent event) {
+
+    }
+
+    private void handleIngredientSearchSelection(CheckMenuItem selectedMenuItem) {
+        System.out.println("Selected ingredient: " + selectedMenuItem.getText());
+
+        selectedMenuItem.setDisable(false);
+    }
+
     @FXML
     void ShowListReturn(ActionEvent event) {
         SearchZoneByName.setText("");
@@ -341,12 +379,16 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void OpenNewReceiptCard(ActionEvent event) {
+        OpenNewScene("NewReceiptCard.fxml", "Создание рецепта");
+    }
+
+    public void OpenNewScene(String fxmlFile, String title) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewReceiptCard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("Создание рецепта");
+            stage.setTitle(title);
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -355,6 +397,6 @@ public class FoodViewController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }
+

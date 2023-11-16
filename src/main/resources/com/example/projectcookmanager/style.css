@@ -114,3 +114,11 @@
 .imageView {
     -fx-border-color: #001219;
 }
+
+.favoriteStorageBtn {
+    -fx-background-color: #faedcd;
+    fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-style: solid;
+}
