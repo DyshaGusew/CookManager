@@ -8,6 +8,7 @@ import com.example.projectcookmanager.Entity.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -81,10 +83,10 @@ public class FoodViewController implements Initializable {
     @FXML
     private Button favoriteStorage;
 
-    private List<DishCard> recentlyAdded;
+    public static List<DishCard> recentlyAdded = new ArrayList<DishCard>();
 
     //Текущий список рецептов
-    private List<Recipe> thisRecipes;
+    public static List<Recipe> thisRecipes = new ArrayList<Recipe>();
     private String thisCategory;
 
     //Все, что появится в начале
@@ -135,7 +137,7 @@ public class FoodViewController implements Initializable {
 
 
     //Обновление показанных рецептов
-    private void updateScrollPane(List<DishCard> filteredDishes) {
+    public void updateScrollPane(List<DishCard> filteredDishes) {
         dishContainer.getChildren().clear();
 
         int column = 0;
@@ -165,7 +167,7 @@ public class FoodViewController implements Initializable {
     }
 
     //Создание списка карт в зависимости от поданного на них списка рецептов из бд
-    private List<DishCard> CreateDishCardList(List<Recipe> recipes) {
+    public static List<DishCard> CreateDishCardList(List<Recipe> recipes) {
         thisRecipes = recipes;
         //recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         List<DishCard> dishCardList = new ArrayList<>();
@@ -394,8 +396,18 @@ public class FoodViewController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
 
             stage.showAndWait();
+            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+                @Override
+                public void handle(WindowEvent windowEvent) {
+                    thisCategory = "all";
+                    thisRecipes = new DBAllRecipes().ReadAll();
+                    ClickButCategories();
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
 }

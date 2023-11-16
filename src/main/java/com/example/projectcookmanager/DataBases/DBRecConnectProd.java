@@ -69,7 +69,7 @@ public class DBRecConnectProd {
                 Connection conn = this.connect();
                 PreparedStatement prepStat = conn.prepareStatement(sql);
                 prepStat.setInt(1, new DBAllRecipes().Read(nameRecipes).id);
-                prepStat.setInt(2, product.id);
+                prepStat.setInt(2, new DBAllProducts().Read(product.name).id);
                 prepStat.setFloat(3, product.getMass());
                 prepStat.executeUpdate();
 
@@ -77,7 +77,7 @@ public class DBRecConnectProd {
                 System.out.println(e.getMessage());
             }
         }
-        new DBAllRecipes().Update(nameRecipes, new DBAllRecipes().Read(nameRecipes));
+        //new DBAllRecipes().Update(nameRecipes, new DBAllRecipes().Read(nameRecipes));
     }
 
     public void DeleteProdRec(int idRec) {
