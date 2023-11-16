@@ -1,5 +1,7 @@
 package com.example.projectcookmanager;
 
+import DishModel.DishCard;
+import DishModel.FullReceiptCard;
 import DishModel.StepData;
 import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.Entity.ProductPattern;
@@ -12,16 +14,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.scene.control.MenuButton;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class NewReceiptCardController {
     private String dishName;
@@ -97,7 +94,6 @@ public class NewReceiptCardController {
     private Button chooseImageForStepButton;
 
     private List<Node> stepNodes = new ArrayList<>();
-    private File selectedFile;
 
     @FXML
     void initialize() {
@@ -112,6 +108,8 @@ public class NewReceiptCardController {
         addStepButton.setOnAction(event -> addStep());
         removeStepButton.setOnAction(event -> removeStep());
     }
+
+
 
     private void ChooseTimeOfCooking() {
         timeOfCookingMenuBtn.getItems().forEach(menuItem -> {
@@ -163,7 +161,7 @@ public class NewReceiptCardController {
     private void handleIngredientSelection(CheckMenuItem selectedMenuItem) {
         System.out.println("Selected ingredient: " + selectedMenuItem.getText());
 
-        selectedMenuItem.setDisable(false);
+        selectedMenuItem.setDisable(true);
     }
 
     @FXML
@@ -192,6 +190,8 @@ public class NewReceiptCardController {
         stepNode.getChildren().addAll(stepImageView, stepDescriptionTextArea, chooseImageForStepButton);
         stepsVBox.getChildren().add(stepNode);
         stepNodes.add(stepNode);
+
+        stepsData.add(new StepData(stepDescriptionTextArea.getText(), imagePath));
     }
 
     private void removeStep() {
@@ -211,7 +211,7 @@ public class NewReceiptCardController {
         );
 
         Stage stage = (Stage) chooseImageBtn.getScene().getWindow();
-        selectedFile = fileChooser.showOpenDialog(stage);
+        File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
             String imagePath = selectedFile.toURI().toString();
@@ -245,7 +245,7 @@ public class NewReceiptCardController {
         );
 
         Stage stage = (Stage) chooseImageBtn.getScene().getWindow();
-        selectedFile = fileChooser.showOpenDialog(stage);
+        File selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
             String imagePath = selectedFile.toURI().toString();
@@ -257,54 +257,11 @@ public class NewReceiptCardController {
         }
     }
 
-    private String getImageFileName(ImageView imageView) {
-        Image image = imageView.getImage();
-        String imagePath = image.getUrl();
-
-        int index = imagePath.lastIndexOf("/");
-        if (index != -1) {
-            return imagePath.substring(index + 1);
-        } else {
-            return UUID.randomUUID().toString() + ".png";
-        }
-    }
-
     @FXML
     void CreateNewDish(ActionEvent event) {
-        stepsData.clear();
-        for (Node stepNode : stepNodes) {
-            if (stepNode instanceof VBox) {
-                VBox vbox = (VBox) stepNode;
-                ImageView stepImageView = (ImageView) vbox.getChildren().get(0);
-                TextArea stepDescriptionTextArea = (TextArea) vbox.getChildren().get(1);
-
-                String stepFileName = getImageFileName(stepImageView);
-
-                copyImage(selectedFile, Paths.get("src/main/resources/img", "StageRecipe"), stepFileName);
-
-                stepsData.add(new StepData(stepDescriptionTextArea.getText(), stepFileName));
-
-                System.out.println("Main Image Path: " + "StageRecipe/" + stepFileName);
-            }
-        }
-
-        String mainImageFileName = getImageFileName(choosenImage);
-
-        copyImage(selectedFile, Paths.get("src/main/resources/img", "MainImage"), mainImageFileName);
-
-        System.out.println("Main Image Path: " + "MainImage/" + mainImageFileName);
-        System.out.println("Steps Data: " + stepsData.size());
     }
 
-    private void copyImage(File selectedFile, Path destinationFolder, String fileName) {
-        try {
-            Path imagePath = destinationFolder.resolve(fileName);
 
-            Files.copy(selectedFile.toPath(), imagePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     void ShowPreview(ActionEvent event) {

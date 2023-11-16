@@ -1,11 +1,9 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
-import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.DataBases.DBRecConnectProd;
 import com.example.projectcookmanager.Entity.Product;
-import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,15 +12,12 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 import java.util.List;
 

@@ -17,4 +17,11 @@ public class StepData {
         this.stepImagePath = stepImagePath;
     }
 
+    public String getStepDescription() {
+        return stepDescription;
+    }
+
+    public String getStepImagePath() {
+        return stepImagePath;
+    }
 }

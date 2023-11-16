@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import com.example.projectcookmanager.FoodViewController;
 
 import java.io.IOException;
 import java.util.List;
