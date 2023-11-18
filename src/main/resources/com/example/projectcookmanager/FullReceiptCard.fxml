@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
@@ -131,5 +132,17 @@
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
+      <Button fx:id="deleteRecipe" layoutX="531.0" layoutY="8.0" mnemonicParsing="false" onAction="#DeleteDish" prefHeight="45.0" prefWidth="52.0">
+         <styleClass>
+            <String fx:value="RedBtn" />
+            <String fx:value="mouse-movedNextBtn" />
+         </styleClass>
+         <graphic>
+            <ImageView fitHeight="32.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/returb.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
    </children>
 </Pane>

@@ -63,8 +63,16 @@
     -fx-background-color: #a3b18a;
 }
 
+.mouse-movedRedBtn:hover {
+    -fx-background-color: #b18a8a;
+}
+
 .NextBtn {
     -fx-background-color: #ccd5ae;
+}
+
+.RedBtn {
+    -fx-background-color: #d5aeae;
 }
 
 .Shadow {

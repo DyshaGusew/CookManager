@@ -349,6 +349,8 @@ public class DBAllRecipes extends DataBase {
         }
         new  DBRecConnectProd().DeleteProdRec(thisRec.id);
         new  DBRecipeStages().DeleteStageRec(thisRec.id);
+        new DBBasketRecipes().Delete(thisRec.id);
+        new DBFavoritesRecipes().Delete(thisRec.id);
     }
 
     public void Delete(int id) {
@@ -364,6 +366,8 @@ public class DBAllRecipes extends DataBase {
         }
         new  DBRecConnectProd().DeleteProdRec(id);
         new  DBRecipeStages().DeleteStageRec(id);
+        new DBBasketRecipes().Delete(id);
+        new DBFavoritesRecipes().Delete(id);
     }
 
     public void Update(String name, Recipe newRecipe) {

@@ -287,6 +287,8 @@ public class NewReceiptCardController {
         }
     }
 
+
+
     @FXML
     void CreateNewDish(ActionEvent event) {
         stepsData.clear();
@@ -295,7 +297,6 @@ public class NewReceiptCardController {
         String mainInfo = descriptionArea.getText();
         String category = categoryCondition.getText();
         int time = hoursSpinner.getValue() * 60 + minutesSpinner.getValue();
-        Image mainImage = choosenImage.getImage();  //Должна быть ссылка на файл и сохранение в папку этого файла
         List<Product> productList = new ArrayList<>();
 
         for(String ingrid : selectedIngredients){
@@ -351,15 +352,11 @@ public class NewReceiptCardController {
         String mainImageFileName = getImageFileName(choosenImage);
 
         copyImage(selectedFile, Paths.get("src/main/resources/img", "MainImage"), mainImageFileName);
-
-        //System.out.println("Main Image Path: " + "MainImage/" + mainImageFileName);
-        //System.out.println("Steps Data: " + stepsData.size());
-
         Recipe newRec = new Recipe(name, mainInfo, category, time, mainImageFileName, productList, rating, StepImage, StepDescription);
 
         new DBAllRecipes().Write(newRec);
         FoodViewController.thisRecipes = new DBAllRecipes().ReadAll();
-        FoodViewController.recentlyAdded = new ArrayList<DishCard>(FoodViewController.CreateDishCardList(FoodViewController.thisRecipes));
+        FoodViewController.recentlyAdded = FoodViewController.CreateDishCardList(FoodViewController.thisRecipes);
         //new FoodViewController().updateScrollPane(FoodViewController.recentlyAdded);
        // Stage stage = (Stage) createDishBtn.getScene().getWindow();
         //stage.close();

@@ -109,7 +109,7 @@ public class FoodViewController implements Initializable {
         //Делаем в перемешанном порядке
         thisRecipes = new DBAllRecipes().ReadAll();
         thisCategory = "all";
-        Collections.reverse(thisRecipes);
+        //Collections.reverse(thisRecipes); взащпоовапдаощполапоОООВООВОВОВРОВВРОВРО
 
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         int column = 0;
@@ -434,14 +434,12 @@ public class FoodViewController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
 
             stage.showAndWait();
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-                @Override
-                public void handle(WindowEvent windowEvent) {
-                    updateScrollPane(recentlyAdded);
-                    thisCategory = "all";
-                    thisRecipes = new DBAllRecipes().ReadAll();
-                    ClickButCategories();
-                }
+            stage.setOnHidden(event -> {
+             //   updateScrollPane(recentlyAdded);
+                thisCategory = "all";
+                thisRecipes = new DBAllRecipes().ReadAll();
+           //     ClickButCategories();
+           //     updateScrollPane(recentlyAdded);
             });
         } catch (IOException e) {
             e.printStackTrace();

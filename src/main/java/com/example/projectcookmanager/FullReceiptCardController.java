@@ -7,8 +7,10 @@ import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.Recipe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -18,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
 import java.util.List;
 
@@ -67,6 +70,9 @@ public class FullReceiptCardController {
 
     @FXML
     private ScrollPane stepsScrollInfo;
+
+    @FXML
+    private Button deleteRecipe;
 
     private DBAllRecipes dbAllRecipes = new DBAllRecipes();
 
@@ -147,5 +153,18 @@ public class FullReceiptCardController {
         }
         listViewOfIngredients.setItems(ingredientNames);
         listViewOfMass.setItems(ingredientMass);
+    }
+
+    @FXML
+    void DeleteDish(ActionEvent event){
+        new DBAllRecipes().Delete(dishName.getText());
+        FoodViewController.thisRecipes = new DBAllRecipes().ReadAll();
+        FoodViewController.recentlyAdded = FoodViewController.CreateDishCardList(FoodViewController.thisRecipes);
+
+        Stage stage = (Stage) deleteRecipe.getScene().getWindow();
+        stage.close();
+
+        //new FoodViewController().updateScrollPane(FoodViewController.recentlyAdded);
+
     }
 }
