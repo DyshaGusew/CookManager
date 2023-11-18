@@ -161,6 +161,7 @@ public class FullReceiptCardController {
         FoodViewController.thisRecipes = new DBAllRecipes().ReadAll();
         FoodViewController.recentlyAdded = FoodViewController.CreateDishCardList(FoodViewController.thisRecipes);
 
+
         Stage stage = (Stage) deleteRecipe.getScene().getWindow();
         stage.close();
 

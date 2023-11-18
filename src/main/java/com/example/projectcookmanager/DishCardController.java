@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 import com.example.projectcookmanager.FoodViewController;
 
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class DishCardController {
@@ -59,18 +62,33 @@ public class DishCardController {
     private FullReceiptCardController fullReceiptCardController;
 
     public void SetData(DishCard dish, Recipe recipe) {
-        Image image = new Image(getClass().getResourceAsStream(dish.getImageUrl()));
-        dishImage.setImage(image);
-        dishImage.setFitWidth(165);
-        dishImage.setFitHeight(106);
-        dishName.setText(dish.getName());
-        dishTime.setText(dish.getTime());
-        dishCalories.setText(dish.getCalories());
-        Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
-        rating.setImage(ratingImage);
+        System.out.println("Путь к изображению: " + dish.getImageUrl());
 
-        thisRecipe = recipe;
-        dishCard = dish;
+        // Получение URL изображения
+        URL imageURL = getClass().getResource(dish.getImageUrl());
+
+        if (imageURL != null) {
+            String imageUrl = imageURL.toExternalForm();
+            System.out.println("URL изображения: " + imageUrl);
+
+            // Загрузка изображения по URL
+            Image image = new Image(imageUrl);
+            dishImage.setImage(image);
+            dishImage.setFitWidth(165);
+            dishImage.setFitHeight(106);
+            dishName.setText(dish.getName());
+            dishTime.setText(dish.getTime());
+            dishCalories.setText(dish.getCalories());
+
+            // Загрузка рейтингового изображения из ресурсов
+            Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
+            rating.setImage(ratingImage);
+
+            thisRecipe = recipe;
+            dishCard = dish;
+        } else {
+            System.out.println("URL изображения не найден:" + dish.getImageUrl());
+        }
     }
 
     @FXML

@@ -17,8 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,14 +27,23 @@ import java.util.List;
 import java.util.UUID;
 
 public class NewReceiptCardController {
+    private FoodViewController foodViewController;
+
+    public void setFoodViewController(FoodViewController foodViewController) {
+        this.foodViewController = foodViewController;
+    }
     private String dishName;
     private String selectedCategory;
     private List<String> selectedIngredients = new ArrayList<>();
     private String description;
     private List<StepData> stepsData = new ArrayList<>();
     private String selectedTime;
+    private int time;
     private String selectedRating;
     private String imagePath;
+
+    private float rating;
+    private String stepFileName;
 
     @FXML
     private TextField categoryCondition;
@@ -80,9 +88,6 @@ public class NewReceiptCardController {
     private TextArea stepDescriptionTextArea;
 
     @FXML
-    private TextField selectedTimeTextField;
-
-    @FXML
     private VBox stepsVBox;
 
     @FXML
@@ -103,6 +108,8 @@ public class NewReceiptCardController {
     private List<Node> stepNodes = new ArrayList<>();
     private File selectedFile;
 
+    private File selectedFileMain;
+
     @FXML
     void initialize() {
         SaveCategoryCondition();
@@ -115,6 +122,8 @@ public class NewReceiptCardController {
 
         addStepButton.setOnAction(event -> addStep());
         removeStepButton.setOnAction(event -> removeStep());
+        hoursSpinner.valueProperty().addListener((obs, oldValue, newValue) -> handleTimeSelection());
+        minutesSpinner.valueProperty().addListener((obs, oldValue, newValue) -> handleTimeSelection());
     }
 
     private void ChooseTimeOfCooking() {
@@ -125,9 +134,11 @@ public class NewReceiptCardController {
                     if (checkMenuItem.getText().equals("В часах")) {
                         hoursSpinner.setVisible(true);
                         minutesSpinner.setVisible(false);
+                        selectedTime = "В часах";
                     } else if (checkMenuItem.getText().equals("В минутах")) {
                         hoursSpinner.setVisible(false);
                         minutesSpinner.setVisible(true);
+                        selectedTime = "В минутах";
                     }
                 });
             }
@@ -169,17 +180,11 @@ public class NewReceiptCardController {
 
         selectedMenuItem.setDisable(false);
 
-        if(selectedMenuItem.isSelected()){
+        if (selectedMenuItem.isSelected()) {
             selectedIngredients.add(selectedMenuItem.getText());
-        }
-        else {
+        } else {
             if (selectedIngredients != null) {
-                for (String el : selectedIngredients) {
-                    if (el == selectedMenuItem.getText()) {
-                        selectedIngredients.remove(el);
-                        break;
-                    }
-                }
+                selectedIngredients.removeIf(el -> el.equals(selectedMenuItem.getText()));
             }
         }
     }
@@ -192,7 +197,11 @@ public class NewReceiptCardController {
     private void SaveRatingCondition() {
         ratingMenuBtn.getItems().forEach(menuItem -> {
             if (menuItem instanceof MenuItem) {
-                menuItem.setOnAction(e -> updateRatingLabel(menuItem.getText()));
+                menuItem.setOnAction(e -> {
+                    String rating = menuItem.getText();
+                    updateRatingLabel(rating);
+                    selectedRating = rating;
+                });
             }
         });
     }
@@ -232,11 +241,16 @@ public class NewReceiptCardController {
         selectedFile = fileChooser.showOpenDialog(stage);
 
         if (selectedFile != null) {
-            String imagePath = selectedFile.toURI().toString();
+            try {
+                InputStream imageStream = new FileInputStream(selectedFile);
+                String imagePath = selectedFile.toURI().toString();
 
-            stepImageView.setFitWidth(200);
-            stepImageView.setFitHeight(150);
-            stepImageView.setImage(new Image(imagePath));
+                stepImageView.setFitWidth(200);
+                stepImageView.setFitHeight(150);
+                stepImageView.setImage(new Image(imageStream));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -249,8 +263,9 @@ public class NewReceiptCardController {
         int selectedHours = hoursSpinner.getValue();
         int selectedMinutes = minutesSpinner.getValue();
 
-        String selectedTime = String.format("%02d:%02d", selectedHours, selectedMinutes);
-        selectedTimeTextField.setText(selectedTime);
+        selectedTime = String.format("%02d:%02d", selectedHours, selectedMinutes);
+        timeOfCookingMenuBtn.setText(selectedTime);
+        time  = selectedHours + selectedMinutes;
     }
 
     @FXML
@@ -263,50 +278,126 @@ public class NewReceiptCardController {
         );
 
         Stage stage = (Stage) chooseImageBtn.getScene().getWindow();
-        selectedFile = fileChooser.showOpenDialog(stage);
+        selectedFileMain = fileChooser.showOpenDialog(stage);
 
-        if (selectedFile != null) {
-            String imagePath = selectedFile.toURI().toString();
+        if (selectedFileMain != null) {
+            try {
+                InputStream imageStream = new FileInputStream(selectedFileMain);
+                String imagePath = selectedFileMain.toURI().toString();
 
-            choosenImage.setFitWidth(200);
-            choosenImage.setFitHeight(150);
+                choosenImage.setFitWidth(200);
+                choosenImage.setFitHeight(150);
 
-            choosenImage.setImage(new Image(imagePath));
+                choosenImage.setImage(new Image(imageStream));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
-    private String getImageFileName(ImageView imageView) {
+    private String getImageFileName(ImageView imageView, File selectedFile) {
         Image image = imageView.getImage();
-        String imagePath = image.getUrl();
 
-        int index = imagePath.lastIndexOf("/");
-        if (index != -1) {
-            return imagePath.substring(index + 1);
-        } else {
-            return UUID.randomUUID().toString() + ".png";
+        if (image != null) {
+            String originalFileName = selectedFile.getName();
+            String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+
+            return originalFileName.replace("." + fileExtension, "") + ".png";
         }
+
+        return UUID.randomUUID().toString() + ".png";
     }
-
-
 
     @FXML
     void CreateNewDish(ActionEvent event) {
         stepsData.clear();
-
-        String name = dishNameField.getText();
-        String mainInfo = descriptionArea.getText();
-        String category = categoryCondition.getText();
-        int time = hoursSpinner.getValue() * 60 + minutesSpinner.getValue();
         List<Product> productList = new ArrayList<>();
 
-        for(String ingrid : selectedIngredients){
+        for (String ingrid : selectedIngredients) {
             ProductPattern productPattern = new DBAllProducts().Read(ingrid);
             Product prod = new Product(productPattern.name, productPattern.getProtein(), productPattern.getFat(), productPattern.getCarbohydrate(), 100);
             productList.add(prod);
-        };
+        }
 
-        float rating = 3.0f;
-        switch (ratingLabel.getText()){
+        if (selectedFile == null) {
+            System.out.println("Файл не выбран.");
+            return;
+        }
+
+        if (dishNameField.getText().trim().isEmpty() || categoryCondition.getText().trim().isEmpty()
+                || descriptionArea.getText().trim().isEmpty() ||
+                selectedRating == null || selectedTime == null || stepsVBox.getChildren().isEmpty()) {
+            System.out.println("Заполните все поля.");
+            return;
+        }
+
+        for (Node stepNode : stepNodes) {
+            if (stepNode instanceof VBox) {
+                VBox vbox = (VBox) stepNode;
+                ImageView stepImageView = (ImageView) vbox.getChildren().get(0);
+                TextArea stepDescriptionTextArea = (TextArea) vbox.getChildren().get(1);
+
+                if (!stepImageView.getImage().isError() || !stepDescriptionTextArea.getText().isEmpty()) {
+                    String originalFileName = selectedFile.getName();
+                    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+
+                    stepFileName = originalFileName.replace("." + fileExtension, "") + ".png";
+
+                    copyImage(selectedFile, Paths.get("src/main/resources/img/StageRecipe"), stepFileName);
+
+                    stepsData.add(new StepData(stepDescriptionTextArea.getText(), stepFileName));
+
+                    System.out.println("Stage Image Path: " + "img/StageRecipe/" + stepFileName);
+                }
+            }
+        }
+
+        if (dishIngredientsMenu.getItems().stream()
+                .filter(item -> item instanceof CheckMenuItem)
+                .map(item -> (CheckMenuItem) item)
+                .noneMatch(CheckMenuItem::isSelected)) {
+            System.out.println("Выберите хотя бы один ингредиент.");
+            return;
+        }
+
+        List<String> StepDescription = new ArrayList<>();
+        List<String> StepImage = new ArrayList<>();
+
+        for (StepData stepData : stepsData) {
+            StepDescription.add(stepData.getStepDescription());
+            StepImage.add(stepData.getStepImagePath());
+        }
+
+        String originalMainFileName = selectedFileMain.getName();
+        String mainFileExtension = originalMainFileName.substring(originalMainFileName.lastIndexOf(".") + 1);
+
+        String mainImageFileName = originalMainFileName.replace("." + mainFileExtension, "") + ".png";
+
+        copyImage(selectedFileMain, Paths.get("src/main/resources/img/MainImage"), mainImageFileName);
+
+
+        System.out.println("Main Image Path: " + mainImageFileName);
+
+        Recipe newRecipe = new Recipe(
+                dishNameField.getText(),
+                descriptionArea.getText(),
+                categoryCondition.getText(),
+                time,
+                mainImageFileName,
+                productList,
+                setRating(ratingLabel),
+                StepImage,
+                StepDescription
+        );
+
+        new DBAllRecipes().Write(newRecipe);
+
+        closeWindow();
+    }
+
+    private float setRating(Label ratingLabel)
+    {
+        switch (ratingLabel.getText()) {
             case "*":
                 rating = 1.0f;
                 break;
@@ -324,42 +415,12 @@ public class NewReceiptCardController {
                 break;
         }
 
-        List<String> StepDescription = new ArrayList<String>();
-        List<String> StepImage = new ArrayList<String>();
+        return  rating;
+    }
 
-        for (Node stepNode : stepNodes) {
-            if (stepNode instanceof VBox) {
-                VBox vbox = (VBox) stepNode;
-                ImageView stepImageView = (ImageView) vbox.getChildren().get(0);
-                TextArea stepDescriptionTextArea = (TextArea) vbox.getChildren().get(1);
-
-                String stepFileName = getImageFileName(stepImageView);
-
-                copyImage(selectedFile, Paths.get("src/main/resources/img", "StageRecipe"), stepFileName);
-
-                stepsData.add(new StepData(stepDescriptionTextArea.getText(), stepFileName));
-
-                System.out.println("Main Image Path: " + "StageRecipe/" + stepFileName);
-            }
-        }
-
-        int numSteps = stepsVBox.getChildren().size();
-        for(int i = 0; i<numSteps; i++){
-            StepDescription.add(stepsData.get(i).getStepDescription());
-            StepImage.add(stepsData.get(i).getStepImagePath());   //Причем сохранять изображения тоже надо
-        }
-
-        String mainImageFileName = getImageFileName(choosenImage);
-
-        copyImage(selectedFile, Paths.get("src/main/resources/img", "MainImage"), mainImageFileName);
-        Recipe newRec = new Recipe(name, mainInfo, category, time, mainImageFileName, productList, rating, StepImage, StepDescription);
-
-        new DBAllRecipes().Write(newRec);
-        FoodViewController.thisRecipes = new DBAllRecipes().ReadAll();
-        FoodViewController.recentlyAdded = FoodViewController.CreateDishCardList(FoodViewController.thisRecipes);
-        //new FoodViewController().updateScrollPane(FoodViewController.recentlyAdded);
-       // Stage stage = (Stage) createDishBtn.getScene().getWindow();
-        //stage.close();
+    private void closeWindow() {
+        Stage stage = (Stage) createDishBtn.getScene().getWindow();
+        stage.close();
     }
 
     private void copyImage(File selectedFile, Path destinationFolder, String fileName) {

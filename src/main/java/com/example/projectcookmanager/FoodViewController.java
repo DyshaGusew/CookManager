@@ -6,6 +6,7 @@ import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -137,7 +138,6 @@ public class FoodViewController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-
 
     //Обновление показанных рецептов
     public void updateScrollPane(List<DishCard> filteredDishes) {
@@ -328,7 +328,6 @@ public class FoodViewController implements Initializable {
         selectedMenuItem.setDisable(false);
         thisRecipes = new DBAllRecipes().ReadOfIngrids(selectedIngredients);
         ClickButCategories();
-
     }
 
     @FXML
@@ -409,7 +408,7 @@ public class FoodViewController implements Initializable {
         SearchZoneByName.setText("");
     }
 
-    private void ClickButCategories(){
+    public void ClickButCategories(){
         BaseView();
 
         Collections.reverse(thisRecipes);
@@ -419,7 +418,43 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void OpenNewReceiptCard(ActionEvent event) {
-        OpenNewScene("NewReceiptCard.fxml", "Создание рецепта");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewReceiptCard.fxml"));
+            loader.setControllerFactory(c -> new NewReceiptCardController());
+            Parent root = loader.load();
+
+            NewReceiptCardController controller = loader.getController();
+            controller.setFoodViewController(this);
+
+            Stage stage = new Stage();
+            stage.setTitle("Создание рецепта");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnHidden(e -> {
+                updateDishCards();
+                initializeAfterClose();
+            });
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void initializeAfterClose() {
+        Platform.runLater(() -> {
+            InitializeCards();
+            handleIngredientsSearchMenu();
+        });
+    }
+
+    public void updateDishCards() {
+        if (thisRecipes != null) {
+            recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+            updateScrollPane(recentlyAdded);
+        }
     }
 
     public void OpenNewScene(String fxmlFile, String title) {
@@ -427,24 +462,19 @@ public class FoodViewController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
 
+            NewReceiptCardController controller = loader.getController();
+            controller.setFoodViewController(this);
+
             Stage stage = new Stage();
             stage.setTitle(title);
             stage.setScene(new Scene(root));
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
 
+
             stage.showAndWait();
-            stage.setOnHidden(event -> {
-             //   updateScrollPane(recentlyAdded);
-                thisCategory = "all";
-                thisRecipes = new DBAllRecipes().ReadAll();
-           //     ClickButCategories();
-           //     updateScrollPane(recentlyAdded);
-            });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-
-
 }
