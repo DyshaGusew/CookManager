@@ -1,6 +1,7 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
+import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.DataBases.DBBasketRecipes;
 import com.example.projectcookmanager.DataBases.DBFavoritesRecipes;
 import com.example.projectcookmanager.Entity.Recipe;
@@ -19,6 +20,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 public class DishCardController {
@@ -77,6 +81,13 @@ public class DishCardController {
             Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
             rating.setImage(ratingImage);
 
+            boolean isFavorite = isRecipeFavorite(recipe);
+            if (isFavorite) {
+                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart -red.png")));
+            } else {
+                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
+            }
+
             thisRecipe = recipe;
             dishCard = dish;
         } else {
@@ -105,19 +116,26 @@ public class DishCardController {
 
     @FXML
     void AddLikeRecipe(ActionEvent event) {
-//        boolean isFavorite = isRecipeFavorite(thisRecipe);
-//        if (isFavorite) {
-//            new DBFavoritesRecipes().Delete(thisRecipe.id);
-//            heartImage.setImage(new Image("/img/icons8-black-50.png"));
-//        } else {
-//            new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
-//            heartImage.setImage(new Image("/img/icons8-heart-green.png"));
-//        }
+        boolean isFavorite = isRecipeFavorite(thisRecipe);
+        if (isFavorite) {
+            new DBFavoritesRecipes().Delete(thisRecipe.id);
+            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
+
+        } else {
+            new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
+            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart -red.png")));
+        }
+        SetData(dishCard, thisRecipe);
     }
 
     private boolean isRecipeFavorite(Recipe recipe) {
         List<Recipe> favoriteRecipes = new DBFavoritesRecipes().ReadAllOnFavorite();
-        return favoriteRecipes.contains(recipe);
+        for(Recipe favRec : favoriteRecipes){
+            if(favRec.id == recipe.id){
+                return true;
+            }
+        }
+        return false;
     }
 
     @FXML
