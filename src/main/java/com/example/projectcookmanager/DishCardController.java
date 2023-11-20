@@ -26,6 +26,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class DishCardController {
+
     @FXML
     private Pane dishBox;
 
@@ -83,7 +84,7 @@ public class DishCardController {
 
             boolean isFavorite = isRecipeFavorite(recipe);
             if (isFavorite) {
-                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart -red.png")));
+                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
             } else {
                 heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
             }
@@ -102,6 +103,7 @@ public class DishCardController {
             Parent root = loader.load();
 
             FullReceiptCardController controller = loader.getController();
+            controller.setFoodViewController();
 
             controller.setData(dishCard);
 
@@ -123,7 +125,7 @@ public class DishCardController {
 
         } else {
             new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart -red.png")));
+            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
         }
         SetData(dishCard, thisRecipe);
     }

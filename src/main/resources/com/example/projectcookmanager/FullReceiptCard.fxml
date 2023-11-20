@@ -136,6 +136,7 @@
          <styleClass>
             <String fx:value="RedBtn" />
             <String fx:value="mouse-movedNextBtn" />
+            <String fx:value="mouse-movedRedBtn" />
          </styleClass>
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">

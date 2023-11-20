@@ -96,6 +96,7 @@ public class FoodViewController implements Initializable {
     //Все, что появится в начале
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         InitializeCards();
 
         handleIngredientsSearchMenu();

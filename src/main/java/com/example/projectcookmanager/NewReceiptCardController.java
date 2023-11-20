@@ -6,6 +6,8 @@ import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -13,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -33,6 +37,7 @@ public class NewReceiptCardController {
     }
 
     private List<String> selectedIngredients = new ArrayList<>();
+    private List<String> selectedMass = new ArrayList<>();
 
     private List<File> selectedFilesList = new ArrayList<>();
 
@@ -99,6 +104,16 @@ public class NewReceiptCardController {
     private Button removeStepButton;
 
     @FXML
+    private ListView listIngredients;
+
+    @FXML
+    private ListView listMassIngredients;
+
+
+    private ObservableList<String> ingredientNames = FXCollections.observableArrayList();;
+    private ObservableList<TextField> ingredientMass = FXCollections.observableArrayList();;
+
+    @FXML
     private ImageView stepImageView;
 
     @FXML
@@ -111,6 +126,8 @@ public class NewReceiptCardController {
 
     @FXML
     void initialize() {
+
+
         SaveCategoryCondition();
 
         ChooseTimeOfCooking();
@@ -181,7 +198,32 @@ public class NewReceiptCardController {
 
         if (selectedMenuItem.isSelected()) {
             selectedIngredients.add(selectedMenuItem.getText());
+
+            ingredientNames.add(selectedMenuItem.getText());
+
+            TextField textMass = new TextField("0");
+            textMass.setPrefWidth(10);
+            textMass.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+            textMass.setPrefHeight(5);
+            textMass.setId(selectedMenuItem.getText());
+            ingredientMass.add(textMass);
+
+            listIngredients.setItems(ingredientNames);
+            listMassIngredients.setItems(ingredientMass);
         } else {
+            ingredientNames.remove(selectedMenuItem.getText());
+
+            for(TextField textField : ingredientMass){
+                if(textField.getId().equals(selectedMenuItem.getText())){
+                    ingredientMass.remove(textField);
+                    break;
+                }
+            }
+
+            //ingredientMass.remove(0);
+            listIngredients.setItems(ingredientNames);
+            listMassIngredients.setItems(ingredientMass);
+
             if (selectedIngredients != null) {
                 selectedIngredients.removeIf(el -> el.equals(selectedMenuItem.getText()));
             }
@@ -271,7 +313,7 @@ public class NewReceiptCardController {
 
         selectedTime = String.format("%02d:%02d", selectedHours, selectedMinutes);
         timeOfCookingMenuBtn.setText(selectedTime);
-        time  = selectedHours + selectedMinutes;
+        time  = selectedHours*60 + selectedMinutes;
     }
 
     @FXML
@@ -306,10 +348,13 @@ public class NewReceiptCardController {
         stepsData.clear();
         List<Product> productList = new ArrayList<>();
 
+        List<TextField> textFields = listMassIngredients.getItems();
+        int i_ = 0;
         for (String ingrid : selectedIngredients) {
             ProductPattern productPattern = new DBAllProducts().Read(ingrid);
-            Product prod = new Product(productPattern.name, productPattern.getProtein(), productPattern.getFat(), productPattern.getCarbohydrate(), 100);
+            Product prod = new Product(productPattern.name, productPattern.getProtein(), productPattern.getFat(), productPattern.getCarbohydrate(), Integer.parseInt(textFields.get(i_).getText()));
             productList.add(prod);
+            i_++;
         }
 
         if (selectedFile == null || selectedFileMain == null) {

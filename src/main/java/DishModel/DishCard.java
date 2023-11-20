@@ -27,35 +27,13 @@ public class DishCard {
 
     public void setTime(int time) {
         if(time < 60){
-            this.time = String.valueOf(time) + " мин";
+            this.time = String.valueOf(time) + "мин";
         }
         else {
-            float n = time/60.0f*10;
-            int result = (int)Math.round(n);
+            int hour = time/60;
+            int minutes = time % 60;
 
-            String form;
-            if (time % 60 == 0) {
-                switch (time){
-                    case 60:
-                        form = " час";
-                        break;
-                    case 120:
-                        form = " часа";
-                        break;
-                    case 180:
-                        form = " часа";
-                        break;
-                    case 240:
-                        form = " часа";
-                        break;
-                    default:
-                        form = " часов";
-                }
-            }
-            else {
-                form = " часа";
-            }
-            this.time = String.valueOf((float) result/10) + form;
+            this.time = String.valueOf(hour) + "ч " + String.valueOf(minutes) + "мин";
         }
 
     }
