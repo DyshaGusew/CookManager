@@ -52,6 +52,9 @@ public class DishCardController {
     private ImageView heartImage;
 
     @FXML
+    private ImageView basketImage;
+
+    @FXML
     private Button basketBtn;
 
     @FXML
@@ -83,10 +86,17 @@ public class DishCardController {
             rating.setImage(ratingImage);
 
             boolean isFavorite = isRecipeFavorite(recipe);
+            boolean isBasket = isRecipeBasket(recipe);
             if (isFavorite) {
                 heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
             } else {
                 heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
+            }
+
+            if (isBasket) {
+                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
+            } else {
+                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
             }
 
             thisRecipe = recipe;
@@ -121,11 +131,11 @@ public class DishCardController {
         boolean isFavorite = isRecipeFavorite(thisRecipe);
         if (isFavorite) {
             new DBFavoritesRecipes().Delete(thisRecipe.id);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
+            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
 
         } else {
             new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
+            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
         }
         SetData(dishCard, thisRecipe);
     }
@@ -142,7 +152,25 @@ public class DishCardController {
 
     @FXML
     void AddBasketRecipe(ActionEvent event) {
-        new DBBasketRecipes().WriteInBasket(thisRecipe);
+        boolean isBasket = isRecipeBasket(thisRecipe);
+        if (isBasket) {
+            new DBBasketRecipes().Delete(thisRecipe.id);
+            basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
+
+        } else {
+            new DBBasketRecipes().WriteInBasket(thisRecipe);
+            basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
+        }
+        SetData(dishCard, thisRecipe);
     }
 
+    private boolean isRecipeBasket(Recipe recipe) {
+        List<Recipe> basketRecipes = new DBBasketRecipes().ReadAllOnBasket();
+        for(Recipe basRec : basketRecipes){
+            if(basRec.id == recipe.id){
+                return true;
+            }
+        }
+        return false;
+    }
 }
