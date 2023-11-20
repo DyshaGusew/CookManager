@@ -15,12 +15,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import com.example.projectcookmanager.FoodViewController;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 public class DishCardController {
@@ -48,7 +46,6 @@ public class DishCardController {
     @FXML
     private ImageView heartImage;
 
-
     @FXML
     private Button basketBtn;
 
@@ -64,15 +61,12 @@ public class DishCardController {
     public void SetData(DishCard dish, Recipe recipe) {
         System.out.println("Путь к изображению: " + dish.getImageUrl());
 
-        // Получение URL изображения
         URL imageURL = getClass().getResource(dish.getImageUrl());
 
         if (imageURL != null) {
-            String imageUrl = imageURL.toExternalForm();
-            System.out.println("URL изображения: " + imageUrl);
+            InputStream imageStream = getClass().getResourceAsStream(dish.getImageUrl());
 
-            // Загрузка изображения по URL
-            Image image = new Image(imageUrl);
+            Image image = new Image(imageStream);
             dishImage.setImage(image);
             dishImage.setFitWidth(165);
             dishImage.setFitHeight(106);
@@ -80,7 +74,6 @@ public class DishCardController {
             dishTime.setText(dish.getTime());
             dishCalories.setText(dish.getCalories());
 
-            // Загрузка рейтингового изображения из ресурсов
             Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
             rating.setImage(ratingImage);
 

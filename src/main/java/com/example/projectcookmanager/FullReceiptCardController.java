@@ -22,6 +22,9 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
 public class FullReceiptCardController {
@@ -77,7 +80,7 @@ public class FullReceiptCardController {
     private DBAllRecipes dbAllRecipes = new DBAllRecipes();
 
 
-    public void setData(DishCard dish) {
+    public void setData(DishCard dish) throws IOException {
         Recipe recipe = dbAllRecipes.Read(dish.getName());
         dishName.setText(dish.getName());
         choosenImage.setImage(new Image((getClass().getResourceAsStream(dish.getImageUrl()))));
@@ -110,25 +113,32 @@ public class FullReceiptCardController {
             stepTextNode.setWrapText(true);
             stepTextNode.setPadding(new Insets(2, 0, 0, 5));
 
-            ImageView stepImageNode = new ImageView(new Image(getClass().getResourceAsStream("/img/StageRecipe/" + imageUrl)));
-            stepImageNode.setFitWidth(250);
-            stepImageNode.setFitHeight(250);
+            URL imageURL = getClass().getResource("/img/StageRecipe/" + imageUrl);
+            if (imageURL != null) {
+                InputStream imageStream = imageURL.openStream();
+                Image image = new Image(imageStream);
 
-            stepsVbox.getChildren().add(stepTextNode);
+                ImageView stepImageNode = new ImageView(image);
+                stepImageNode.setFitWidth(250);
+                stepImageNode.setFitHeight(250);
 
-            ImageView stepImageNode1 = new ImageView();
-            stepImageNode1.setFitWidth(5);
-            stepImageNode1.setFitHeight(5);
-            stepsVbox.getChildren().add(stepImageNode1);
+                stepsVbox.getChildren().add(stepTextNode);
 
-            stepsVbox.getChildren().add(stepImageNode);
+                ImageView stepImageNode1 = new ImageView();
+                stepImageNode1.setFitWidth(5);
+                stepImageNode1.setFitHeight(5);
+                stepsVbox.getChildren().add(stepImageNode1);
 
-            stepImageNode = new ImageView();
-            stepImageNode.setFitWidth(20);
-            stepImageNode.setFitHeight(20);
+                stepsVbox.getChildren().add(stepImageNode);
 
-            stepsVbox.getChildren().add(stepImageNode);
-           // stepsVbox.setSpacing(50);
+                stepImageNode = new ImageView();
+                stepImageNode.setFitWidth(20);
+                stepImageNode.setFitHeight(20);
+
+                stepsVbox.getChildren().add(stepImageNode);
+            } else {
+                System.out.println("Ссылка на изображение этапа пуста для этапа " + i);
+            }
         }
 
         stepsScroll.setContent(null);

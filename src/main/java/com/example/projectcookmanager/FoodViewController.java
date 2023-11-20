@@ -433,7 +433,6 @@ public class FoodViewController implements Initializable {
             stage.initModality(Modality.APPLICATION_MODAL);
 
             stage.setOnHidden(e -> {
-                updateDishCards();
                 initializeAfterClose();
             });
 
@@ -447,11 +446,13 @@ public class FoodViewController implements Initializable {
         Platform.runLater(() -> {
             InitializeCards();
             handleIngredientsSearchMenu();
+            updateDishCards();
         });
     }
 
     public void updateDishCards() {
         if (thisRecipes != null) {
+            thisRecipes = new DBAllRecipes().ReadAll();
             recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
             updateScrollPane(recentlyAdded);
         }
