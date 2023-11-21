@@ -4,6 +4,7 @@ module com.example.projectcookmanager {
     requires java.sql;
     requires java.desktop;
     requires javafx.swing;
+    requires org.jsoup;
 
     opens com.example.projectcookmanager to javafx.fxml;
     exports com.example.projectcookmanager;

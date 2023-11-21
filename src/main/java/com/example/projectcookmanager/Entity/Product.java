@@ -22,4 +22,9 @@ public class Product extends ProductPattern{
         super(name, protein, fat, carbohydrate);
         setMass(mass);
     }
+
+    public Product(ProductPattern prod, float mass){
+        super(prod.name, prod.getProtein(), prod.getFat(), prod.getCarbohydrate());
+        setMass(mass);
+    }
 }

@@ -15,7 +15,7 @@ public class Recipe extends Entity {
     private float fat;
     private float protein;
     private float carbohydrate;
-    private String mainImageLink;  //Основное описание рецепта
+    private String mainImageLink;  //Основная картинка рецепта
 
     //Оценка
     private float rating;
