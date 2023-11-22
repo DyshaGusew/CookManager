@@ -6,6 +6,7 @@ import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
+import com.example.projectcookmanager.Parser.Parser;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -109,6 +110,9 @@ public class NewReceiptCardController {
     @FXML
     private ListView listMassIngredients;
 
+    @FXML
+    private TextField recipeUrlArea;
+
 
     private ObservableList<String> ingredientNames = FXCollections.observableArrayList();;
     private ObservableList<TextField> ingredientMass = FXCollections.observableArrayList();;
@@ -194,7 +198,7 @@ public class NewReceiptCardController {
     private void handleIngredientSelection(CheckMenuItem selectedMenuItem) {
         System.out.println("Selected ingredient: " + selectedMenuItem.getText());
 
-        selectedMenuItem.setDisable(false);
+       // selectedMenuItem.setDisable(false);
 
         if (selectedMenuItem.isSelected()) {
             selectedIngredients.add(selectedMenuItem.getText());
@@ -426,6 +430,90 @@ public class NewReceiptCardController {
         closeWindow();
     }
 
+    @FXML
+    void AddOfSite(ActionEvent event){
+        if (!recipeUrlArea.getText().equals("")) {
+            Recipe thisRecipe = Parser.RecOfParser(recipeUrlArea.getText());
+            SetDataOfParser(thisRecipe);
+            if(Parser.noIngrid.size() != 0){
+
+            }
+        }
+    }
+    private void SetDataOfParser(Recipe recipe){
+        dishNameField.setText(recipe.name);
+        categoryCondition.setText(recipe.getCategory());
+
+        descriptionArea.setText(recipe.getMainInfo());
+        ratingLabel.setText(getStringRating(recipe.getRating()));
+
+        String selectTime = String.format("%02d:%02d", recipe.getTimeCooking()/60, recipe.getTimeCooking()%60);
+        timeOfCookingMenuBtn.setText(selectTime);
+
+        SetIngridAndMassOfParser(recipe);
+
+        InputStream imageStream = getClass().getResourceAsStream("/img/MainImage/" + recipe.getMainImageLink());
+        choosenImage.setImage(new Image(imageStream));
+
+//        for(int i = 0; i < recipe.getTextStages().size(); i++){
+//            InputStream imageStream_ = getClass().getResourceAsStream("/img/StageImage/" + recipe.getImagesStageLinks().get(i));
+//
+//        }
+    }
+
+    private void SetIngridAndMassOfParser(Recipe recipe) {
+        dishIngredientsMenu.getItems().clear();
+        DBAllProducts dbAllProducts = new DBAllProducts();
+        List<ProductPattern> allProducts = dbAllProducts.ReadAll();
+
+        for (ProductPattern productPattern : allProducts) {
+            CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
+
+            checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
+            for (Product product : recipe.getProducts()){
+                if(product.name.equals(productPattern.name)){
+                    checkmenuItem.setSelected(true);
+                    //selectedMenuItem.setDisable(false);
+                    selectedIngredients.add(product.name);
+
+                    ingredientNames.add(product.name);
+
+                    TextField textMass = new TextField(Float.toString(product.getMass()));
+                    textMass.setPrefWidth(10);
+                    textMass.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+                    textMass.setPrefHeight(5);
+                    textMass.setId(product.name);
+                    ingredientMass.add(textMass);
+
+                    listIngredients.setItems(ingredientNames);
+                    listMassIngredients.setItems(ingredientMass);
+                    break;
+                }
+            }
+            dishIngredientsMenu.getItems().add(checkmenuItem);
+        }
+    }
+    private void InfoAboutNoIngrid(List<String> noIngredients){
+
+    }
+
+    private String getStringRating(float rating){
+        if(rating <= 1.4){
+            return "*";
+        }
+        else if(rating <= 2.4 && rating >= 1.5){
+            return "**";
+        }
+        else if(rating <= 3.4 && rating >= 2.5){
+            return "***";
+        }
+        else if(rating <= 4.4 && rating >= 3.5){
+            return "****";
+        }
+        else{
+            return "*****";
+        }
+    }
     private CompletableFuture<String> createMainImageAsync(File selectedFileMain) {
         return CompletableFuture.supplyAsync(() -> {
             String originalMainFileName = selectedFileMain.getName();

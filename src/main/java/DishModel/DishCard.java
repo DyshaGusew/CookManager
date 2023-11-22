@@ -55,16 +55,16 @@ public class DishCard {
         if(rating <= 1.4){
             this.ratingUrl = "/img/Other/1star.png";
         }
-        if(rating <= 2.4 && rating >= 1.5){
+        else if(rating <= 2.4 && rating >= 1.5){
             this.ratingUrl = "/img/Other/2stars.png";
         }
-        if(rating <= 3.4 && rating >= 2.5){
+        else if(rating <= 3.4 && rating >= 2.5){
             this.ratingUrl = "/img/Other/3stars.png";
         }
-        if(rating <= 4.4 && rating >= 3.5){
+        else if(rating <= 4.4 && rating >= 3.5){
             this.ratingUrl = "/img/Other/4stars.png";
         }
-        if(rating >= 4.5){
+        else{
             this.ratingUrl = "/img/Other/5stars.png";
         }
     }

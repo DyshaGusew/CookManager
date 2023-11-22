@@ -24,7 +24,7 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        Recipe recOfParser1 = Parser.RecOfParser("https://povar.ru/recipes/idealnoe_testo_dlya_pelmenei-20059.html");
+        //Recipe recOfParser1 = Parser.RecOfParser("https://povar.ru/recipes/idealnoe_testo_dlya_pelmenei-20059.html");
         //Recipe recOfParser2 = Parser.RecOfParser("https://povar.ru/recipes/kurinye_kolbaski_s_syrom_dlya_grilya-70476.html");
         launch();
     }

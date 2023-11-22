@@ -25,7 +25,7 @@ import java.util.UUID;
 public class Parser {
     private static String pathMainImage =  "img/MainImage";
     private static String pathStageImage = "img/StageRecipe";
-    private static List<String> noIngrid = new ArrayList<>();
+    public static List<String> noIngrid = new ArrayList<>();
     public static Recipe RecOfParser(String recipeUrl){
         try {
             // Получаем HTML-страницу рецепта
@@ -108,21 +108,18 @@ public class Parser {
 
             Recipe parceOfRecipe = new Recipe(title, info, category, timeCooking, mainImageName, productList, rating, stepPhotos, instructions);
 
-            if(noIngrid.size() != 0){
-                //Штука, появляется при отсутствии какого-либо рецепта
-            }
 
-            // Выводим полученные данные на экран
-            System.out.println("Название: " + title);
-            System.out.println("Категория: " + category);
-            System.out.println("Описание: " + info);
-            System.out.println("Фото: " + mainImageName);
-            System.out.println("Рейтинг: " + rating);
-            System.out.println("Время приготовления: " + timeCooking);
-            System.out.println("Ингредиенты: " + ingredientsNames);
-            System.out.println("Фотографии этапов приготовления: " + stepPhotos);
-            System.out.println("Описание этапов приготовления: " + instructions);
-            System.out.println("Отсутствующие элементы: " + noIngrid);
+//            // Выводим полученные данные на экран
+//            System.out.println("Название: " + title);
+//            System.out.println("Категория: " + category);
+//            System.out.println("Описание: " + info);
+//            System.out.println("Фото: " + mainImageName);
+//            System.out.println("Рейтинг: " + rating);
+//            System.out.println("Время приготовления: " + timeCooking);
+//            System.out.println("Ингредиенты: " + ingredientsNames);
+//            System.out.println("Фотографии этапов приготовления: " + stepPhotos);
+//            System.out.println("Описание этапов приготовления: " + instructions);
+//            System.out.println("Отсутствующие элементы: " + noIngrid);
 
             return parceOfRecipe;
         } catch (IOException e) {
