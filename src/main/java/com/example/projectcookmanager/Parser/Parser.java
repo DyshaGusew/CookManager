@@ -26,6 +26,7 @@ public class Parser {
     private static String pathMainImage =  "img/MainImage";
     private static String pathStageImage = "img/StageRecipe";
     public static List<String> noIngrid = new ArrayList<>();
+    public static List<Float> noMass = new ArrayList<>();
     public static Recipe RecOfParser(String recipeUrl){
         try {
             // Получаем HTML-страницу рецепта
@@ -85,6 +86,7 @@ public class Parser {
 
             //Получаем список продуктов данного рецепта
             noIngrid = new ArrayList<>();
+            noMass = new ArrayList<>();
             List<Product> productList = GetProductOfRecipe(ingredientsNames, ingredientsMass);
 
             // Извлекаем фотографии этапов приготовления
@@ -220,6 +222,7 @@ public class Parser {
         for(int i = 0; i< ingredientsNames.size(); i++){
             ProductPattern productPattern = new DBAllProducts().Read(ingredientsNames.get(i));
             if(productPattern == null){
+                noMass.add(ingredientsMass.get(i));
                 noIngrid.add(ingredientsNames.get(i));
                 continue;
             }

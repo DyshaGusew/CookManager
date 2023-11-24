@@ -11,7 +11,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -436,10 +439,11 @@ public class NewReceiptCardController {
             Recipe thisRecipe = Parser.RecOfParser(recipeUrlArea.getText());
             SetDataOfParser(thisRecipe);
             if(Parser.noIngrid.size() != 0){
-
+                OpenInfoAboutNoIngrid(Parser.noIngrid, Parser.noMass);
             }
         }
     }
+
     private void SetDataOfParser(Recipe recipe){
         dishNameField.setText(recipe.name);
         categoryCondition.setText(recipe.getCategory());
@@ -493,8 +497,22 @@ public class NewReceiptCardController {
             dishIngredientsMenu.getItems().add(checkmenuItem);
         }
     }
-    private void InfoAboutNoIngrid(List<String> noIngredients){
+    private void OpenInfoAboutNoIngrid(List<String> noIngredients, List<Float> noMass){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("NoIngredients.fxml"));
+            Parent root = loader.load();
 
+            NoIngredientsController controller = loader.getController();
+            controller.setNoIngridList(noIngredients);
+            controller.setNoMassList(noMass);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String getStringRating(float rating){
