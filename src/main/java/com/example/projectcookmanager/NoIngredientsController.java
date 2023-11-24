@@ -8,7 +8,6 @@ import javafx.scene.control.ListView;
 import java.util.List;
 
 public class NoIngredientsController {
-
     private ObservableList<String> noIngridList= FXCollections.observableArrayList();
     private ObservableList<String> noMassList= FXCollections.observableArrayList();
 
@@ -26,6 +25,7 @@ public class NoIngredientsController {
 
         ListNoIngrid.setItems(noIngridList);
     }
+
     @FXML
     public void setNoMassList(List<Float> noMassList1) {
         for(Float mass : noMassList1){

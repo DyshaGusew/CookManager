@@ -1,13 +1,8 @@
 package DishModel;
 
-import javafx.scene.image.Image;
-
-import java.io.InputStream;
-
 public class StepData {
     private String stepDescription;
     private String stepImagePath;
-
 
     public StepData(String stepDescription, String stepImagePath) {
         this.stepDescription = stepDescription;

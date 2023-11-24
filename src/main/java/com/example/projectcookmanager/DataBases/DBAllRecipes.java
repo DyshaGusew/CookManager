@@ -317,7 +317,7 @@ public class DBAllRecipes extends DataBase {
             prepStat.setString(1, recipe.name);
             prepStat.setString(2, recipe.getCategory());
             prepStat.setString(3, recipe.getMainInfo());
-            prepStat.setFloat(4, recipe.getCalories());
+            prepStat.setFloat(4, (recipe.getCalories()));
             prepStat.setInt(5, recipe.getTimeCooking());
             prepStat.setString(6, recipe.getMainImageLink());
             prepStat.setFloat(7, recipe.getRating());

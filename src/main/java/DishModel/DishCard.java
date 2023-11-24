@@ -4,22 +4,18 @@ import javafx.scene.control.Button;
 
 public class DishCard {
     private String name;
+
     private String time;
+
     private String ratingUrl;
+
     private String imageUrl;
 
     private String calories;
+
     private String timeImageUrl;
+
     private static DishCard selectedDish;
-    private Button nextButton;
-
-    public void setSelected() {
-        selectedDish = this;
-    }
-
-    public static DishCard getSelectedDish() {
-        return selectedDish;
-    }
 
     public String getTime() {
         return time;
@@ -27,15 +23,14 @@ public class DishCard {
 
     public void setTime(int time) {
         if(time < 60){
-            this.time = String.valueOf(time) + "мин";
+            this.time = time + "мин";
         }
         else {
             int hour = time/60;
             int minutes = time % 60;
 
-            this.time = String.valueOf(hour) + "ч " + String.valueOf(minutes) + "мин";
+            this.time = hour + "ч " + minutes + "мин";
         }
-
     }
 
     public String getName() {
@@ -50,8 +45,7 @@ public class DishCard {
         return ratingUrl;
     }
 
-    public void setRatingUrl(float rating)
-    {
+    public void setRatingUrl(float rating) {
         if(rating <= 1.4){
             this.ratingUrl = "/img/Other/1star.png";
         }
@@ -78,7 +72,7 @@ public class DishCard {
     }
 
     public void setCalories(int calories) {
-        this.calories = String.valueOf(calories) + " Ккал";
+        this.calories = calories + " Ккал";
     }
 
     public String getCalories() {

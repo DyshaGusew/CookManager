@@ -1,6 +1,6 @@
 package com.example.projectcookmanager.DataBases;
 
-import com.example.projectcookmanager.Entity.ProductPattern;
+import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.Recipe;
 
 import java.sql.*;

@@ -3,14 +3,12 @@ package com.example.projectcookmanager;
 import DishModel.DishCard;
 import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
-import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,7 +21,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
@@ -87,31 +84,30 @@ public class FoodViewController implements Initializable {
 
     private List<String> selectedIngredients = new ArrayList<>();
 
-    public static List<DishCard> recentlyAdded = new ArrayList<DishCard>();
+    public static List<DishCard> recentlyAdded = new ArrayList<>();
 
     //Текущий список рецептов
-    public static List<Recipe> thisRecipes = new ArrayList<Recipe>();
+    public static List<Recipe> thisRecipes = new ArrayList<>();
+
     private String thisCategory;
 
     //Все, что появится в начале
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
         InitializeCards();
 
         handleIngredientsSearchMenu();
     }
 
-    public void InitializeCards()
-    {
+    public void InitializeCards() {
         //Заполняю комбо бокс
-        ObservableList<String> categories = FXCollections.observableArrayList("Новизна", "Время приготовления", "Рейтинг", "Каллорийность");
+        ObservableList<String> categories = FXCollections.observableArrayList
+                ("Новизна", "Время приготовления", "Рейтинг", "Каллорийность");
         ShortBut.setItems(categories);
 
         //Делаем в перемешанном порядке
         thisRecipes = new DBAllRecipes().ReadAll();
         thisCategory = "all";
-        //Collections.reverse(thisRecipes); взащпоовапдаощполапоОООВООВОВОВРОВВРОВРО
 
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         int column = 0;
@@ -173,7 +169,6 @@ public class FoodViewController implements Initializable {
     //Создание списка карт в зависимости от поданного на них списка рецептов из бд
     public static List<DishCard> CreateDishCardList(List<Recipe> recipes) {
         thisRecipes = recipes;
-        //recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
         List<DishCard> dishCardList = new ArrayList<>();
 
         for(Recipe rec : recipes){
@@ -204,7 +199,7 @@ public class FoodViewController implements Initializable {
         else{
             newList = new DBAllRecipes().ReadAll();
         }
-        thisRecipes = new ArrayList<Recipe>();
+        thisRecipes = new ArrayList<>();
 
         if(!thisCategory.equals("all")){
             for (Recipe rec : newList){
@@ -216,7 +211,6 @@ public class FoodViewController implements Initializable {
         }
         else {
             thisRecipes = newList;
-
         }
 
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
@@ -228,9 +222,6 @@ public class FoodViewController implements Initializable {
         List<Recipe> newList;
 
         switch (ShortBut.getValue()){
-//            case "Новизна":
-//                newList = new DBAllRecipes().ReadOfSort("id");
-//                break;
             case "Время приготовления":
                 newList = new DBAllRecipes().ReadOfSort("timeCooking");
                 break;
@@ -244,7 +235,7 @@ public class FoodViewController implements Initializable {
                 newList = new DBAllRecipes().ReadOfSort("id");
         }
 
-        thisRecipes = new ArrayList<Recipe>();
+        thisRecipes = new ArrayList<>();
 
         //Если категория не содержит всех категорий, то
         if(!thisCategory.equals("all")){
@@ -262,7 +253,6 @@ public class FoodViewController implements Initializable {
 
         SearchZoneByName.setText("");
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-        // List<DishCard> filteredDishes = CreateDishCardList(new DBAllRecipes().ReadOfParam("category", "Выпечка"));
         updateScrollPane(recentlyAdded);
     }
 
@@ -302,12 +292,42 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void OpenFavorites(ActionEvent event) {
-        OpenNewScene("FavoriteDishes.fxml", "Любимые блюда");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FavoriteListCard.fxml"));
+            Parent root = loader.load();
+
+            FavoriteListCardController controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setTitle("Любимые блюда");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void OpenBasket(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BasketIngredientsCard.fxml"));
+            Parent root = loader.load();
 
+            BasketIngredientsCardController controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setTitle("Ингредиенты для блюд");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleIngredientSearchSelection(CheckMenuItem selectedMenuItem) {
@@ -343,7 +363,6 @@ public class FoodViewController implements Initializable {
         Collections.reverse(thisRecipes);
 
         recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
-        //List<DishCard> filteredDishes = CreateDishCardList(thisRecipes);
         updateScrollPane(recentlyAdded);
     }
 
@@ -456,27 +475,6 @@ public class FoodViewController implements Initializable {
             thisRecipes = new DBAllRecipes().ReadAll();
             recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
             updateScrollPane(recentlyAdded);
-        }
-    }
-
-    public void OpenNewScene(String fxmlFile, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Parent root = loader.load();
-
-            NewReceiptCardController controller = loader.getController();
-            controller.setFoodViewController(this);
-
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

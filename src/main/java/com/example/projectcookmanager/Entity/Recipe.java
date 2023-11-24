@@ -20,6 +20,8 @@ public class Recipe extends Entity {
     //Оценка
     private float rating;
 
+    private String ratingUrl;
+
     //Продукты
     private List<Product> products;
 
@@ -27,15 +29,12 @@ public class Recipe extends Entity {
     private List<String> imagesStageLinks;
     private List<String> textStages;
 
-
-
     public String getMainInfo() {
         return mainInfo;
     }
     public void setMainInfo(String mainInfo) {
         this.mainInfo = mainInfo;
     }
-
 
     public String getCategory() {
         return category;
@@ -45,15 +44,42 @@ public class Recipe extends Entity {
     }
 
     public int getTimeCooking() {
-        return timeCooking;
+        return (int)timeCooking;
     }
+
+    public String getTimeCookingNew() {
+        return String.valueOf(timeCooking);
+    }
+
     public void setTimeCooking(int timeCooking) {
         this.timeCooking = timeCooking;
+    }
+
+    public String getRatingUrl(float rating)
+    {
+        if(rating <= 1.4){
+            this.ratingUrl = "/img/Other/1star.png";
+        }
+        else if(rating <= 2.4 && rating >= 1.5){
+            this.ratingUrl = "/img/Other/2stars.png";
+        }
+        else if(rating <= 3.4 && rating >= 2.5){
+            this.ratingUrl = "/img/Other/3stars.png";
+        }
+        else if(rating <= 4.4 && rating >= 3.5){
+            this.ratingUrl = "/img/Other/4stars.png";
+        }
+        else{
+            this.ratingUrl = "/img/Other/5stars.png";
+        }
+
+        return ratingUrl;
     }
 
     public float getProtein() {
         return protein;
     }
+
     public void setProtein(List<Product> products) {
         if(valueAllMass(products) != 0){
             this.protein = valueAspect("protein", products) / ((valueAllMass(products)/100.0f));
@@ -61,12 +87,12 @@ public class Recipe extends Entity {
         else{
             this.protein = 0;
         }
-
     }
 
     public float getCarbohydrate() {
         return carbohydrate;
     }
+
     public void setCarbohydrate(List<Product> products) {
         if(valueAllMass(products) != 0){
             this.carbohydrate = valueAspect("carbohydrate", products) / ((valueAllMass(products)/100.0f));
@@ -74,7 +100,6 @@ public class Recipe extends Entity {
         else{
             this.carbohydrate = 0;
         }
-
     }
 
     public float getFat() {
@@ -94,14 +119,21 @@ public class Recipe extends Entity {
     public int getCalories() {
         return (int)calories;
     }
+
+    public String getCaloriesNew() {
+        return String.valueOf((int)calories) + " Ккал";
+    }
+
     public void setCalories(float protein, float fat, float carbohydrate) {
-
             this.calories = (protein * 4.0f) + (fat * 9.0f) + (carbohydrate * 4.0f);
-
     }
 
     public String getMainImageLink() {
         return this.mainImageLink;
+    }
+
+    public String getMainImageLinkNew() {
+        return "/img/MainImage/" + this.mainImageLink;
     }
     public void setMainImageLink(String mainImageLink) {
         this.mainImageLink = mainImageLink;

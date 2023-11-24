@@ -9,9 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -30,12 +28,6 @@ import java.net.URL;
 import java.util.List;
 
 public class FullReceiptCardController {
-    private FoodViewController foodViewController;
-
-    public void setFoodViewController(FoodViewController foodViewController) {
-        this.foodViewController = foodViewController;
-    }
-
     @FXML
     private ImageView choosenImage;
 
@@ -86,11 +78,6 @@ public class FullReceiptCardController {
 
     private DBAllRecipes dbAllRecipes = new DBAllRecipes();
 
-    public void setFoodViewController(){
-
-    }
-
-
     public void setData(DishCard dish) throws IOException {
         Recipe recipe = dbAllRecipes.Read(dish.getName());
         dishName.setText(dish.getName());
@@ -110,13 +97,10 @@ public class FullReceiptCardController {
 
         VBox stepsVbox = new VBox();
 
-
         for (int i = 0; i < recipe.getTextStages().size(); i++) {
 
             String stepText = recipe.getTextStages().get(i);
             String imageUrl = recipe.getImagesStageLinks().get(i);
-
-            //HBox stepBox = new HBox();
 
             Label stepTextNode = new Label(stepText);
             stepTextNode.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 20));
@@ -170,7 +154,7 @@ public class FullReceiptCardController {
 
         for (Product product : allProductsRecipe) {
             ingredientNames.add(product.name);
-            ingredientMass.add(Float.toString(product.getMass()) + " гр");
+            ingredientMass.add(product.getMass() + " гр");
         }
         listViewOfIngredients.setItems(ingredientNames);
         listViewOfMass.setItems(ingredientMass);
@@ -181,17 +165,8 @@ public class FullReceiptCardController {
         new DBAllRecipes().Delete(dishName.getText());
         FoodViewController.thisRecipes = new DBAllRecipes().ReadAll();
         FoodViewController.recentlyAdded = FoodViewController.CreateDishCardList(FoodViewController.thisRecipes);
-//            FXMLLoader foodViewLoader = new FXMLLoader(getClass().getResource("Food-ReceiptNew.fxml"));
-//            Parent foodViewRoot = foodViewLoader.load();
-//            FoodViewController foodViewController = foodViewLoader.getController();
-//            foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
-
-
 
         Stage stage = (Stage) deleteRecipe.getScene().getWindow();
         stage.close();
-
-        //new FoodViewController().updateScrollPane(FoodViewController.recentlyAdded);
-
     }
 }

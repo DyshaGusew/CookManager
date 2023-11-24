@@ -42,16 +42,21 @@ public class NewReceiptCardController {
     }
 
     private List<String> selectedIngredients = new ArrayList<>();
+
     private List<String> selectedMass = new ArrayList<>();
 
     private List<File> selectedFilesList = new ArrayList<>();
 
     private List<StepData> stepsData = new ArrayList<>();
+
     private String selectedTime;
+
     private int time;
+
     private String selectedRating;
 
     private float rating;
+
     private String stepFileName;
 
     @FXML
@@ -77,9 +82,6 @@ public class NewReceiptCardController {
 
     @FXML
     private ImageView choosenImage;
-
-    @FXML
-    private Button showPreviewBtn;
 
     @FXML
     private MenuButton ratingMenuBtn;
@@ -117,9 +119,9 @@ public class NewReceiptCardController {
     @FXML
     private TextField recipeUrlArea;
 
+    private ObservableList<String> ingredientNames = FXCollections.observableArrayList();
 
-    private ObservableList<String> ingredientNames = FXCollections.observableArrayList();;
-    private ObservableList<TextField> ingredientMass = FXCollections.observableArrayList();;
+    private ObservableList<TextField> ingredientMass = FXCollections.observableArrayList();
 
     @FXML
     private ImageView stepImageView;
@@ -128,6 +130,7 @@ public class NewReceiptCardController {
     private Button chooseImageForStepButton;
 
     private List<Node> stepNodes = new ArrayList<>();
+
     private File selectedFile;
 
     private File selectedFileMain;
@@ -136,8 +139,6 @@ public class NewReceiptCardController {
 
     @FXML
     void initialize() {
-
-
         SaveCategoryCondition();
 
         ChooseTimeOfCooking();
@@ -156,6 +157,7 @@ public class NewReceiptCardController {
         timeOfCookingMenuBtn.getItems().forEach(menuItem -> {
             if (menuItem instanceof CheckMenuItem) {
                 CheckMenuItem checkMenuItem = (CheckMenuItem) menuItem;
+
                 checkMenuItem.setOnAction(e -> {
                     if (checkMenuItem.getText().equals("В часах")) {
                         hoursSpinner.setVisible(true);
@@ -204,8 +206,6 @@ public class NewReceiptCardController {
     private void handleIngredientSelection(CheckMenuItem selectedMenuItem) {
         System.out.println("Selected ingredient: " + selectedMenuItem.getText());
 
-       // selectedMenuItem.setDisable(false);
-
         if (selectedMenuItem.isSelected()) {
             selectedIngredients.add(selectedMenuItem.getText());
 
@@ -230,7 +230,6 @@ public class NewReceiptCardController {
                 }
             }
 
-            //ingredientMass.remove(0);
             listIngredients.setItems(ingredientNames);
             listMassIngredients.setItems(ingredientMass);
 
@@ -271,7 +270,6 @@ public class NewReceiptCardController {
         stepsVBox.getChildren().add(stepNode);
         stepNodes.add(stepNode);
     }
-
 
     private void removeStep() {
         int numSteps = stepsVBox.getChildren().size();
@@ -375,7 +373,6 @@ public class NewReceiptCardController {
             }
         }
 
-
         if (dishNameField.getText().trim().isEmpty() || categoryCondition.getText().trim().isEmpty()
                 || descriptionArea.getText().trim().isEmpty() ||
                 selectedRating == null || selectedTime == null || stepsVBox.getChildren().isEmpty()) {
@@ -393,9 +390,11 @@ public class NewReceiptCardController {
 
                     File stepFile = selectedFilesList.get(i);
 
-                    if (stepFile != null && (!stepImageView.getImage().isError() || !stepDescriptionTextArea.getText().isEmpty())) {
+                    if (stepFile != null && (!stepImageView.getImage().isError()
+                            || !stepDescriptionTextArea.getText().isEmpty())) {
                         String originalFileName = stepFile.getName();
-                        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+                        String fileExtension = originalFileName.substring
+                                (originalFileName.lastIndexOf(".") + 1);
 
                         stepFileName = originalFileName.replace("." + fileExtension, "") + ".png";
 
@@ -408,7 +407,6 @@ public class NewReceiptCardController {
                 }
             }
         }
-
 
         CompletableFuture<String> mainImageFuture = null;
         CompletableFuture<Void> stepImageFuture = null;
@@ -455,7 +453,6 @@ public class NewReceiptCardController {
                     parceRecipe.getImagesStageLinks(),
                     parceRecipe.getTextStages());
         }
-
 
         new DBAllRecipes().Write(newRecipe);
 
@@ -529,7 +526,6 @@ public class NewReceiptCardController {
             for (Product product : recipe.getProducts()){
                 if(product.name.equals(productPattern.name)){
                     checkmenuItem.setSelected(true);
-                    //selectedMenuItem.setDisable(false);
                     selectedIngredients.add(product.name);
 
                     ingredientNames.add(product.name);
@@ -549,6 +545,7 @@ public class NewReceiptCardController {
             dishIngredientsMenu.getItems().add(checkmenuItem);
         }
     }
+
     private void OpenInfoAboutNoIngrid(List<String> noIngredients, List<Float> noMass){
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("NoIngredients.fxml"));
@@ -584,12 +581,15 @@ public class NewReceiptCardController {
             return "*****";
         }
     }
+
     private CompletableFuture<String> createMainImageAsync(File selectedFileMain) {
         return CompletableFuture.supplyAsync(() -> {
             String originalMainFileName = selectedFileMain.getName();
-            String mainFileExtension = originalMainFileName.substring(originalMainFileName.lastIndexOf(".") + 1);
+            String mainFileExtension = originalMainFileName.substring
+                    (originalMainFileName.lastIndexOf(".") + 1);
 
-            String mainImageFileName = originalMainFileName.replace("." + mainFileExtension, "") + ".png";
+            String mainImageFileName = originalMainFileName.replace
+                    ("." + mainFileExtension, "") + ".png";
 
             Path destinationFolder = Paths.get("target/classes/img/MainImage");
             createDirectoryIfNotExists(destinationFolder);
@@ -622,9 +622,11 @@ public class NewReceiptCardController {
 
                 if (stepFile != null) {
                     String originalFileName = stepFile.getName();
-                    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+                    String fileExtension = originalFileName.substring
+                            (originalFileName.lastIndexOf(".") + 1);
 
-                    String stepFileName = originalFileName.replace("." + fileExtension, "") + ".png";
+                    String stepFileName = originalFileName.replace
+                            ("." + fileExtension, "") + ".png";
 
                     copyImage(stepFile, destinationFolder, stepFileName);
 
@@ -644,8 +646,7 @@ public class NewReceiptCardController {
         }
     }
 
-    private float setRating(Label ratingLabel)
-    {
+    private float setRating(Label ratingLabel) {
         switch (ratingLabel.getText()) {
             case "*":
                 rating = 1.0f;
@@ -682,10 +683,5 @@ public class NewReceiptCardController {
                 e.printStackTrace();
             }
         });
-    }
-
-    @FXML
-    void ShowPreview(ActionEvent event) {
-
     }
 }
