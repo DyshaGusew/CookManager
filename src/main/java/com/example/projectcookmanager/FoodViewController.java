@@ -377,8 +377,8 @@ public class FoodViewController implements Initializable {
 
     @FXML
     void ShowHotDishes(ActionEvent event) {
-        thisRecipes = new DBAllRecipes().ReadOfCategory("Вторые блюда");
-        thisCategory = "Вторые блюда";
+        thisRecipes = new DBAllRecipes().ReadOfCategory("Горячие блюда");
+        thisCategory = "Горячие блюда";
         ClickButCategories();
     }
 

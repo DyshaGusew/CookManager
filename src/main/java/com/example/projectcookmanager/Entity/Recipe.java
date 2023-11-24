@@ -101,7 +101,7 @@ public class Recipe extends Entity {
     }
 
     public String getMainImageLink() {
-        return mainImageLink;
+        return this.mainImageLink;
     }
     public void setMainImageLink(String mainImageLink) {
         this.mainImageLink = mainImageLink;

@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -130,6 +131,8 @@ public class NewReceiptCardController {
     private File selectedFile;
 
     private File selectedFileMain;
+
+    private Recipe parceRecipe;
 
     @FXML
     void initialize() {
@@ -269,6 +272,7 @@ public class NewReceiptCardController {
         stepNodes.add(stepNode);
     }
 
+
     private void removeStep() {
         int numSteps = stepsVBox.getChildren().size();
 
@@ -359,15 +363,18 @@ public class NewReceiptCardController {
         int i_ = 0;
         for (String ingrid : selectedIngredients) {
             ProductPattern productPattern = new DBAllProducts().Read(ingrid);
-            Product prod = new Product(productPattern.name, productPattern.getProtein(), productPattern.getFat(), productPattern.getCarbohydrate(), Integer.parseInt(textFields.get(i_).getText()));
+            Product prod = new Product(productPattern.name, productPattern.getProtein(), productPattern.getFat(), productPattern.getCarbohydrate(), Float.parseFloat(textFields.get(i_).getText()));
             productList.add(prod);
             i_++;
         }
 
-        if (selectedFile == null || selectedFileMain == null) {
-            System.out.println("Файл не выбран.");
-            return;
+        if(choosenImage == null){
+            if (selectedFile == null || selectedFileMain == null) {
+                System.out.println("Файл не выбран.");
+                return;
+            }
         }
+
 
         if (dishNameField.getText().trim().isEmpty() || categoryCondition.getText().trim().isEmpty()
                 || descriptionArea.getText().trim().isEmpty() ||
@@ -376,37 +383,43 @@ public class NewReceiptCardController {
             return;
         }
 
-        for (int i = 0; i < stepNodes.size(); i++) {
-            Node stepNode = stepNodes.get(i);
-            if (stepNode instanceof VBox) {
-                VBox vbox = (VBox) stepNode;
-                ImageView stepImageView = (ImageView) vbox.getChildren().get(0);
-                TextArea stepDescriptionTextArea = (TextArea) vbox.getChildren().get(1);
+        if(selectedFilesList.size() != 0){
+            for (int i = 0; i < stepNodes.size(); i++) {
+                Node stepNode = stepNodes.get(i);
+                if (stepNode instanceof VBox) {
+                    VBox vbox = (VBox) stepNode;
+                    ImageView stepImageView = (ImageView) vbox.getChildren().get(0);
+                    TextArea stepDescriptionTextArea = (TextArea) vbox.getChildren().get(1);
 
-                File stepFile = selectedFilesList.get(i);
+                    File stepFile = selectedFilesList.get(i);
 
-                if (stepFile != null && (!stepImageView.getImage().isError() || !stepDescriptionTextArea.getText().isEmpty())) {
-                    String originalFileName = stepFile.getName();
-                    String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
+                    if (stepFile != null && (!stepImageView.getImage().isError() || !stepDescriptionTextArea.getText().isEmpty())) {
+                        String originalFileName = stepFile.getName();
+                        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf(".") + 1);
 
-                    stepFileName = originalFileName.replace("." + fileExtension, "") + ".png";
+                        stepFileName = originalFileName.replace("." + fileExtension, "") + ".png";
 
-                    copyImageAsync(stepFile, Paths.get("src/main/resources/img/StageRecipe"), stepFileName);
+                        copyImageAsync(stepFile, Paths.get("src/main/resources/img/StageRecipe"), stepFileName);
 
-                    stepsData.add(new StepData(stepDescriptionTextArea.getText(), stepFileName));
+                        stepsData.add(new StepData(stepDescriptionTextArea.getText(), stepFileName));
 
-                    System.out.println("Stage Image Path: " + "img/StageRecipe/" + stepFileName);
+                        System.out.println("Stage Image Path: " + "img/StageRecipe/" + stepFileName);
+                    }
                 }
             }
         }
 
-        CompletableFuture<String> mainImageFuture = createMainImageAsync(selectedFileMain);
 
-        CompletableFuture<Void> stepImageFuture = createStepImagesAsync(selectedFilesList);
+        CompletableFuture<String> mainImageFuture = null;
+        CompletableFuture<Void> stepImageFuture = null;
+        if(selectedFileMain != null){
+            mainImageFuture = createMainImageAsync(selectedFileMain);
 
+            stepImageFuture = createStepImagesAsync(selectedFilesList);
 
-        mainImageFuture.join();
-        stepImageFuture.join();
+            mainImageFuture.join();
+            stepImageFuture.join();
+        }
 
         List<String> StepDescription = new ArrayList<>();
         List<String> StepImage = new ArrayList<>();
@@ -416,17 +429,33 @@ public class NewReceiptCardController {
             StepImage.add(stepData.getStepImagePath());
         }
 
-        Recipe newRecipe = new Recipe(
-                dishNameField.getText(),
-                descriptionArea.getText(),
-                categoryCondition.getText(),
-                time,
-                mainImageFuture.join(),
-                productList,
-                setRating(ratingLabel),
-                StepImage,
-                StepDescription
-        );
+        Recipe newRecipe;
+        if(mainImageFuture != null){
+            newRecipe = new Recipe(
+                    dishNameField.getText(),
+                    descriptionArea.getText(),
+                    categoryCondition.getText(),
+                    time,
+                    mainImageFuture.join(),
+                    productList,
+                    setRating(ratingLabel),
+                    StepImage,
+                    StepDescription
+            );
+        }
+        else{
+            newRecipe = new Recipe(
+                    dishNameField.getText(),
+                    descriptionArea.getText(),
+                    categoryCondition.getText(),
+                    time,
+                    parceRecipe.getMainImageLink(),
+                    productList,
+                    setRating(ratingLabel),
+                    parceRecipe.getImagesStageLinks(),
+                    parceRecipe.getTextStages());
+        }
+
 
         new DBAllRecipes().Write(newRecipe);
 
@@ -436,8 +465,8 @@ public class NewReceiptCardController {
     @FXML
     void AddOfSite(ActionEvent event){
         if (!recipeUrlArea.getText().equals("")) {
-            Recipe thisRecipe = Parser.RecOfParser(recipeUrlArea.getText());
-            SetDataOfParser(thisRecipe);
+            parceRecipe = Parser.RecOfParser(recipeUrlArea.getText());
+            SetDataOfParser(parceRecipe);
             if(Parser.noIngrid.size() != 0){
                 OpenInfoAboutNoIngrid(Parser.noIngrid, Parser.noMass);
             }
@@ -449,20 +478,43 @@ public class NewReceiptCardController {
         categoryCondition.setText(recipe.getCategory());
 
         descriptionArea.setText(recipe.getMainInfo());
-        ratingLabel.setText(getStringRating(recipe.getRating()));
 
-        String selectTime = String.format("%02d:%02d", recipe.getTimeCooking()/60, recipe.getTimeCooking()%60);
-        timeOfCookingMenuBtn.setText(selectTime);
+        selectedRating = getStringRating(recipe.getRating());
+        ratingLabel.setText(selectedRating);
+
+        selectedTime = String.format("%02d:%02d", recipe.getTimeCooking()/60, recipe.getTimeCooking()%60);
+        timeOfCookingMenuBtn.setText(selectedTime);
+        time = recipe.getTimeCooking();
 
         SetIngridAndMassOfParser(recipe);
 
         InputStream imageStream = getClass().getResourceAsStream("/img/MainImage/" + recipe.getMainImageLink());
         choosenImage.setImage(new Image(imageStream));
 
-//        for(int i = 0; i < recipe.getTextStages().size(); i++){
-//            InputStream imageStream_ = getClass().getResourceAsStream("/img/StageImage/" + recipe.getImagesStageLinks().get(i));
-//
-//        }
+        for(int i = 0; i < recipe.getTextStages().size(); i++){
+            addStepOfParser(recipe.getTextStages().get(i), recipe.getImagesStageLinks().get(i));
+        }
+    }
+
+    private void addStepOfParser(String textInfo, String imageLink) {
+        VBox stepNode = new VBox();
+
+        ImageView stepImageView = new ImageView();
+        stepImageView.setFitWidth(250);
+        stepImageView.setFitHeight(200);
+        InputStream imageStream = getClass().getResourceAsStream("/img/StageRecipe/" + imageLink);
+        stepImageView.setImage(new Image(imageStream));
+
+        TextArea stepDescriptionTextArea = new TextArea();
+        stepDescriptionTextArea.setMaxWidth(400);
+        stepDescriptionTextArea.setMaxHeight(Region.USE_COMPUTED_SIZE);
+        stepDescriptionTextArea.setFont(new Font("Arial Black", 14));
+        stepDescriptionTextArea.setWrapText(true);
+        stepDescriptionTextArea.setText(textInfo);
+
+        stepNode.getChildren().addAll(stepImageView, stepDescriptionTextArea);
+        stepsVBox.getChildren().add(stepNode);
+        stepNodes.add(stepNode);
     }
 
     private void SetIngridAndMassOfParser(Recipe recipe) {

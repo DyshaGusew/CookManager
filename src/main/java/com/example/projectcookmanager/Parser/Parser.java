@@ -35,14 +35,19 @@ public class Parser {
             // Извлекаем название блюда
             String title = document.selectFirst("h1").text();
 
-            if(new DBAllRecipes().Read(title) != null){
-                //Если рецепт уже есть в БД
-                return null;
-            }
+
             // Извлекаем категорию блюда
             String category = document.selectFirst("span[itemprop=keywords]").text();
-            String[] categ = category.split("/");
-            category = categ[0].substring(0, categ[0].length()-1);
+            if(category.contains("/")){
+                String[] categ = category.split("/");
+                category = categ[0].substring(0, categ[0].length()-1);
+            }
+            else{
+                String[] categ = category.split("/");
+                category = categ[0];
+            }
+
+
 
             // извлекаем описание блюда
             String info = document.selectFirst("span.detailed_full span").text();
@@ -109,19 +114,6 @@ public class Parser {
             }
 
             Recipe parceOfRecipe = new Recipe(title, info, category, timeCooking, mainImageName, productList, rating, stepPhotos, instructions);
-
-
-//            // Выводим полученные данные на экран
-//            System.out.println("Название: " + title);
-//            System.out.println("Категория: " + category);
-//            System.out.println("Описание: " + info);
-//            System.out.println("Фото: " + mainImageName);
-//            System.out.println("Рейтинг: " + rating);
-//            System.out.println("Время приготовления: " + timeCooking);
-//            System.out.println("Ингредиенты: " + ingredientsNames);
-//            System.out.println("Фотографии этапов приготовления: " + stepPhotos);
-//            System.out.println("Описание этапов приготовления: " + instructions);
-//            System.out.println("Отсутствующие элементы: " + noIngrid);
 
             return parceOfRecipe;
         } catch (IOException e) {
