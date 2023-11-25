@@ -99,45 +99,6 @@ public class DishCardController {
         }
     }
 
-    public void SetData(Recipe recipe) {
-        System.out.println("Путь к изображению: " + recipe.getMainImageLinkNew());
-
-        URL imageURL = getClass().getResource(recipe.getMainImageLinkNew());
-
-        if (imageURL != null) {
-            InputStream imageStream = getClass().getResourceAsStream(recipe.getMainImageLinkNew());
-
-            Image image = new Image(imageStream);
-            dishImage.setImage(image);
-            dishImage.setFitWidth(165);
-            dishImage.setFitHeight(106);
-            dishName.setText(recipe.name);
-            dishTime.setText(recipe.getTimeCookingNew());
-            dishCalories.setText(recipe.getCaloriesNew());
-
-            Image ratingImage = new Image(getClass().getResourceAsStream(recipe.getRatingUrl(recipe.getRating())));;
-            rating.setImage(ratingImage);
-
-            boolean isFavorite = isRecipeFavorite(recipe);
-            boolean isBasket = isRecipeBasket(recipe);
-            if (isFavorite) {
-                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
-            } else {
-                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
-            }
-
-            if (isBasket) {
-                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
-            } else {
-                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
-            }
-
-            thisRecipe = recipe;
-        } else {
-            System.out.println("URL изображения не найден:" + recipe.getMainImageLink());
-        }
-    }
-
     @FXML
     void ShowFullReceipt(ActionEvent event) {
         try {

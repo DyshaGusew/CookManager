@@ -1,5 +1,6 @@
 package com.example.projectcookmanager;
 
+import DishModel.DishCard;
 import com.example.projectcookmanager.DataBases.DBFavoritesRecipes;
 import com.example.projectcookmanager.Entity.Recipe;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static com.example.projectcookmanager.FoodViewController.CreateDishCardList;
 
 public class FavoriteListCardController implements Initializable {
     @FXML
@@ -35,7 +38,15 @@ public class FavoriteListCardController implements Initializable {
                 fxmlLoader.setLocation(getClass().getResource("DishCard.fxml"));
                 Pane dishBox = fxmlLoader.load();
                 DishCardController dishCardController = fxmlLoader.getController();
-                dishCardController.SetData(favoriteRecipe);
+
+                DishCard dishCard = new DishCard();
+                dishCard.setName(favoriteRecipe.name);
+                dishCard.setTime(favoriteRecipe.getTimeCooking());
+                dishCard.setCalories(favoriteRecipe.getCalories());
+                dishCard.setImageUrl(favoriteRecipe.getMainImageLink());
+                dishCard.setRatingUrl(favoriteRecipe.getRating());
+
+                dishCardController.SetData(dishCard, favoriteRecipe);
 
                 if (column == 1) {
                     column = 0;
