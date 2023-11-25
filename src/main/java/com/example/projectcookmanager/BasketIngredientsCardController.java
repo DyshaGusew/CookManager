@@ -1,30 +1,91 @@
 package com.example.projectcookmanager;
 
 import DishModel.BasketCard;
-import com.example.projectcookmanager.DataBases.*;
+import com.example.projectcookmanager.DataBases.DBAllProducts;
+import com.example.projectcookmanager.DataBases.DBBasketRecipes;
+import com.example.projectcookmanager.DataBases.DBRecConnectProd;
 import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class BasketIngredientsCardController implements Initializable {
     @FXML
     private GridPane basketGridContainer;
 
+    @FXML
+    private Button resultIngredients;
+
+    private List<String> allIngredient = new ArrayList<>();
+
+    private List<String> allCalories = new ArrayList<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeBasketIngredients();
+    }
+
+    @FXML
+    void ShowResult(ActionEvent event) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TotalIngredientsCard.fxml"));
+            Parent root = fxmlLoader.load();
+
+            TotalIngredientsCardController totalIngredientsCardController = fxmlLoader.getController();
+
+            Map<String, Integer> ingredientMap = getCombinedIngredients(allIngredient, allCalories);
+            List<String> combinedIngredients = new ArrayList<>(ingredientMap.keySet());
+
+            List<String> combinedCalories = ingredientMap.values().stream()
+                    .map(calories -> calories + " гр")
+                    .collect(Collectors.toList());
+
+            totalIngredientsCardController.SetData(combinedIngredients, combinedCalories);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Map<String, Integer> getCombinedIngredients(List<String> ingredients, List<String> calories) {
+        Map<String, Integer> ingredientMap = new HashMap<>();
+
+        for (int i = 0; i < ingredients.size(); i++) {
+            String ingredient = ingredients.get(i);
+            double calorie = Double.parseDouble(calories.get(i).replace(" гр", ""));
+
+            int calorieInt = (int) calorie;
+
+            if (ingredientMap.containsKey(ingredient)) {
+                int totalCalorie = ingredientMap.get(ingredient) + calorieInt;
+                ingredientMap.put(ingredient, totalCalorie);
+            } else {
+                ingredientMap.put(ingredient, calorieInt);
+            }
+        }
+
+        return ingredientMap;
     }
 
     private void initializeBasketIngredients() {
@@ -47,7 +108,11 @@ public class BasketIngredientsCardController implements Initializable {
                 basketCard.setListOfIngredients(getIngredientsNames(basketRecipe, allIngredients));
                 basketCard.setListOfCalories(getCalories(basketRecipe));
 
+                allIngredient.addAll(basketCard.getListOfIngredients());
+                allCalories.addAll(basketCard.getListOfCalories());
+
                 basketCardController.SetData(basketCard);
+
 
                 if (column == 1) {
                     column = 0;
