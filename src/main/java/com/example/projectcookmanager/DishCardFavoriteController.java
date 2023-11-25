@@ -21,8 +21,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-public class DishCardController {
-    public static FoodViewController foodViewController;
+public class DishCardFavoriteController extends DishCardController{
+    public static FavoriteListCardController favoriteListCardController;
 
     @FXML
     private Pane dishBox;
@@ -61,6 +61,7 @@ public class DishCardController {
 
     private Recipe thisRecipe;
 
+    @Override
     public void SetData(DishCard dish, Recipe recipe) {
         System.out.println("Путь к изображению: " + dish.getImageUrl());
 
@@ -80,13 +81,11 @@ public class DishCardController {
             Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
             rating.setImage(ratingImage);
 
-            boolean isFavorite = isRecipeFavorite(recipe);
+
             boolean isBasket = isRecipeBasket(recipe);
-            if (isFavorite) {
-                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
-            } else {
-                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
-            }
+
+            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
+
 
             if (isBasket) {
                 basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
@@ -101,6 +100,18 @@ public class DishCardController {
         }
     }
 
+    @Override
+    @FXML
+    void AddLikeRecipe(ActionEvent event) {
+        boolean isFavorite = isRecipeFavorite(thisRecipe);
+        if (isFavorite) {
+            new DBFavoritesRecipes().Delete(thisRecipe.id);
+            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
+        }
+        favoriteListCardController.initializeFavoriteDishes();
+    }
+
+    @Override
     @FXML
     void ShowFullReceipt(ActionEvent event) {
         try {
@@ -120,29 +131,7 @@ public class DishCardController {
         }
     }
 
-    @FXML
-    void AddLikeRecipe(ActionEvent event) {
-        boolean isFavorite = isRecipeFavorite(thisRecipe);
-        if (isFavorite) {
-            new DBFavoritesRecipes().Delete(thisRecipe.id);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
-
-        } else {
-            new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
-        }
-    }
-
-    protected boolean isRecipeFavorite(Recipe recipe) {
-        List<Recipe> favoriteRecipes = new DBFavoritesRecipes().ReadAllOnFavorite();
-        for(Recipe favRec : favoriteRecipes){
-            if(favRec.id == recipe.id){
-                return true;
-            }
-        }
-        return false;
-    }
-
+    @Override
     @FXML
     void AddBasketRecipe(ActionEvent event) {
         boolean isBasket = isRecipeBasket(thisRecipe);
@@ -154,15 +143,5 @@ public class DishCardController {
             new DBBasketRecipes().WriteInBasket(thisRecipe);
             basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
         }
-    }
-
-    protected boolean isRecipeBasket(Recipe recipe) {
-        List<Recipe> basketRecipes = new DBBasketRecipes().ReadAllOnBasket();
-        for(Recipe basRec : basketRecipes){
-            if(basRec.id == recipe.id){
-                return true;
-            }
-        }
-        return false;
     }
 }

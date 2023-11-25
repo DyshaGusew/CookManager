@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 import static com.example.projectcookmanager.FoodViewController.CreateDishCardList;
 
 public class FavoriteListCardController implements Initializable {
+
     @FXML
     private GridPane favoriteGridContainer;
 
@@ -26,7 +27,9 @@ public class FavoriteListCardController implements Initializable {
         initializeFavoriteDishes();
     }
 
-    private void initializeFavoriteDishes() {
+    @FXML
+    public void initializeFavoriteDishes() {
+        favoriteGridContainer.getChildren().clear();
         List<Recipe> favoriteRecipes = new DBFavoritesRecipes().ReadAllOnFavorite();
 
         int column = 0;
@@ -34,8 +37,9 @@ public class FavoriteListCardController implements Initializable {
 
         try {
             for (Recipe favoriteRecipe : favoriteRecipes) {
+
                 FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("DishCard.fxml"));
+                fxmlLoader.setLocation(getClass().getResource("DishCardFavorite.fxml"));
                 Pane dishBox = fxmlLoader.load();
                 DishCardController dishCardController = fxmlLoader.getController();
 
