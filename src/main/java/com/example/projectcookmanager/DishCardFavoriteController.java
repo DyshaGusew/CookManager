@@ -138,10 +138,11 @@ public class DishCardFavoriteController extends DishCardController{
         if (isBasket) {
             new DBBasketRecipes().Delete(thisRecipe.id);
             basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
-
+            FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
         } else {
             new DBBasketRecipes().WriteInBasket(thisRecipe);
             basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
+            FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
         }
     }
 }
