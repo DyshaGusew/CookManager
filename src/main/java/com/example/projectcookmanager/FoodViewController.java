@@ -450,6 +450,7 @@ public class FoodViewController implements Initializable {
             Parent root = loader.load();
 
             NewReceiptCardController controller = loader.getController();
+            NewReceiptCardController.newReceiptCardController = controller;
             controller.setFoodViewController(this);
 
             Stage stage = new Stage();

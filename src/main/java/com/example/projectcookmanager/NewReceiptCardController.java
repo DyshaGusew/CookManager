@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class NewReceiptCardController {
+    static public NewReceiptCardController newReceiptCardController;
     private FoodViewController foodViewController;
 
     public void setFoodViewController(FoodViewController foodViewController) {
@@ -188,7 +189,7 @@ public class NewReceiptCardController {
         });
     }
 
-    private void handleIngredientsMenu() {
+    public void handleIngredientsMenu() {
         dishIngredientsMenu.getItems().clear();
 
         DBAllProducts dbAllProducts = new DBAllProducts();
@@ -470,6 +471,20 @@ public class NewReceiptCardController {
         }
     }
 
+    @FXML
+    void AddNewProduct(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewProductMenu.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void SetDataOfParser(Recipe recipe){
         dishNameField.setText(recipe.name);
         categoryCondition.setText(recipe.getCategory());
@@ -684,4 +699,6 @@ public class NewReceiptCardController {
             }
         });
     }
+
+
 }

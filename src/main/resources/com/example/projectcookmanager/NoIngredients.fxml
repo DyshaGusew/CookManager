@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
@@ -19,11 +20,23 @@
                   <ListView fx:id="ListNoMass" layoutX="10.0" layoutY="10.0" prefHeight="293.0" prefWidth="114.0" />
                </children>
             </HBox>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="48.0" prefWidth="300.0" style="-fx-background-color: #FAEDCDFF;" text="Попробуйте вручную добавить похожие" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
-               <font>
-                  <Font name="Arial Black" size="15.0" />
-               </font>
-            </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #FAEDCDFF;" text="Попробуйте вручную добавить похожие или воспользуйтесь авто добавлением" textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
+                     <font>
+                        <Font name="Arial Black" size="13.0" />
+                     </font>
+                  </Label>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddNoIngrid" style="-fx-background-color: #FAEDCDFF; -fx-border-color: #6f6f6f6f;" text="Auto" textAlignment="CENTER">
+                     <font>
+                        <Font name="Arial Black" size="21.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" top="15.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
          </children>
       </VBox>
    </children>
