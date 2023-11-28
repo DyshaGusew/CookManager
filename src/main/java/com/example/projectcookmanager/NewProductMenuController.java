@@ -80,9 +80,10 @@ public class NewProductMenuController {
             TextField car = (TextField) hbox.getChildren().get(3);
 
             ProductPattern product = new ProductPattern(name.getText(), Float.parseFloat(prot.getText()), Float.parseFloat(fat.getText()), Float.parseFloat(car.getText()));
+            gg.add(product);
             new DBAllProducts().Write(product);
         }
-        NewReceiptCardController.newReceiptCardController.handleIngredientsMenu();
+        NewReceiptCardController.newReceiptCardController.addIngredientsMenu(gg);
         Stage stage = (Stage) newIngridListView.getScene().getWindow();
         stage.close();
     }

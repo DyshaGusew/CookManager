@@ -1,6 +1,7 @@
 package com.example.projectcookmanager;
 
 import com.example.projectcookmanager.DataBases.DBAllProducts;
+import com.example.projectcookmanager.DataBases.DBRecConnectProd;
 import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import javafx.collections.FXCollections;
@@ -10,6 +11,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -67,7 +69,9 @@ public class AllProductMenuController implements Initializable {
             @Override
             public void handle(ActionEvent event) {
                 HBox hBox = (HBox) rem.getParent();
+                new DBRecConnectProd().DeleteProd(new DBAllProducts().Read(hBox.getChildren().get(0).getId()).id);
                 new DBAllProducts().Delete(hBox.getChildren().get(0).getId());
+
                 IngridLines.remove(Integer.parseInt(rem.getId()));
 
                 int i =0;
@@ -96,9 +100,12 @@ public class AllProductMenuController implements Initializable {
             TextField fat = (TextField) hbox.getChildren().get(2);
             TextField car = (TextField) hbox.getChildren().get(3);
 
+
             ProductPattern productNew = new ProductPattern(name.getText(), Float.parseFloat(prot.getText()), Float.parseFloat(fat.getText()), Float.parseFloat(car.getText()));
             new DBAllProducts().Update(name.getId(), productNew);
+            gg.add(productNew);
         }
+
         NewReceiptCardController.newReceiptCardController.handleIngredientsMenu();
         Stage stage = (Stage) ingridListView.getScene().getWindow();
         stage.close();

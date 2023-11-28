@@ -190,12 +190,24 @@ public class NewReceiptCardController {
     }
 
     public void handleIngredientsMenu() {
+        listIngredients.getItems().clear();
+        listMassIngredients.getItems().clear();
         dishIngredientsMenu.getItems().clear();
 
         DBAllProducts dbAllProducts = new DBAllProducts();
         List<ProductPattern> allProducts = dbAllProducts.ReadAll();
 
         for (ProductPattern productPattern : allProducts) {
+            CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
+
+            checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
+
+            dishIngredientsMenu.getItems().add(checkmenuItem);
+        }
+    }
+
+    public void addIngredientsMenu(List<ProductPattern> prods) {
+        for (ProductPattern productPattern : prods) {
             CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
 
             checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
