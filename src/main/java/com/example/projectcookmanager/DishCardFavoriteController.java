@@ -25,9 +25,6 @@ public class DishCardFavoriteController extends DishCardController{
     public static FavoriteListCardController favoriteListCardController;
 
     @FXML
-    private Pane dishBox;
-
-    @FXML
     private Label dishName;
 
     @FXML
@@ -40,19 +37,10 @@ public class DishCardFavoriteController extends DishCardController{
     private ImageView dishImage;
 
     @FXML
-    private Button nextBtn;
-
-    @FXML
-    private Button likeBtn;
-
-    @FXML
     private ImageView heartImage;
 
     @FXML
     private ImageView basketImage;
-
-    @FXML
-    private Button basketBtn;
 
     @FXML
     private ImageView rating;

@@ -5,18 +5,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.NewProductMenuController">
+<AnchorPane prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.AllProductMenuController">
    <children>
       <VBox prefHeight="400.0" prefWidth="300.0">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="346.0" style="-fx-background-color: #FAEDCDFF;" text="Создание новых ингредиентов" textAlignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="54.0" prefWidth="346.0" style="-fx-background-color: #FAEDCDFF;" text="Список ингридиентов" textAlignment="CENTER">
                <font>
-                  <Font name="Arial Black" size="16.0" />
+                  <Font name="Arial Black" size="23.0" />
                </font>
             </Label>
-            <HBox prefHeight="25.0" prefWidth="243.0">
+            <HBox prefHeight="25.0" prefWidth="300.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="195.0" style="-fx-border-color: #626262A0;" text="Наименование">
+                  <Label alignment="CENTER" prefHeight="25.0" prefWidth="195.0" style="-fx-border-color: #626262A0;" text="Наименование">
                      <font>
                         <Font name="Arial Black" size="13.0" />
                      </font></Label>
@@ -34,22 +34,18 @@
                      </font></Label>
                </children>
             </HBox>
-            <ListView fx:id="newIngridListView" prefHeight="278.0" prefWidth="300.0" />
-            <HBox prefWidth="300.0">
+            <ListView fx:id="ingridListView" prefHeight="278.0" prefWidth="300.0" />
+            <HBox prefHeight="58.0" prefWidth="300.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#AddIngrid" prefHeight="27.0" prefWidth="79.0" text="Add">
-                     <font>
-                        <Font name="Arial Black" size="18.0" />
-                     </font></Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddAllIngrid" prefHeight="40.0" prefWidth="110.0" text=" Добавить в БД" textAlignment="RIGHT">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddAllIngrid" prefHeight="40.0" prefWidth="130.0" text="Сохранить" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                      <HBox.margin>
-                        <Insets left="110.0" />
+                        <Insets left="85.0" top="7.0" />
                      </HBox.margin>
                      <font>
-                        <Font name="Arial Black" size="11.0" />
+                        <Font name="Arial Black" size="17.0" />
                      </font></Button>
                </children>
             </HBox>

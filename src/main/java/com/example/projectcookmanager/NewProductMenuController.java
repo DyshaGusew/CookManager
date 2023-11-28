@@ -70,16 +70,6 @@ public class NewProductMenuController {
         newIngridListView.setItems(newIngridLines);
     }
 
-
-
-    @FXML
-    void ReturnIngrid(ActionEvent event){
-        if(newIngridLines.size() != 0){
-            newIngridLines.remove(newIngridLines.size()-1);
-            newIngridListView.setItems(newIngridLines);
-        }
-    }
-
     @FXML
     void AddAllIngrid(ActionEvent event){
         List<ProductPattern> gg = new ArrayList<>();
