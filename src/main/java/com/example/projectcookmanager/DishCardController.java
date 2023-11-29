@@ -1,6 +1,6 @@
 package com.example.projectcookmanager;
 
-import com.example.projectcookmanager.DishModel.DishCard;
+import DishModel.DishCard;
 import com.example.projectcookmanager.DataBases.DBBasketRecipes;
 import com.example.projectcookmanager.DataBases.DBFavoritesRecipes;
 import com.example.projectcookmanager.Entity.Recipe;

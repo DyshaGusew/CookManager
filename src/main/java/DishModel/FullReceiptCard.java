@@ -1,4 +1,4 @@
-package com.example.projectcookmanager.DishModel;
+package DishModel;
 
 import javafx.scene.control.ListView;
 

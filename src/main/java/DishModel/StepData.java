@@ -1,4 +1,4 @@
-package com.example.projectcookmanager.DishModel;
+package DishModel;
 
 public class StepData {
     private String stepDescription;

@@ -1,6 +1,6 @@
 package com.example.projectcookmanager;
 
-import com.example.projectcookmanager.DishModel.DishCard;
+import DishModel.DishCard;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.DataBases.DBRecConnectProd;
 import com.example.projectcookmanager.Entity.Product;

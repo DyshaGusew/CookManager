@@ -1,6 +1,6 @@
 package com.example.projectcookmanager;
 
-import com.example.projectcookmanager.DishModel.BasketCard;
+import DishModel.BasketCard;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;

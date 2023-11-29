@@ -1,9 +1,8 @@
-package com.example.projectcookmanager.DishModel;
+package DishModel;
 
 import java.util.List;
 
-public class BasketCard {
-    private  String dishName;
+public class TotalIngredientsCard {
     private List<String> listOfIngredients;
 
     private List<String> listOfCalories;
@@ -14,14 +13,6 @@ public class BasketCard {
 
     public void setListOfCalories(List<String> listOfCalories) {
         this.listOfCalories = listOfCalories;
-    }
-
-    public String getDishName() {
-        return dishName;
-    }
-
-    public void setDishName(String dishName) {
-        this.dishName = dishName;
     }
 
     public List<String> getListOfIngredients() {
