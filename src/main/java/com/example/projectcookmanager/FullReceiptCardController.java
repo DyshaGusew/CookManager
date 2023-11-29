@@ -85,9 +85,20 @@ public class FullReceiptCardController {
 
     private DishCard dishCard;
 
+    public  static FullReceiptCardController fullReceiptCardController;
+
     private DBAllRecipes dbAllRecipes = new DBAllRecipes();
 
-    public void setData(DishCard dish) throws IOException {
+    public void SetData(DishCard dish) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("NewReceiptCard.fxml"));
+        loader.setControllerFactory(c -> new NewReceiptCardController());
+        Parent root = loader.load();
+
+        NewReceiptCardController controller = loader.getController();
+        NewReceiptCardController.newReceiptCardController = controller;
+
+
+
         Recipe recipe = dbAllRecipes.Read(dish.getName());
         dishName.setText(dish.getName());
         choosenImage.setImage(new Image((getClass().getResourceAsStream(dish.getImageUrl()))));
@@ -188,11 +199,13 @@ public class FullReceiptCardController {
         if (selectedRecipe != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("RewriteReceiptCard.fxml"));
+                loader.setControllerFactory(c -> new NewReceiptCardController());
                 Parent root = loader.load();
-                NewReceiptCardController controller = loader.getController();
-                controller.setFullReceiptCardController(this);
 
-                controller.InitData(dishCard);
+                NewReceiptCardController controller = loader.getController();
+                NewReceiptCardController.newReceiptCardController = controller;
+
+                NewReceiptCardController.newReceiptCardController.InitData(dishCard);
 
                 Stage stage = new Stage();
                 stage.setTitle("Ингредиенты для блюд");

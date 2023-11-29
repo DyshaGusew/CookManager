@@ -108,8 +108,9 @@ public class DishCardController {
             Parent root = loader.load();
 
             FullReceiptCardController controller = loader.getController();
+            FullReceiptCardController.fullReceiptCardController = controller;
 
-            controller.setData(dishCard);
+            controller.SetData(dishCard);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));

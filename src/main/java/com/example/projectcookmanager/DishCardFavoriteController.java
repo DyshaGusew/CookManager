@@ -9,17 +9,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.List;
 
 public class DishCardFavoriteController extends DishCardController{
     public static FavoriteListCardController favoriteListCardController;
@@ -107,8 +104,8 @@ public class DishCardFavoriteController extends DishCardController{
             Parent root = loader.load();
 
             FullReceiptCardController controller = loader.getController();
-
-            controller.setData(dishCard);
+            FullReceiptCardController.fullReceiptCardController = controller;
+            controller.SetData(dishCard);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
