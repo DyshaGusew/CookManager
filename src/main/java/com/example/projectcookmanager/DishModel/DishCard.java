@@ -1,6 +1,4 @@
-package DishModel;
-
-import javafx.scene.control.Button;
+package com.example.projectcookmanager.DishModel;
 
 public class DishCard {
     private String name;

@@ -1,4 +1,4 @@
-package DishModel;
+package com.example.projectcookmanager.DishModel;
 
 import java.util.ArrayList;
 import java.util.List;

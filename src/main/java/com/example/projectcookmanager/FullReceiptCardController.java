@@ -1,6 +1,6 @@
 package com.example.projectcookmanager;
 
-import DishModel.DishCard;
+import com.example.projectcookmanager.DishModel.DishCard;
 import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.DataBases.DBRecConnectProd;
 import com.example.projectcookmanager.Entity.Product;
@@ -9,7 +9,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -20,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -75,6 +79,11 @@ public class FullReceiptCardController {
 
     @FXML
     private Button deleteRecipe;
+
+    @FXML
+    private Button rewriteBtn;
+
+    private DishCard dishCard;
 
     private DBAllRecipes dbAllRecipes = new DBAllRecipes();
 
@@ -158,6 +167,7 @@ public class FullReceiptCardController {
         }
         listViewOfIngredients.setItems(ingredientNames);
         listViewOfMass.setItems(ingredientMass);
+        dishCard = dish;
     }
 
     @FXML
@@ -168,5 +178,34 @@ public class FullReceiptCardController {
 
         Stage stage = (Stage) deleteRecipe.getScene().getWindow();
         stage.close();
+    }
+
+    @FXML
+    void RewriteReceipt(ActionEvent event) {
+        Recipe selectedRecipe = dbAllRecipes.Read(dishName.getText());
+
+        if (selectedRecipe != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("RewriteReceiptCard.fxml"));
+                Parent root = loader.load();
+                NewReceiptCardController controller = loader.getController();
+                controller.setFullReceiptCardController(this);
+
+                controller.InitData(dishCard);
+
+                Stage stage = new Stage();
+                stage.setTitle("Ингредиенты для блюд");
+                stage.setScene(new Scene(root));
+                stage.setResizable(false);
+                stage.initModality(Modality.APPLICATION_MODAL);
+
+                stage.showAndWait();
+                stage.close();
+            } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        } else {
+        }
     }
 }
