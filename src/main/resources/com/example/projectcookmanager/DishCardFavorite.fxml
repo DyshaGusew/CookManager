@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="dishBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="440.0" style="-fx-background-radius: 15;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.DishCardFavoriteController">
+   <children>
+      <ImageView fx:id="dishImage" fitHeight="106.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/MainImage/yaichnica_obichnaya-384161.jpg" />
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER" layoutX="160.0" layoutY="1.0" prefHeight="39.0" prefWidth="280.0">
+         <children>
+            <Label fx:id="dishName" alignment="CENTER" contentDisplay="CENTER" prefHeight="39.0" prefWidth="423.0" text="Яичница обычная" textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Arial Black" size="18.0" />
+               </font>
+            </Label>
+         </children></VBox>
+      <ImageView fx:id="rating" fitHeight="128.0" fitWidth="160.0" layoutX="16.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/Other/4stars.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="nextBtn" alignment="CENTER" contentDisplay="TOP" layoutX="357.0" layoutY="98.0" mnemonicParsing="false" onAction="#ShowFullReceipt" prefHeight="31.0" prefWidth="65.0" stylesheets="@style.css" text="Далее">
+         <styleClass>
+            <String fx:value="NextBtn" />
+            <String fx:value="mouse-movedNextBtn" />
+         </styleClass>
+      </Button>
+      <HBox layoutX="220.0" layoutY="42.0" />
+      <ImageView fitHeight="30.0" fitWidth="33.0" layoutX="172.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/icon-time.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="dishTime" layoutX="205.0" layoutY="40.0" text="30 мин">
+         <font>
+            <Font name="Arial Black" size="17.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="31.0" fitWidth="30.0" layoutX="315.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../img/icon-callories.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="dishCalories" layoutX="346.0" layoutY="40.0" text="457 Ккал">
+         <font>
+            <Font name="Arial Black" size="17.0" />
+         </font>
+      </Label>
+      <Button fx:id="likeBtn" layoutX="182.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddLikeRecipe" prefHeight="48.0" prefWidth="62.0">
+         <graphic>
+            <ImageView fx:id="heartImage" fitHeight="40.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/icons8-heart-black-50.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <styleClass>
+            <String fx:value="NextBtn" />
+            <String fx:value="mouse-movedNextBtn" />
+         </styleClass>
+      </Button>
+      <Button fx:id="basketBtn" layoutX="258.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddBasketRecipe" prefHeight="48.0" prefWidth="62.0">
+         <graphic>
+            <ImageView fx:id="basketImage" fitHeight="42.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../img/icons8-add-to-basket-shop-96.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <styleClass>
+            <String fx:value="NextBtn" />
+            <String fx:value="mouse-movedNextBtn" />
+         </styleClass>
+      </Button>
+   </children>
+   <styleClass>
+      <String fx:value="Shadow" />
+      <String fx:value="dishCard" />
+   </styleClass>
+</Pane>

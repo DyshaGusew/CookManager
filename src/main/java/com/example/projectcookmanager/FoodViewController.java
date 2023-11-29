@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class FoodViewController implements Initializable {
+    public static FoodViewController foodViewController;
     @FXML
     private Button allDishBtn;
 
@@ -94,12 +95,14 @@ public class FoodViewController implements Initializable {
     //Все, что появится в начале
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         InitializeCards();
 
         handleIngredientsSearchMenu();
     }
 
     public void InitializeCards() {
+
         //Заполняю комбо бокс
         ObservableList<String> categories = FXCollections.observableArrayList
                 ("Новизна", "Время приготовления", "Рейтинг", "Каллорийность");
@@ -116,6 +119,7 @@ public class FoodViewController implements Initializable {
         try {
             for (DishCard dish : recentlyAdded) {
                 FXMLLoader fxmlLoader = new FXMLLoader();
+                FoodViewController controller = fxmlLoader.getController();
                 fxmlLoader.setLocation(getClass().getResource("DishCard.fxml"));
                 Pane dishBox = fxmlLoader.load();
                 DishCardController dishCardController = fxmlLoader.getController();
@@ -172,6 +176,7 @@ public class FoodViewController implements Initializable {
         List<DishCard> dishCardList = new ArrayList<>();
 
         for(Recipe rec : recipes){
+
             DishCard dishCard = new DishCard();
             dishCard.setName(rec.name);
             dishCard.setTime(rec.getTimeCooking());
@@ -297,6 +302,7 @@ public class FoodViewController implements Initializable {
             Parent root = loader.load();
 
             FavoriteListCardController controller = loader.getController();
+            DishCardFavoriteController.favoriteListCardController = controller;
 
             Stage stage = new Stage();
             stage.setTitle("Любимые блюда");
@@ -444,6 +450,7 @@ public class FoodViewController implements Initializable {
             Parent root = loader.load();
 
             NewReceiptCardController controller = loader.getController();
+            NewReceiptCardController.newReceiptCardController = controller;
             controller.setFoodViewController(this);
 
             Stage stage = new Stage();

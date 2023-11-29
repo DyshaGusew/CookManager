@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class NewReceiptCardController {
+    static public NewReceiptCardController newReceiptCardController;
     private FoodViewController foodViewController;
 
     public void setFoodViewController(FoodViewController foodViewController) {
@@ -205,13 +206,25 @@ public class NewReceiptCardController {
         });
     }
 
-    private void handleIngredientsMenu() {
+    public void handleIngredientsMenu() {
+        listIngredients.getItems().clear();
+        listMassIngredients.getItems().clear();
         dishIngredientsMenu.getItems().clear();
 
         DBAllProducts dbAllProducts = new DBAllProducts();
         List<ProductPattern> allProducts = dbAllProducts.ReadAll();
 
         for (ProductPattern productPattern : allProducts) {
+            CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
+
+            checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
+
+            dishIngredientsMenu.getItems().add(checkmenuItem);
+        }
+    }
+
+    public void addIngredientsMenu(List<ProductPattern> prods) {
+        for (ProductPattern productPattern : prods) {
             CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
 
             checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
@@ -505,6 +518,36 @@ public class NewReceiptCardController {
         }
     }
 
+    @FXML
+    void AddNewProduct(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("NewProductMenu.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    void ShowAllProducts(ActionEvent event){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AllProductsList.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void SetDataOfParser(Recipe recipe){
         dishNameField.setText(recipe.name);
         categoryCondition.setText(recipe.getCategory());
@@ -791,4 +834,6 @@ public class NewReceiptCardController {
             }
         });
     }
+
+
 }

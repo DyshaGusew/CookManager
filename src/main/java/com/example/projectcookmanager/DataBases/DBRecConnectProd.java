@@ -93,6 +93,19 @@ public class DBRecConnectProd {
         }
     }
 
+    public void DeleteProd(int idProduct) {
+        String sql = "DELETE FROM " + nameTableControl + " WHERE idProduct = ?";
+        try {
+            Connection conn = this.connect();
+            PreparedStatement prepStat = conn.prepareStatement(sql);
+            prepStat.setObject(1, idProduct);
+            // Выполняем запрос
+            prepStat.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void UpdateProdRec(Recipe newRec, List<Product> product) {
         DeleteProdRec(new DBAllRecipes().Read(newRec.name).id);
         WriteProductRecipe(product, newRec.name);
