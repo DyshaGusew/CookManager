@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBFavoritesRecipes{
+public class DBFavoritesRecipes extends DBAllRecipes{
     private Connection conn = null;
     static private String nameTable = "FavoritesRecipes";
     //static public String nameTableControl = "ProductsRecipes";

@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DBBasketRecipes{
+public class DBBasketRecipes extends DBAllRecipes{
     private Connection conn = null;
     static private String nameTable = "BasketRecipes";
     //static public String nameTableControl = "ProductsRecipes";

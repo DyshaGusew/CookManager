@@ -148,18 +148,15 @@ public class DBAllProducts extends DataBase {
         try {
             Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            // set the corresponding param
             pstmt.setString(1, newProductPattern.name);
             pstmt.setFloat(2, newProductPattern.getProtein());
             pstmt.setFloat(3, newProductPattern.getFat());
             pstmt.setFloat(4, newProductPattern.getCarbohydrate());
             pstmt.setInt(5, Read(name).id);
-            // update
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        //new DBAllRecipes().Update(name, new DBAllRecipes().Read(name));
     }
 
     public void Update(int id, ProductPattern newProductPattern) {
@@ -172,18 +169,16 @@ public class DBAllProducts extends DataBase {
         try {
             Connection conn = this.connect();
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            // set the corresponding param
             pstmt.setString(1, newProductPattern.name);
             pstmt.setFloat(2, newProductPattern.getProtein());
             pstmt.setFloat(3, newProductPattern.getFat());
             pstmt.setFloat(4, newProductPattern.getCarbohydrate());
             pstmt.setInt(5, id);
-            // update
+
             pstmt.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        //new DBAllRecipes().Update(id, new DBAllRecipes().Read(id));
     }
 
     public List<ProductPattern> ReadAll() {

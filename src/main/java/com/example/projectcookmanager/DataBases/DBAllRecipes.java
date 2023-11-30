@@ -183,6 +183,43 @@ public class DBAllRecipes extends DataBase {
         return recipes;
     }
 
+    public List<Recipe> FilterOfParam(String param, String valueParam, String operator){
+        String sql = "SELECT * FROM " + nameTable + " WHERE " + param + operator + "?";
+        List<Recipe> recipes = new ArrayList<Recipe>();
+
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            Connection conn = this.connect();
+            statement = conn.prepareStatement(sql);
+            statement.setString(1, valueParam);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                recipes.add(new Recipe(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("mainInfo"),
+                        resultSet.getString("category"),
+                        resultSet.getInt("timeCooking"),
+                        resultSet.getString("mainImageLink"),
+                        new DBRecConnectProd().ReadAllOfRecipe(resultSet.getInt("id")),
+                        resultSet.getFloat("rating"),
+                        new DBRecipeStages().ReadAllImageStagesOfRecipe(resultSet.getInt("id")),
+                        new DBRecipeStages().ReadAllTextStagesOfRecipe(resultSet.getInt("id"))));
+            }
+            if (resultSet != null) resultSet.close();
+            if (statement != null) statement.close();
+            if (conn != null) conn.close();
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+            recipes = null;
+        }
+        return recipes;
+    }
+
     public List<Recipe> ReadOfCategory(String valueCategory){
         return ReadOfParam("category", valueCategory);
     }

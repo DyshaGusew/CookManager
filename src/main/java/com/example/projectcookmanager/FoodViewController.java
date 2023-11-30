@@ -31,57 +31,28 @@ import java.util.ResourceBundle;
 
 public class FoodViewController implements Initializable {
     public static FoodViewController foodViewController;
-    @FXML
-    private Button allDishBtn;
-
-    @FXML
-    private Button bakeryBtn;
-
-    @FXML
-    private Button dessertBtn;
-
-    @FXML
-    private Button drinksBtn;
-
-    @FXML
-    private Button hotDishBtn;
-
-    @FXML
-    private Button saladeBtn;
-
-    @FXML
-    private Button snackBtn;
-
-    @FXML
-    private Button soupBtn;
 
     @FXML
     private GridPane dishContainer;
 
     @FXML
-    private Label NameOfDish;
-
-    @FXML
-    private VBox FoodReceiptVbox;
-
-    @FXML
     private TextField SearchZoneByName;
 
     @FXML
-
     private ComboBox<String> ShortBut;
 
     @FXML
     private MenuButton searchByIngredient;
 
     @FXML
-    private Button CreateNewReceiptBtn;
-
-    @FXML
     private Button ReturnArrayBut;
 
     @FXML
-    private Button favoriteStorage;
+    private ComboBox<String> filterAspectBut;
+    @FXML
+    private ComboBox<String> filterOperationBut;
+    @FXML
+    private TextField filterValue;
 
     private List<String> selectedIngredients = new ArrayList<>();
 
@@ -103,10 +74,20 @@ public class FoodViewController implements Initializable {
 
     public void InitializeCards() {
 
-        //Заполняю комбо бокс
+        //Заполняю комбо боксы
         ObservableList<String> categories = FXCollections.observableArrayList
                 ("Новизна", "Время приготовления", "Рейтинг", "Каллорийность");
         ShortBut.setItems(categories);
+
+        ObservableList<String> aspects = FXCollections.observableArrayList
+                ("Ккал", "Время", "Рейтинг");
+        filterAspectBut.setItems(aspects);
+        filterAspectBut.setValue("Ккал");
+
+        ObservableList<String> operations = FXCollections.observableArrayList
+                ("=", "<", ">");
+        filterOperationBut.setItems(operations);
+        filterOperationBut.setValue("=");
 
         //Делаем в перемешанном порядке
         thisRecipes = new DBAllRecipes().ReadAll();
@@ -261,6 +242,51 @@ public class FoodViewController implements Initializable {
         updateScrollPane(recentlyAdded);
     }
 
+
+    @FXML
+    void FilterOfParams(ActionEvent event){
+        List<Recipe> newList = new ArrayList<>();
+        boolean g1 = filterAspectBut.getValue() == null;
+        boolean g2 = filterOperationBut.getValue() == null;
+        boolean g3 = filterValue.getText().equals("");
+        if(g1 || g2 || g3){
+            return;
+        }
+
+        switch (filterAspectBut.getValue()){
+            case "Ккал":
+                newList = new DBAllRecipes().FilterOfParam("calories", filterValue.getText(), filterOperationBut.getValue());
+                break;
+            case "Рейтинг":
+                newList = new DBAllRecipes().FilterOfParam("rating", filterValue.getText(), filterOperationBut.getValue());
+                break;
+            case "Время":
+                newList = new DBAllRecipes().FilterOfParam("timeCooking", filterValue.getText(), filterOperationBut.getValue());
+                break;
+            default:
+                newList = new DBAllRecipes().ReadOfSort("id");
+        }
+
+        thisRecipes = new ArrayList<>();
+
+        //Если категория не содержит всех категорий, то
+        if(!thisCategory.equals("all")){
+            for(Recipe elem: newList){
+
+                if(elem.getCategory().equals(thisCategory) && elem.name.contains(SearchZoneByName.getText())){
+                    thisRecipes.add(elem);
+                }
+            }
+        }
+        else {
+            thisRecipes = newList;
+        }
+        Collections.reverse(thisRecipes);
+
+        SearchZoneByName.setText("");
+        recentlyAdded = new ArrayList<>(CreateDishCardList(thisRecipes));
+        updateScrollPane(recentlyAdded);
+    }
     private void handleIngredientSelection(CheckMenuItem selectedMenuItem) {
         System.out.println("Selected ingredient: " + selectedMenuItem.getText());
 
