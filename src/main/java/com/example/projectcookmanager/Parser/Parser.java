@@ -1,6 +1,5 @@
 package com.example.projectcookmanager.Parser;
 import com.example.projectcookmanager.DataBases.DBAllProducts;
-import com.example.projectcookmanager.DataBases.DBAllRecipes;
 import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import com.example.projectcookmanager.Entity.Recipe;
@@ -15,11 +14,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 public class Parser {
@@ -29,50 +26,41 @@ public class Parser {
     public static List<Float> noMass = new ArrayList<>();
     public static Recipe RecOfParser(String recipeUrl){
         try {
-            // Получаем HTML-страницу рецепта
             Document document = Jsoup.connect(recipeUrl).get();
-
-            // Извлекаем название блюда
             String title = document.selectFirst("h1").text();
 
-
-            // Извлекаем категорию блюда
             String category = document.selectFirst("span[itemprop=keywords]").text();
             if(category.contains("/")){
-                String[] categ = category.split("/");
-                category = categ[0].substring(0, categ[0].length()-1);
+                String[] arrCategory = category.split("/");
+                category = arrCategory[0].substring(0, arrCategory[0].length()-1);
             }
             else{
-                String[] categ = category.split("/");
-                category = categ[0];
+                String[] arrCategory = category.split("/");
+                category = arrCategory[0];
             }
 
 
-
-            // извлекаем описание блюда
             String info = document.selectFirst("span.detailed_full span").text();
 
-            // Извлекаем ссылку на фото блюда
             String mainImageUrl = document.selectFirst("div.bigImgBox img").attr("src");
-            downloadImage(mainImageUrl, pathMainImage);
+            DownloadImage(mainImageUrl, pathMainImage);
             String[] elemUrl = mainImageUrl.split("/");
             String mainImageName = (elemUrl[elemUrl.length-1]);
 
-            // Извлекаем время приготовления блюда
+
             String cookingTime = document.selectFirst("span.duration").text();
             String[] time = cookingTime.split(" ");
-            int hours =Integer.parseInt(time[0]);
+
+            int hours = Integer.parseInt(time[0]);
             int timeCooking;
             if(time.length == 4){
                 int min = Integer.parseInt(time[2]);
                 timeCooking = min + hours*60;
             }
-
             else {
                 int minutes = Integer.parseInt(time[0]);
                 timeCooking = minutes;
             }
-
 
             // Извлекаем рейтинг блюда
             float rating = Float.parseFloat(document.selectFirst("span[itemprop=ratingValue]").text());
@@ -99,7 +87,7 @@ public class Parser {
             List<String> stepPhotos = new ArrayList<>();
             for (Element stepPhotoElement : stepPhotoElements) {
                 String stepPhotoUrl = stepPhotoElement.attr("src");
-                downloadImage(stepPhotoUrl, pathStageImage);
+                DownloadImage(stepPhotoUrl, pathStageImage);
 
                 elemUrl = stepPhotoUrl.split("/");
                 stepPhotos.add(elemUrl[elemUrl.length-1]);
@@ -113,7 +101,17 @@ public class Parser {
                 instructions.add(instruction);
             }
 
-            Recipe parceOfRecipe = new Recipe(title, info, category, timeCooking, mainImageName, productList, rating, stepPhotos, instructions);
+            Recipe parceOfRecipe = new Recipe(
+                    title,
+                    info,
+                    category,
+                    timeCooking,
+                    mainImageName,
+                    productList,
+                    rating,
+                    stepPhotos,
+                    instructions
+            );
 
             return parceOfRecipe;
         } catch (IOException e) {
@@ -225,7 +223,7 @@ public class Parser {
         return productList;
     }
 
-    private static void downloadImage(String imageUrl, String destPath) throws IOException{
+    private static void DownloadImage(String imageUrl, String destPath) throws IOException{
         URL url = new URL(imageUrl);
         URLConnection conn = url.openConnection();
         try(InputStream in = conn.getInputStream()){

@@ -215,11 +215,10 @@ public class FullReceiptCardController {
 
                 stage.showAndWait();
                 stage.close();
-            } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        } else {
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

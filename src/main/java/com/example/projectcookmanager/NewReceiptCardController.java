@@ -529,8 +529,6 @@ public class NewReceiptCardController {
         }
     }
 
-
-
     //Установка данных в зависимости от рецепта
     private void setData(Recipe recipe){
         dishNameField.setText(recipe.name);
