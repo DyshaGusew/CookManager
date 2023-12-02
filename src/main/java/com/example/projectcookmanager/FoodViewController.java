@@ -429,7 +429,7 @@ public class FoodViewController implements Initializable {
 
             NewReceiptCardController controller = loader.getController();
             NewReceiptCardController.newReceiptCardController = controller;
-            controller.SetFoodViewController(this);
+            controller.setFoodViewController(this);
 
             Stage stage = new Stage();
             stage.setTitle("Создание рецепта");

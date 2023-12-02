@@ -83,7 +83,7 @@ public class NewProductMenuController {
             patternList.add(product);
             new DBAllProducts().Write(product);
         }
-        NewReceiptCardController.newReceiptCardController.AddIngredientsMenu(patternList);
+        NewReceiptCardController.newReceiptCardController.addIngredientsMenu(patternList);
         Stage stage = (Stage) newIngridListView.getScene().getWindow();
         stage.close();
     }

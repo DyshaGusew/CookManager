@@ -499,8 +499,6 @@ public class NewReceiptCardController {
                     parceRecipe.getTextStages());
         }
 
-
-
         if(new DBAllRecipes().Read(newRecipe.name) != null){
             new DBAllRecipes().Delete(newRecipe.name);
         }
@@ -512,10 +510,9 @@ public class NewReceiptCardController {
         dish.setTime(newRecipe.getTimeCooking());
         dish.setImageUrl(newRecipe.getMainImageLink());
         dish.setRatingUrl(newRecipe.getRating());
-        FullReceiptCardController.fullReceiptCardController.SetData(dish);
+        FullReceiptCardController.fullReceiptCardController.setData(dish);
         closeWindow();
     }
-
 
     //Добавление с сайта
     @FXML
@@ -649,8 +646,8 @@ public class NewReceiptCardController {
             Parent root = loader.load();
 
             NoIngredientsController controller = loader.getController();
-            controller.setNoIngridList(noIngredients);
-            controller.setNoMassList(noMass);
+            controller.SetNoIngridList(noIngredients);
+            controller.SetNoMassList(noMass);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
