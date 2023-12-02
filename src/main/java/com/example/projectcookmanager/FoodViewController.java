@@ -18,7 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -477,7 +476,7 @@ public class FoodViewController implements Initializable {
 
             NewReceiptCardController controller = loader.getController();
             NewReceiptCardController.newReceiptCardController = controller;
-            controller.setFoodViewController(this);
+            controller.SetFoodViewController(this);
 
             Stage stage = new Stage();
             stage.setTitle("Создание рецепта");

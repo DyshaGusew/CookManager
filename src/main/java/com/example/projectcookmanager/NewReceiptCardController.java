@@ -37,16 +37,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class NewReceiptCardController {
     static public NewReceiptCardController newReceiptCardController;
+
     private FoodViewController foodViewController;
 
-    public void setFoodViewController(FoodViewController foodViewController) {
+    public void SetFoodViewController(FoodViewController foodViewController) {
         this.foodViewController = foodViewController;
-    }
-
-    private FullReceiptCardController fullReceiptCardController;
-
-    public void setFullReceiptCardController(FullReceiptCardController fullReceiptCardController) {
-        this.fullReceiptCardController = fullReceiptCardController;
     }
 
     private List<String> selectedIngredients = new ArrayList<>();
@@ -90,12 +85,6 @@ public class NewReceiptCardController {
     private MenuButton dishIngredientsMenu;
 
     @FXML
-    private ScrollPane stepsScroll;
-
-    @FXML
-    private ScrollPane stepsScrollInfo;
-
-    @FXML
     private TextField dishNameField;
 
     @FXML
@@ -114,19 +103,10 @@ public class NewReceiptCardController {
     private Spinner<Integer> minutesSpinner;
 
     @FXML
-    private TextArea stepDescriptionTextArea;
-
-    @FXML
     private VBox stepsVBox;
 
     @FXML
     private Label ratingLabel;
-
-    @FXML
-    private Button addStepButton;
-
-    @FXML
-    private Button removeStepButton;
 
     @FXML
     private ListView listIngredients;
@@ -136,14 +116,6 @@ public class NewReceiptCardController {
 
     @FXML
     private TextField recipeUrlArea;
-
-    private DBAllRecipes dbAllRecipes = new DBAllRecipes();
-
-    @FXML
-    private ImageView stepImageView;
-
-    @FXML
-    private Button chooseImageForStepButton;
 
     private List<Node> stepNodes = new ArrayList<>();
 
@@ -161,10 +133,10 @@ public class NewReceiptCardController {
 
         SaveRatingCondition();
 
-        handleIngredientsMenu();
+        HandleIngredientsMenu();
 
-        hoursSpinner.valueProperty().addListener((obs, oldValue, newValue) -> handleTimeSelection());
-        minutesSpinner.valueProperty().addListener((obs, oldValue, newValue) -> handleTimeSelection());
+        hoursSpinner.valueProperty().addListener((obs, oldValue, newValue) -> HandleTimeSelection());
+        minutesSpinner.valueProperty().addListener((obs, oldValue, newValue) -> HandleTimeSelection());
     }
 
     //Создание вручную работа со всеми элементами
@@ -178,7 +150,8 @@ public class NewReceiptCardController {
                         hoursSpinner.setVisible(true);
                         minutesSpinner.setVisible(false);
                         selectedTime = "В часах";
-                    } else if (checkMenuItem.getText().equals("В минутах")) {
+                    }
+                    else if (checkMenuItem.getText().equals("В минутах")) {
                         hoursSpinner.setVisible(false);
                         minutesSpinner.setVisible(true);
                         selectedTime = "В минутах";
@@ -203,7 +176,7 @@ public class NewReceiptCardController {
         });
     }
 
-    public void handleIngredientsMenu() {
+    public void HandleIngredientsMenu() {
         listIngredients.getItems().clear();
         listMassIngredients.getItems().clear();
         dishIngredientsMenu.getItems().clear();
@@ -214,23 +187,23 @@ public class NewReceiptCardController {
         for (ProductPattern productPattern : allProducts) {
             CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
 
-            checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
+            checkmenuItem.setOnAction(event -> HandleIngredientSelection(checkmenuItem));
 
             dishIngredientsMenu.getItems().add(checkmenuItem);
         }
     }
 
-    public void addIngredientsMenu(List<ProductPattern> prods) {
+    public void AddIngredientsMenu(List<ProductPattern> prods) {
         for (ProductPattern productPattern : prods) {
             CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
 
-            checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
+            checkmenuItem.setOnAction(event -> HandleIngredientSelection(checkmenuItem));
 
             dishIngredientsMenu.getItems().add(checkmenuItem);
         }
     }
 
-    private void handleIngredientSelection(CheckMenuItem selectedMenuItem) {
+    private void HandleIngredientSelection(CheckMenuItem selectedMenuItem) {
         System.out.println("Selected ingredient: " + selectedMenuItem.getText());
 
         if (selectedMenuItem.isSelected()) {
@@ -247,10 +220,11 @@ public class NewReceiptCardController {
 
             listIngredients.setItems(ingredientNames);
             listMassIngredients.setItems(ingredientMass);
-        } else {
+        }
+        else {
             ingredientNames.remove(selectedMenuItem.getText());
 
-            for(TextField textField : ingredientMass){
+            for(TextField textField : ingredientMass) {
                 if(textField.getId().equals(selectedMenuItem.getText())){
                     ingredientMass.remove(textField);
                     break;
@@ -267,8 +241,8 @@ public class NewReceiptCardController {
     }
 
     @FXML
-    void dishIngredientsMenuClicked(ActionEvent event) {
-        handleIngredientsMenu();
+    void DishIngredientsMenuClicked(ActionEvent event) {
+        HandleIngredientsMenu();
     }
 
     private void SaveRatingCondition() {
@@ -276,7 +250,7 @@ public class NewReceiptCardController {
             if (menuItem instanceof MenuItem) {
                 menuItem.setOnAction(e -> {
                     String rating = menuItem.getText();
-                    updateRatingLabel(rating);
+                    UpdateRatingLabel(rating);
                     selectedRating = rating;
                 });
             }
@@ -289,7 +263,7 @@ public class NewReceiptCardController {
 
         ImageView stepImageView = new ImageView();
         Button chooseImageForStepButton = new Button("Выбрать изображение");
-        chooseImageForStepButton.setOnAction(event -> chooseImageForStep(stepImageView));
+        chooseImageForStepButton.setOnAction(event -> ChooseImageForStep(stepImageView));
 
         TextArea stepDescriptionTextArea = new TextArea();
         stepDescriptionTextArea.setPromptText("Введите описание этапа...");
@@ -312,7 +286,7 @@ public class NewReceiptCardController {
         }
     }
 
-    private void chooseImageForStep(ImageView stepImageView) {
+    private void ChooseImageForStep(ImageView stepImageView) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Выберите изображение");
         fileChooser.getExtensionFilters().addAll(
@@ -328,7 +302,6 @@ public class NewReceiptCardController {
 
             try {
                 InputStream imageStream = new FileInputStream(selectedFile);
-                String imagePath = selectedFile.toURI().toString();
 
                 ImageView newStepImageView = new ImageView();
                 newStepImageView.setFitWidth(200);
@@ -344,18 +317,18 @@ public class NewReceiptCardController {
         }
     }
 
-    private void updateRatingLabel(String selectedRating) {
+    private void UpdateRatingLabel(String selectedRating) {
         ratingLabel.setText(selectedRating);
     }
 
     @FXML
-    private void handleTimeSelection() {
+    private void HandleTimeSelection() {
         int selectedHours = hoursSpinner.getValue();
         int selectedMinutes = minutesSpinner.getValue();
 
         selectedTime = String.format("%02d:%02d", selectedHours, selectedMinutes);
         timeOfCookingMenuBtn.setText(selectedTime);
-        time  = selectedHours*60 + selectedMinutes;
+        time  = selectedHours * 60 + selectedMinutes;
     }
 
     @FXML
@@ -379,7 +352,8 @@ public class NewReceiptCardController {
                 choosenImage.setFitHeight(150);
 
                 choosenImage.setImage(new Image(imageStream));
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
@@ -414,7 +388,6 @@ public class NewReceiptCardController {
         System.out.println("Selected Rating: " + selectedRating);
         System.out.println("Selected Time: " + timeOfCookingMenuBtn);
         System.out.println("Steps VBox Children: " + stepsVBox.getChildren().isEmpty());
-        //System.out.println("Steps Sroll Children: " + stepsScroll.getContent());
         System.out.println("ChoosenImage +" + choosenImage.getImage());
         System.out.println("Ingredients +" + listIngredients.getItems());
 
@@ -443,7 +416,7 @@ public class NewReceiptCardController {
 
                         stepFileName = originalFileName.replace("." + fileExtension, "") + ".png";
 
-                        copyImageAsync(stepFile, Paths.get("src/main/resources/img/StageRecipe"), stepFileName);
+                        CopyImageAsync(stepFile, Paths.get("src/main/resources/img/StageRecipe"), stepFileName);
 
                         stepsData.add(new StepData(stepDescriptionTextArea.getText(), stepFileName));
 
@@ -456,9 +429,9 @@ public class NewReceiptCardController {
         CompletableFuture<String> mainImageFuture = null;
         CompletableFuture<Void> stepImageFuture = null;
         if(selectedFileMain != null){
-            mainImageFuture = createMainImageAsync(selectedFileMain);
+            mainImageFuture = CreateMainImageAsync(selectedFileMain);
 
-            stepImageFuture = createStepImagesAsync(selectedFilesList);
+            stepImageFuture = CreateStepImagesAsync(selectedFilesList);
 
             mainImageFuture.join();
             stepImageFuture.join();
@@ -473,7 +446,7 @@ public class NewReceiptCardController {
         }
 
         Recipe newRecipe;
-        if(mainImageFuture != null){
+        if(mainImageFuture != null) {
             newRecipe = new Recipe(
                     dishNameField.getText(),
                     descriptionArea.getText(),
@@ -481,12 +454,12 @@ public class NewReceiptCardController {
                     time,
                     mainImageFuture.join(),
                     productList,
-                    setRating(ratingLabel),
+                    SetRating(ratingLabel),
                     StepImage,
                     StepDescription
             );
         }
-        else{
+        else {
             newRecipe = new Recipe(
                     dishNameField.getText(),
                     descriptionArea.getText(),
@@ -494,66 +467,70 @@ public class NewReceiptCardController {
                     time,
                     parceRecipe.getMainImageLink(),
                     productList,
-                    setRating(ratingLabel),
+                    SetRating(ratingLabel),
                     parceRecipe.getImagesStageLinks(),
                     parceRecipe.getTextStages());
         }
 
-
-
         if(new DBAllRecipes().Read(newRecipe.name) != null){
             new DBAllRecipes().Delete(newRecipe.name);
         }
+
         new DBAllRecipes().Write(newRecipe);
+
         FoodViewController.foodViewController.updateDishCards();
+
         DishCard dish = new DishCard();
         dish.setCalories(newRecipe.getCalories());
         dish.setName(newRecipe.name);
         dish.setTime(newRecipe.getTimeCooking());
         dish.setImageUrl(newRecipe.getMainImageLink());
         dish.setRatingUrl(newRecipe.getRating());
-        FullReceiptCardController.fullReceiptCardController.SetData(dish);
-        closeWindow();
-    }
 
+        if(FullReceiptCardController.fullReceiptCardController != null){
+            FullReceiptCardController.fullReceiptCardController.SetData(dish);
+        }
+
+        CloseWindow();
+    }
 
     //Добавление с сайта
     @FXML
     void AddOfSite(ActionEvent event){
         if (!recipeUrlArea.getText().equals("")) {
             parceRecipe = Parser.RecOfParser(recipeUrlArea.getText());
-            setData(parceRecipe);
-            if(Parser.noIngrid.size() != 0){
+            SetData(parceRecipe);
+            if(Parser.noIngrid.size() != 0) {
                 openInfoAboutNoIngrid(Parser.noIngrid, Parser.noMass);
             }
         }
     }
 
     //Установка данных в зависимости от рецепта
-    private void setData(Recipe recipe){
+    private void SetData(Recipe recipe) {
         dishNameField.setText(recipe.name);
         categoryCondition.setText(recipe.getCategory());
 
         descriptionArea.setText(recipe.getMainInfo());
 
-        selectedRating = getStringRating(recipe.getRating());
+        selectedRating = GetStringRating(recipe.getRating());
         ratingLabel.setText(selectedRating);
 
         selectedTime = String.format("%02d:%02d", recipe.getTimeCooking()/60, recipe.getTimeCooking()%60);
         timeOfCookingMenuBtn.setText(selectedTime);
         time = recipe.getTimeCooking();
 
-        setIngridMass(recipe);
+        SetIngridMass(recipe);
 
         InputStream imageStream = getClass().getResourceAsStream("/img/MainImage/" + recipe.getMainImageLink());
         choosenImage.setImage(new Image(imageStream));
 
-        for(int i = 0; i < recipe.getTextStages().size(); i++){
-            setStep(recipe.getTextStages().get(i), recipe.getImagesStageLinks().get(i));
+        for(int i = 0; i < recipe.getTextStages().size(); i++) {
+            SetStep(recipe.getTextStages().get(i), recipe.getImagesStageLinks().get(i));
         }
     }
 
-    private void setStep(String textInfo, String imageLink) {
+    private void SetStep(String textInfo, String imageLink) {
         VBox stepNode = new VBox();
 
         ImageView stepImageView = new ImageView();
@@ -574,15 +551,15 @@ public class NewReceiptCardController {
         stepNodes.add(stepNode);
     }
 
-    private void setIngridMass(Recipe recipe) {
+    private void SetIngridMass(Recipe recipe) {
         dishIngredientsMenu.getItems().clear();
         DBAllProducts dbAllProducts = new DBAllProducts();
         List<ProductPattern> allProducts = dbAllProducts.ReadAll();
 
         for (ProductPattern productPattern : allProducts) {
             CheckMenuItem checkmenuItem = new CheckMenuItem(productPattern.name);
+            checkmenuItem.setOnAction(event -> HandleIngredientSelection(checkmenuItem));
 
-            checkmenuItem.setOnAction(event -> handleIngredientSelection(checkmenuItem));
             for (Product product : recipe.getProducts()){
                 if(product.name.equals(productPattern.name)){
                     checkmenuItem.setSelected(true);
@@ -609,7 +586,7 @@ public class NewReceiptCardController {
     //Установка данных где-либо
     public void InitData(DishCard dish) throws IOException {
         parceRecipe = new DBAllRecipes().Read(dish.getName());
-        setData(parceRecipe);
+        SetData(parceRecipe);
     }
 
 
@@ -649,8 +626,8 @@ public class NewReceiptCardController {
             Parent root = loader.load();
 
             NoIngredientsController controller = loader.getController();
-            controller.setNoIngridList(noIngredients);
-            controller.setNoMassList(noMass);
+            controller.SetNoIngridList(noIngredients);
+            controller.SetNoMassList(noMass);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -663,12 +640,12 @@ public class NewReceiptCardController {
 
 
     //Работа с рейтингом
-    private float setRating(Label ratingLabel) {
+    private float SetRating(Label ratingLabel) {
         rating = ratingLabel.getText().length();
         return  rating;
     }
 
-    private String getStringRating(float rating){
+    private String GetStringRating(float rating){
         String ratingString = "";
 
         for (int i = 0; i < Math.round(rating); i++) {
@@ -680,7 +657,7 @@ public class NewReceiptCardController {
 
 
     //Работа с картинками
-    private CompletableFuture<String> createMainImageAsync(File selectedFileMain) {
+    private CompletableFuture<String> CreateMainImageAsync(File selectedFileMain) {
         return CompletableFuture.supplyAsync(() -> {
             String originalMainFileName = selectedFileMain.getName();
             String mainFileExtension = originalMainFileName.substring
@@ -690,9 +667,9 @@ public class NewReceiptCardController {
                     ("." + mainFileExtension, "") + ".jpg";
 
             Path destinationFolder = Paths.get("target/classes/img/MainImage");
-            createDirectoryIfNotExists(destinationFolder);
+            CreateDirectoryIfNotExists(destinationFolder);
 
-            copyImage(selectedFileMain, destinationFolder, mainImageFileName);
+            CopyImage(selectedFileMain, destinationFolder, mainImageFileName);
 
             System.out.println("Main Image Path: " + mainImageFileName);
 
@@ -700,7 +677,7 @@ public class NewReceiptCardController {
         });
     }
 
-    private void copyImage(File selectedFile, Path destinationFolder, String fileName) {
+    private void CopyImage(File selectedFile, Path destinationFolder, String fileName) {
         try {
             Path imagePath = destinationFolder.resolve(fileName);
 
@@ -710,10 +687,10 @@ public class NewReceiptCardController {
         }
     }
 
-    private CompletableFuture<Void> createStepImagesAsync(List<File> selectedFilesList) {
+    private CompletableFuture<Void> CreateStepImagesAsync(List<File> selectedFilesList) {
         return CompletableFuture.runAsync(() -> {
             Path destinationFolder = Paths.get("target/classes/img/StageRecipe");
-            createDirectoryIfNotExists(destinationFolder);
+            CreateDirectoryIfNotExists(destinationFolder);
 
             for (int i = 0; i < selectedFilesList.size(); i++) {
                 File stepFile = selectedFilesList.get(i);
@@ -726,7 +703,7 @@ public class NewReceiptCardController {
                     String stepFileName = originalFileName.replace
                             ("." + fileExtension, "") + ".jpg";
 
-                    copyImage(stepFile, destinationFolder, stepFileName);
+                    CopyImage(stepFile, destinationFolder, stepFileName);
 
                     System.out.println("Stage Image Path: " + "img/StageRecipe/" + stepFileName);
                 }
@@ -734,7 +711,7 @@ public class NewReceiptCardController {
         });
     }
 
-    private void createDirectoryIfNotExists(Path directoryPath) {
+    private void CreateDirectoryIfNotExists(Path directoryPath) {
         try {
             if (!Files.exists(directoryPath)) {
                 Files.createDirectories(directoryPath);
@@ -743,7 +720,7 @@ public class NewReceiptCardController {
             e.printStackTrace();
         }
     }
-    private CompletableFuture<Void> copyImageAsync(File selectedFile, Path destinationFolder, String fileName) {
+    private CompletableFuture<Void> CopyImageAsync(File selectedFile, Path destinationFolder, String fileName) {
         return CompletableFuture.runAsync(() -> {
             try {
                 Path imagePath = destinationFolder.resolve(fileName);
@@ -756,7 +733,7 @@ public class NewReceiptCardController {
     }
 
     //Закрытие окна
-    private void closeWindow() {
+    private void CloseWindow() {
         Stage stage = (Stage) createDishBtn.getScene().getWindow();
         stage.close();
     }

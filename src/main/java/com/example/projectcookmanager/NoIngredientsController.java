@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +24,8 @@ public class NoIngredientsController {
     private ListView ListNoMass;
 
     @FXML
-    public void setNoIngridList(List<String> noIngridList1) {
-        for(String ingrid : noIngridList1){
+    public void SetNoIngridList(List<String> noIngridList1) {
+        for(String ingrid : noIngridList1) {
             noIngridList.add(ingrid);
         }
 
@@ -34,8 +33,8 @@ public class NoIngredientsController {
     }
 
     @FXML
-    public void setNoMassList(List<Float> noMassList1) {
-        for(Float mass : noMassList1){
+    public void SetNoMassList(List<Float> noMassList1) {
+        for(Float mass : noMassList1) {
             noMassList.add(Float.toString(mass) + " гр");
         }
 
@@ -51,9 +50,10 @@ public class NoIngredientsController {
             NewProductMenuController controller = loader.getController();
 
             List<String> noIngString = new ArrayList<>();
-            for(String name : noIngridList){
+            for(String name : noIngridList) {
                 noIngString.add(name);
             }
+
             controller.SetData(noIngString);
 
             Stage stage = new Stage();

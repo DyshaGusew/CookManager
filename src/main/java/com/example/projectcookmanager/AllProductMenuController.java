@@ -2,12 +2,10 @@ package com.example.projectcookmanager;
 
 import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.DataBases.DBRecConnectProd;
-import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -104,7 +102,7 @@ public class AllProductMenuController implements Initializable {
             gg.add(productNew);
         }
 
-        NewReceiptCardController.newReceiptCardController.handleIngredientsMenu();
+        NewReceiptCardController.newReceiptCardController.HandleIngredientsMenu();
 
         Stage stage = (Stage) ingridListView.getScene().getWindow();
         stage.close();

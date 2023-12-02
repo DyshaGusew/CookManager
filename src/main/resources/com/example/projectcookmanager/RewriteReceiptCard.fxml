@@ -63,7 +63,7 @@
             </TextField>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <MenuButton fx:id="dishIngredientsMenu" mnemonicParsing="false" onAction="#dishIngredientsMenuClicked" text="Ингредиенты">
+                  <MenuButton fx:id="dishIngredientsMenu" mnemonicParsing="false" onAction="#DishIngredientsMenuClicked" text="Ингредиенты">
                      <items>
                         <CheckMenuItem mnemonicParsing="false" text="Unspecified Action" />
                      </items>
