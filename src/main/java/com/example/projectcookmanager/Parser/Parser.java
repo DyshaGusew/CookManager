@@ -161,6 +161,9 @@ public class Parser {
             if(thisMass.contains(",")){
                 thisMass = thisMass.replace(',', '.');
             }
+            if(thisMass.contains("/")){
+                thisMass = Float.toString(Float.parseFloat(thisMass.split("/")[0]) / Float.parseFloat(thisMass.split("/")[1])) ;
+            }
             float mass = Float.parseFloat(thisMass);
             ingredientsMass.add(mass);
         }
@@ -199,6 +202,21 @@ public class Parser {
             }
             else if(unit.contains("акан")){
                 ingredientsMass.set(i, ingredientsMass.get(i)*200.0f);
+            }
+            else if(unit.contains("омт")){
+                ingredientsMass.set(i, ingredientsMass.get(i)*40.0f);
+            }
+            else if(unit.contains("Ст")){
+                ingredientsMass.set(i, ingredientsMass.get(i)*20.0f);
+            }
+            else if(unit.contains("епот")){
+                ingredientsMass.set(i, ingredientsMass.get(i)*3.0f);
+            }
+            else if(unit.contains("вкус")){
+                ingredientsMass.set(i, ingredientsMass.get(i)*5.0f);
+            }
+            else if(unit.contains("мил")){
+                ingredientsMass.set(i, ingredientsMass.get(i)*0.8f);
             }
             else {
                 ingredientsMass.set(i, 0.0f);

@@ -102,7 +102,7 @@ public class AllProductMenuController implements Initializable {
             gg.add(productNew);
         }
 
-        NewReceiptCardController.newReceiptCardController.handleIngredientsMenu();
+        NewReceiptCardController.newReceiptCardController.HandleIngredientsMenu();
 
         Stage stage = (Stage) ingridListView.getScene().getWindow();
         stage.close();

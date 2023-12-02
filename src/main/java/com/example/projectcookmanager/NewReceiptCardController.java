@@ -512,7 +512,7 @@ public class NewReceiptCardController {
         dish.setTime(newRecipe.getTimeCooking());
         dish.setImageUrl(newRecipe.getMainImageLink());
         dish.setRatingUrl(newRecipe.getRating());
-        FullReceiptCardController.fullReceiptCardController.setData(dish);
+        FullReceiptCardController.fullReceiptCardController.SetData(dish);
         closeWindow();
     }
 
