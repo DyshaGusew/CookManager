@@ -15,8 +15,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static com.example.projectcookmanager.FoodViewController.CreateDishCardList;
-
 public class FavoriteListCardController implements Initializable {
 
     @FXML
@@ -37,31 +35,37 @@ public class FavoriteListCardController implements Initializable {
 
         try {
             for (Recipe favoriteRecipe : favoriteRecipes) {
-
-                FXMLLoader fxmlLoader = new FXMLLoader();
-                fxmlLoader.setLocation(getClass().getResource("DishCardFavorite.fxml"));
-                Pane dishBox = fxmlLoader.load();
-                DishCardController dishCardController = fxmlLoader.getController();
-
-                DishCard dishCard = new DishCard();
-                dishCard.setName(favoriteRecipe.name);
-                dishCard.setTime(favoriteRecipe.getTimeCooking());
-                dishCard.setCalories(favoriteRecipe.getCalories());
-                dishCard.setImageUrl(favoriteRecipe.getMainImageLink());
-                dishCard.setRatingUrl(favoriteRecipe.getRating());
-
-                dishCardController.SetData(dishCard, favoriteRecipe);
-
+                addDishCardToGrid(favoriteRecipe, column, row);
                 if (column == 1) {
                     column = 0;
                     ++row;
                 }
-
-                favoriteGridContainer.add(dishBox, column++, row);
-                GridPane.setMargin(dishBox, new Insets(5));
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void addDishCardToGrid(Recipe favoriteRecipe, int column, int row) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DishCardFavorite.fxml"));
+        Pane dishBox = fxmlLoader.load();
+        DishCardController dishCardController = fxmlLoader.getController();
+
+        DishCard dishCard = createDishCardFromRecipe(favoriteRecipe);
+        dishCardController.setData(dishCard, favoriteRecipe);
+
+        favoriteGridContainer.add(dishBox, column++, row);
+        GridPane.setMargin(dishBox, new Insets(5));
+    }
+
+    private DishCard createDishCardFromRecipe(Recipe recipe) {
+        DishCard dishCard = new DishCard();
+        dishCard.setName(recipe.name);
+        dishCard.setTime(recipe.getTimeCooking());
+        dishCard.setCalories(recipe.getCalories());
+        dishCard.setImageUrl(recipe.getMainImageLink());
+        dishCard.setRatingUrl(recipe.getRating());
+
+        return dishCard;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
+import DishModel.ImagesUrl;
 import com.example.projectcookmanager.DataBases.DBBasketRecipes;
 import com.example.projectcookmanager.DataBases.DBFavoritesRecipes;
 import com.example.projectcookmanager.Entity.Recipe;
@@ -17,12 +18,10 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
 public class DishCardController {
-    public static FoodViewController foodViewController;
 
     @FXML
     private Pane dishBox;
@@ -61,38 +60,20 @@ public class DishCardController {
 
     private Recipe thisRecipe;
 
-    public void SetData(DishCard dish, Recipe recipe) {
+    public void setData(DishCard dish, Recipe recipe) {
         System.out.println("Путь к изображению: " + dish.getImageUrl());
 
         URL imageURL = getClass().getResource(dish.getImageUrl());
 
         if (imageURL != null) {
-            InputStream imageStream = getClass().getResourceAsStream(dish.getImageUrl());
-
-            Image image = new Image(imageStream);
-            dishImage.setImage(image);
-            dishImage.setFitWidth(165);
-            dishImage.setFitHeight(106);
-            dishName.setText(dish.getName());
-            dishTime.setText(dish.getTime());
-            dishCalories.setText(dish.getCalories());
-
-            Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
-            rating.setImage(ratingImage);
+            initializeImageViews(dish.getImageUrl(), dish.getRatingUrl());
+            initializeLabels(dish.getName(), dish.getTime(), dish.getCalories());
 
             boolean isFavorite = isRecipeFavorite(recipe);
+            System.out.println("Блюдо " + dish.getName() + "В любимом " + isFavorite);
             boolean isBasket = isRecipeBasket(recipe);
-            if (isFavorite) {
-                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
-            } else {
-                heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
-            }
-
-            if (isBasket) {
-                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
-            } else {
-                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
-            }
+            initializeHeartImage(isFavorite);
+            initializeBasketImage(isBasket);
 
             thisRecipe = recipe;
             dishCard = dish;
@@ -101,8 +82,46 @@ public class DishCardController {
         }
     }
 
+    private void initializeImageViews(String imageUrl, String ratingUrl) {
+        Image dishImage = loadImage(imageUrl);
+        this.dishImage.setImage(dishImage);
+        this.dishImage.setFitWidth(165);
+        this.dishImage.setFitHeight(106);
+
+        Image ratingImage = loadImage(ratingUrl);
+        this.rating.setImage(ratingImage);
+    }
+
+    private void initializeLabels(String name, String time, String calories) {
+        dishName.setText(name);
+        dishTime.setText(time);
+        dishCalories.setText(calories);
+    }
+
+    public void initializeHeartImage(boolean isFavorite) {
+        heartImage.setImage(loadHeartImage(isFavorite));
+    }
+
+    public void initializeBasketImage(boolean isBasket) {
+        basketImage.setImage(loadBasketImage(isBasket));
+    }
+
+    private Image loadImage(String imageUrl) {
+        return new Image(getClass().getResourceAsStream(imageUrl));
+    }
+
+    private Image loadHeartImage(boolean isFavorite) {
+        String imageUrl = isFavorite ? ImagesUrl.HEART_GREEN.getUrl() : ImagesUrl.HEART_BLACK.getUrl();
+        return new Image(getClass().getResourceAsStream(imageUrl));
+    }
+
+    private Image loadBasketImage(boolean isBasket) {
+        String imageUrl = isBasket ? ImagesUrl.BASKET_GREEN.getUrl() : ImagesUrl.BASKET_GRAY.getUrl();
+        return new Image(getClass().getResourceAsStream(imageUrl));
+    }
+
     @FXML
-    void ShowFullReceipt(ActionEvent event) {
+    void showFullReceipt(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FullReceiptCard.fxml"));
             Parent root = loader.load();
@@ -110,7 +129,7 @@ public class DishCardController {
             FullReceiptCardController controller = loader.getController();
             FullReceiptCardController.fullReceiptCardController = controller;
 
-            controller.SetData(dishCard);
+            controller.setData(dishCard);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -122,16 +141,29 @@ public class DishCardController {
     }
 
     @FXML
-    void AddLikeRecipe(ActionEvent event) {
+    void addLikeRecipe(ActionEvent event) {
         boolean isFavorite = isRecipeFavorite(thisRecipe);
+
         if (isFavorite) {
             new DBFavoritesRecipes().Delete(thisRecipe.id);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
-
         } else {
             new DBFavoritesRecipes().WriteInFavorite(thisRecipe);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
         }
+
+        initializeHeartImage(!isFavorite);
+    }
+
+    @FXML
+    void addBasketRecipe(ActionEvent event) {
+        boolean isBasket = isRecipeBasket(thisRecipe);
+
+        if (isBasket) {
+            new DBBasketRecipes().Delete(thisRecipe.id);
+        } else {
+            new DBBasketRecipes().WriteInBasket(thisRecipe);
+        }
+
+        initializeBasketImage(!isBasket);
     }
 
     protected boolean isRecipeFavorite(Recipe recipe) {
@@ -142,19 +174,6 @@ public class DishCardController {
             }
         }
         return false;
-    }
-
-    @FXML
-    void AddBasketRecipe(ActionEvent event) {
-        boolean isBasket = isRecipeBasket(thisRecipe);
-        if (isBasket) {
-            new DBBasketRecipes().Delete(thisRecipe.id);
-            basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
-
-        } else {
-            new DBBasketRecipes().WriteInBasket(thisRecipe);
-            basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
-        }
     }
 
     protected boolean isRecipeBasket(Recipe recipe) {

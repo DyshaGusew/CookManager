@@ -37,7 +37,7 @@
             <ListView fx:id="ingridListView" prefHeight="278.0" prefWidth="300.0" />
             <HBox prefHeight="58.0" prefWidth="300.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#AddAllIngrid" prefHeight="40.0" prefWidth="130.0" text="Сохранить" textAlignment="CENTER">
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addAllIngrid" prefHeight="40.0" prefWidth="130.0" text="Сохранить" textAlignment="CENTER">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

@@ -15,7 +15,7 @@ public class BasketCardController {
     @FXML
     private ListView<String> listOfIngrediens;
 
-    public void SetData(BasketCard basketCard) {
+    public void setData(BasketCard basketCard) {
         dishName.setText(basketCard.getDishName());
         listOfIngrediens.getItems().setAll(basketCard.getListOfIngredients());
         listOfCallories.getItems().setAll(basketCard.getListOfCalories());

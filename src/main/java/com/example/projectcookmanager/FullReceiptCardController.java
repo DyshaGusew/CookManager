@@ -33,63 +33,27 @@ import java.util.List;
 
 public class FullReceiptCardController {
     @FXML
-    private ImageView choosenImage;
+    private ImageView choosenImage, rating;
 
     @FXML
-    private Label descriptionArea;
+    private Label descriptionArea, dishCalloriesLabel, dishCategoryLabel, dishName, dishTime, fitLabel, carLabel, proteinLabel;
 
     @FXML
-    private Label dishCalloriesLabel;
+    private ListView<String> listViewOfIngredients, listViewOfMass;
 
     @FXML
-    private Label dishCategoryLabel;
+    private ScrollPane stepsScroll, stepsScrollInfo;
 
     @FXML
-    private Label dishName;
-
-    @FXML
-    private Label dishTime;
-
-    @FXML
-    private Label fitLabel;
-
-    @FXML
-    private Label carLabel;
-
-    @FXML
-    private Label proteinLabel;
-
-    @FXML
-    private ImageView time;
-
-    @FXML
-    private ListView<String> listViewOfIngredients;
-
-    @FXML
-    private ListView<String> listViewOfMass;
-
-    @FXML
-    private ImageView rating;
-
-    @FXML
-    private ScrollPane stepsScroll;
-
-    @FXML
-    private ScrollPane stepsScrollInfo;
-
-    @FXML
-    private Button deleteRecipe;
-
-    @FXML
-    private Button rewriteBtn;
+    private Button deleteRecipe, rewriteBtn;
 
     private DishCard dishCard;
 
-    public  static FullReceiptCardController fullReceiptCardController;
+    public static FullReceiptCardController fullReceiptCardController;
 
     private DBAllRecipes dbAllRecipes = new DBAllRecipes();
 
-    public void SetData(DishCard dish) throws IOException {
+    public void setData(DishCard dish) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("NewReceiptCard.fxml"));
         loader.setControllerFactory(c -> new NewReceiptCardController());
         Parent root = loader.load();
@@ -97,9 +61,16 @@ public class FullReceiptCardController {
         NewReceiptCardController controller = loader.getController();
         NewReceiptCardController.newReceiptCardController = controller;
 
-
-
         Recipe recipe = dbAllRecipes.Read(dish.getName());
+
+        initializeBasicInfo(dish, recipe);
+        initializeSteps(recipe);
+        initializeIngredients(recipe);
+
+        dishCard = dish;
+    }
+
+    private void initializeBasicInfo(DishCard dish, Recipe recipe) {
         dishName.setText(dish.getName());
         choosenImage.setImage(new Image((getClass().getResourceAsStream(dish.getImageUrl()))));
         choosenImage.setFitWidth(205);
@@ -108,66 +79,71 @@ public class FullReceiptCardController {
         dishTime.setText(dish.getTime());
 
         descriptionArea.setText(recipe.getMainInfo());
-        dishCalloriesLabel.setText(String.valueOf(recipe.getCalories()) + " Ккал");
+        dishCalloriesLabel.setText(recipe.getCalories() + " Ккал");
         dishCategoryLabel.setText(recipe.getCategory());
+        fitLabel.setText(String.valueOf((int) recipe.getFat()));
+        proteinLabel.setText(String.valueOf((int) recipe.getProtein()));
+        carLabel.setText(String.valueOf((int) recipe.getCarbohydrate()));
+    }
 
-        fitLabel.setText(Integer.toString((int)recipe.getFat()));
-        proteinLabel.setText(Integer.toString((int)recipe.getProtein()));
-        carLabel.setText(Integer.toString((int)recipe.getCarbohydrate()));
-
+    private void initializeSteps(Recipe recipe) {
         VBox stepsVbox = new VBox();
 
         for (int i = 0; i < recipe.getTextStages().size(); i++) {
-
             String stepText = recipe.getTextStages().get(i);
             String imageUrl = recipe.getImagesStageLinks().get(i);
 
-            Label stepTextNode = new Label(stepText);
-            stepTextNode.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 20));
-            stepTextNode.setMaxWidth(270);
-            stepTextNode.setWrapText(true);
-            stepTextNode.setPadding(new Insets(2, 0, 0, 5));
+            Label stepTextNode = createStepLabel(stepText);
+            ImageView stepImageNode = createStepImageView(imageUrl);
 
-            URL imageURL = getClass().getResource("/img/StageRecipe/" + imageUrl);
-            if (imageURL != null) {
-                InputStream imageStream = imageURL.openStream();
+            stepsVbox.getChildren().addAll(stepTextNode, new ImageView(), stepImageNode, new ImageView());
+        }
+
+        stepsScroll.setContent(stepsVbox);
+        stepsScrollInfo.setContent(descriptionArea);
+    }
+
+    private Label createStepLabel(String stepText) {
+        Label stepTextNode = new Label(stepText);
+        stepTextNode.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 20));
+        stepTextNode.setMaxWidth(270);
+        stepTextNode.setWrapText(true);
+        stepTextNode.setPadding(new Insets(2, 0, 0, 5));
+        return stepTextNode;
+    }
+
+    private ImageView createStepImageView(String imageUrl) {
+        URL imageURL = getClass().getResource("/img/StageRecipe/" + imageUrl);
+
+        if (imageURL != null) {
+            InputStream imageStream = null;
+            try {
+                imageStream = imageURL.openStream();
                 Image image = new Image(imageStream);
-
                 ImageView stepImageNode = new ImageView(image);
                 stepImageNode.setFitWidth(250);
                 stepImageNode.setFitHeight(250);
-
-                stepsVbox.getChildren().add(stepTextNode);
-
-                ImageView stepImageNode1 = new ImageView();
-                stepImageNode1.setFitWidth(5);
-                stepImageNode1.setFitHeight(5);
-                stepsVbox.getChildren().add(stepImageNode1);
-
-                stepsVbox.getChildren().add(stepImageNode);
-
-                stepImageNode = new ImageView();
-                stepImageNode.setFitWidth(20);
-                stepImageNode.setFitHeight(20);
-
-                stepsVbox.getChildren().add(stepImageNode);
-            } else {
-                System.out.println("Ссылка на изображение этапа пуста для этапа " + i);
+                return stepImageNode;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (imageStream != null) {
+                    try {
+                        imageStream.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
+        } else {
+            System.out.println("Ссылка на изображение этапа пуста для этапа");
         }
 
-        stepsScroll.setContent(null);
+        return new ImageView();
+    }
 
-        stepsScroll.setContent(stepsVbox);
-
-        stepsScrollInfo.setContent(null);
-
-        stepsScrollInfo.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        stepsScrollInfo.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-
-        stepsScrollInfo.setContent(descriptionArea);
-
-        List<Product> allProductsRecipe = new DBRecConnectProd().ReadAllOfRecipe(dbAllRecipes.Read(dish.getName()).id);
+    private void initializeIngredients(Recipe recipe) {
+        List<Product> allProductsRecipe = new DBRecConnectProd().ReadAllOfRecipe(dbAllRecipes.Read(recipe.name).id);
 
         ObservableList<String> ingredientNames = FXCollections.observableArrayList();
         ObservableList<String> ingredientMass = FXCollections.observableArrayList();
@@ -176,24 +152,22 @@ public class FullReceiptCardController {
             ingredientNames.add(product.name);
             ingredientMass.add(product.getMass() + " гр");
         }
+
         listViewOfIngredients.setItems(ingredientNames);
         listViewOfMass.setItems(ingredientMass);
-        dishCard = dish;
     }
 
     @FXML
-    void DeleteDish(ActionEvent event){
+    void deleteDish(ActionEvent event) {
         new DBAllRecipes().Delete(dishName.getText());
         FoodViewController.thisRecipes = new DBAllRecipes().ReadAll();
-        FoodViewController.recentlyAdded = FoodViewController.CreateDishCardList(FoodViewController.thisRecipes);
+        FoodViewController.recentlyAdded = FoodViewController.createDishCardList(FoodViewController.thisRecipes);
         FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
-
-        Stage stage = (Stage) deleteRecipe.getScene().getWindow();
-        stage.close();
+        ((Stage) deleteRecipe.getScene().getWindow()).close();
     }
 
     @FXML
-    void RewriteReceipt(ActionEvent event) {
+    void rewriteReceipt(ActionEvent event) {
         Recipe selectedRecipe = dbAllRecipes.Read(dishName.getText());
 
         if (selectedRecipe != null) {
@@ -215,8 +189,7 @@ public class FullReceiptCardController {
 
                 stage.showAndWait();
                 stage.close();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

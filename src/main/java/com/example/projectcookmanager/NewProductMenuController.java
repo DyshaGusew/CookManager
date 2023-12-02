@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -17,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class NewProductMenuController {
 
@@ -25,8 +23,6 @@ public class NewProductMenuController {
     private ListView newIngridListView;
 
     private ObservableList<HBox> newIngridLines = FXCollections.observableArrayList();
-
-    private List<Product> products;
 
     @FXML
     void AddIngrid(ActionEvent event){

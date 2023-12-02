@@ -33,18 +33,18 @@ public class BasketIngredientsCardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        InitializeBasketIngredients();
+        initializeBasketIngredients();
     }
 
     @FXML
-    void ShowResult(ActionEvent event) {
+    void showResult(ActionEvent event) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("TotalIngredientsCard.fxml"));
             Parent root = fxmlLoader.load();
 
             TotalIngredientsCardController totalIngredientsCardController = fxmlLoader.getController();
 
-            Map<String, Integer> ingredientMap = GetCombinedIngredients(allIngredient, allCalories);
+            Map<String, Integer> ingredientMap = getCombinedIngredients(allIngredient, allCalories);
             List<String> combinedIngredients = new ArrayList<>(ingredientMap.keySet());
 
             List<String> combinedCalories = ingredientMap.values().stream()
@@ -62,7 +62,7 @@ public class BasketIngredientsCardController implements Initializable {
         }
     }
 
-    private Map<String, Integer> GetCombinedIngredients(List<String> ingredients, List<String> calories) {
+    private Map<String, Integer> getCombinedIngredients(List<String> ingredients, List<String> calories) {
         Map<String, Integer> ingredientMap = new HashMap<>();
 
         for (int i = 0; i < ingredients.size(); i++) {
@@ -83,7 +83,7 @@ public class BasketIngredientsCardController implements Initializable {
         return ingredientMap;
     }
 
-    private void InitializeBasketIngredients() {
+    private void initializeBasketIngredients() {
         List<Recipe> basketRecipes = new DBBasketRecipes().ReadAllOnBasket();
         List<ProductPattern> allIngredients = new DBAllProducts().ReadAll();
 
@@ -100,13 +100,13 @@ public class BasketIngredientsCardController implements Initializable {
 
                 BasketCard basketCard = new BasketCard();
                 basketCard.setDishName(basketRecipe.name);
-                basketCard.setListOfIngredients(GetIngredientsNames(basketRecipe, allIngredients));
-                basketCard.setListOfCalories(GetCalories(basketRecipe));
+                basketCard.setListOfIngredients(getIngredientsNames(basketRecipe, allIngredients));
+                basketCard.setListOfCalories(getCalories(basketRecipe));
 
                 allIngredient.addAll(basketCard.getListOfIngredients());
                 allCalories.addAll(basketCard.getListOfCalories());
 
-                basketCardController.SetData(basketCard);
+                basketCardController.setData(basketCard);
 
                 if (column == 1) {
                     column = 0;
@@ -121,7 +121,7 @@ public class BasketIngredientsCardController implements Initializable {
         }
     }
 
-    public List<String> GetCalories(Recipe recipe) {
+    public List<String> getCalories(Recipe recipe) {
         List<Product> recipeProducts = new DBRecConnectProd().ReadAllOfRecipe(recipe.id);
         List<String> caloriesList = new ArrayList<>();
         String totalCalories;
@@ -134,7 +134,7 @@ public class BasketIngredientsCardController implements Initializable {
         return caloriesList;
     }
 
-    private List<String> GetIngredientsNames(Recipe recipe, List<ProductPattern> allIngredients) {
+    private List<String> getIngredientsNames(Recipe recipe, List<ProductPattern> allIngredients) {
         List<String> ingredientNames = new ArrayList<>();
 
         List<Product> recipeIngredients = new DBRecConnectProd().ReadAllOfRecipe(recipe.id);

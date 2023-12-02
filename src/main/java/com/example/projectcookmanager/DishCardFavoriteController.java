@@ -1,6 +1,7 @@
 package com.example.projectcookmanager;
 
 import DishModel.DishCard;
+import DishModel.ImagesUrl;
 import com.example.projectcookmanager.DataBases.DBBasketRecipes;
 import com.example.projectcookmanager.DataBases.DBFavoritesRecipes;
 import com.example.projectcookmanager.Entity.Recipe;
@@ -18,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-public class DishCardFavoriteController extends DishCardController{
+public class DishCardFavoriteController extends DishCardController {
     public static FavoriteListCardController favoriteListCardController;
 
     @FXML
@@ -47,18 +48,13 @@ public class DishCardFavoriteController extends DishCardController{
     private Recipe thisRecipe;
 
     @Override
-    public void SetData(DishCard dish, Recipe recipe) {
+    public void setData(DishCard dish, Recipe recipe) {
         System.out.println("Путь к изображению: " + dish.getImageUrl());
 
         URL imageURL = getClass().getResource(dish.getImageUrl());
 
         if (imageURL != null) {
-            InputStream imageStream = getClass().getResourceAsStream(dish.getImageUrl());
-
-            Image image = new Image(imageStream);
-            dishImage.setImage(image);
-            dishImage.setFitWidth(165);
-            dishImage.setFitHeight(106);
+            initializeImageView(dish.getImageUrl(), dishImage, 165, 106);
             dishName.setText(dish.getName());
             dishTime.setText(dish.getTime());
             dishCalories.setText(dish.getCalories());
@@ -66,17 +62,10 @@ public class DishCardFavoriteController extends DishCardController{
             Image ratingImage = new Image(getClass().getResourceAsStream(dish.getRatingUrl()));
             rating.setImage(ratingImage);
 
-
+            boolean isFavorite = isRecipeFavorite(recipe);
             boolean isBasket = isRecipeBasket(recipe);
-
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-green.png")));
-
-
-            if (isBasket) {
-                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
-            } else {
-                basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
-            }
+            initializeHeartImage(isFavorite);
+            initializeBasketImage(isBasket);
 
             thisRecipe = recipe;
             dishCard = dish;
@@ -85,27 +74,22 @@ public class DishCardFavoriteController extends DishCardController{
         }
     }
 
-    @Override
     @FXML
-    void AddLikeRecipe(ActionEvent event) {
+    void addLikeRecipe(ActionEvent event) {
         boolean isFavorite = isRecipeFavorite(thisRecipe);
-        if (isFavorite) {
-            new DBFavoritesRecipes().Delete(thisRecipe.id);
-            heartImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-heart-black-50.png")));
-        }
-        favoriteListCardController.initializeFavoriteDishes();
+        updateHeartImage(isFavorite);
     }
 
     @Override
     @FXML
-    void ShowFullReceipt(ActionEvent event) {
+    void showFullReceipt(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("FullReceiptCard.fxml"));
             Parent root = loader.load();
 
             FullReceiptCardController controller = loader.getController();
             FullReceiptCardController.fullReceiptCardController = controller;
-            controller.SetData(dishCard);
+            controller.setData(dishCard);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -116,18 +100,45 @@ public class DishCardFavoriteController extends DishCardController{
         }
     }
 
-    @Override
     @FXML
-    void AddBasketRecipe(ActionEvent event) {
+    void addBasketRecipe(ActionEvent event) {
         boolean isBasket = isRecipeBasket(thisRecipe);
+        updateBasketImage(isBasket);
+
+        FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
+    }
+
+    private void initializeImageView(String imageUrl, ImageView imageView, double fitWidth, double fitHeight) {
+        URL imageURL = getClass().getResource(imageUrl);
+
+        if (imageURL != null) {
+            InputStream imageStream = getClass().getResourceAsStream(imageUrl);
+            Image image = new Image(imageStream);
+            imageView.setImage(image);
+            imageView.setFitWidth(fitWidth);
+            imageView.setFitHeight(fitHeight);
+        } else {
+            System.out.println("URL изображения не найден:" + imageUrl);
+        }
+    }
+
+    private void updateHeartImage(boolean isFavorite) {
+        if (isFavorite) {
+            new DBFavoritesRecipes().Delete(thisRecipe.id);
+            heartImage.setImage(new Image(getClass().getResourceAsStream(ImagesUrl.HEART_BLACK.getUrl())));
+        }
+
+        favoriteListCardController.initializeFavoriteDishes();
+        FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
+    }
+
+    private void updateBasketImage(boolean isBasket) {
         if (isBasket) {
             new DBBasketRecipes().Delete(thisRecipe.id);
-            basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-96.png")));
-            FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
+            basketImage.setImage(new Image(getClass().getResourceAsStream(ImagesUrl.BASKET_GRAY.getUrl())));
         } else {
             new DBBasketRecipes().WriteInBasket(thisRecipe);
-            basketImage.setImage(new Image(getClass().getResourceAsStream("/img/icons8-add-to-basket-shop-green.png")));
-            FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
+            basketImage.setImage(new Image(getClass().getResourceAsStream(ImagesUrl.BASKET_GREEN.getUrl())));
         }
     }
 }

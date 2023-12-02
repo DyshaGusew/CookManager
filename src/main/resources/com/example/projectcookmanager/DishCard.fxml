@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<Pane fx:id="dishBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="440.0" style="-fx-background-radius: 15;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.DishCardController">
+<Pane fx:id="dishBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="142.0" prefWidth="440.0" style="-fx-background-radius: 15;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.projectcookmanager.DishCardController">
    <children>
       <ImageView fx:id="dishImage" fitHeight="106.0" fitWidth="165.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -26,7 +30,7 @@
             <Image url="@../../../img/Other/4stars.png" />
          </image>
       </ImageView>
-      <Button fx:id="nextBtn" alignment="CENTER" contentDisplay="TOP" layoutX="357.0" layoutY="98.0" mnemonicParsing="false" onAction="#ShowFullReceipt" prefHeight="31.0" prefWidth="65.0" stylesheets="@style.css" text="Далее">
+      <Button fx:id="nextBtn" alignment="CENTER" contentDisplay="TOP" layoutX="357.0" layoutY="98.0" mnemonicParsing="false" onAction="#showFullReceipt" prefHeight="31.0" prefWidth="65.0" stylesheets="@style.css" text="Далее">
          <styleClass>
             <String fx:value="NextBtn" />
             <String fx:value="mouse-movedNextBtn" />
@@ -53,7 +57,7 @@
             <Font name="Arial Black" size="17.0" />
          </font>
       </Label>
-      <Button fx:id="likeBtn" layoutX="182.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddLikeRecipe" prefHeight="48.0" prefWidth="62.0">
+      <Button fx:id="likeBtn" layoutX="182.0" layoutY="85.0" mnemonicParsing="false" onAction="#addLikeRecipe" prefHeight="48.0" prefWidth="62.0">
          <graphic>
             <ImageView fx:id="heartImage" fitHeight="40.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -66,7 +70,7 @@
             <String fx:value="mouse-movedNextBtn" />
          </styleClass>
       </Button>
-      <Button fx:id="basketBtn" layoutX="258.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddBasketRecipe" prefHeight="48.0" prefWidth="62.0">
+      <Button fx:id="basketBtn" layoutX="258.0" layoutY="85.0" mnemonicParsing="false" onAction="#addBasketRecipe" prefHeight="48.0" prefWidth="62.0">
          <graphic>
             <ImageView fx:id="basketImage" fitHeight="42.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                <image>

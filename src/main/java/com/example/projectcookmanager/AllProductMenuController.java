@@ -2,12 +2,10 @@ package com.example.projectcookmanager;
 
 import com.example.projectcookmanager.DataBases.DBAllProducts;
 import com.example.projectcookmanager.DataBases.DBRecConnectProd;
-import com.example.projectcookmanager.Entity.Product;
 import com.example.projectcookmanager.Entity.ProductPattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -33,27 +31,27 @@ public class AllProductMenuController implements Initializable {
         List<ProductPattern> patternList;
         patternList = new DBAllProducts().ReadAll();
         for(ProductPattern prod : patternList){
-            AddIngrid(prod);
+            addIngrid(prod);
         }
     }
 
-    private void AddIngrid(ProductPattern prod){
+    private void addIngrid(ProductPattern prod){
         TextField name = new TextField();
         name.setPromptText("Наименование ингридиента");
         name.setPrefWidth(155);
         name.setText(String.valueOf(prod.name));
         name.setId(prod.name);
 
-        TextField prot = CreateBJU("Б", 35, prod);
+        TextField prot = createBJU("Б", 35, prod);
 
-        TextField fat = CreateBJU("Ж", 35, prod);
+        TextField fat = createBJU("Ж", 35, prod);
 
-        TextField car = CreateBJU("У", 35, prod);
+        TextField car = createBJU("У", 35, prod);
 
         Button remove = new Button("-");
         remove.setId(String.valueOf(ingridLines.size()));
         remove.setPrefWidth(20);
-        remove.setOnAction(event ->  SetIngridInListView(remove));
+        remove.setOnAction(event ->  setIngridInListView(remove));
 
         HBox line = new HBox(name, prot, fat, car, remove);
         line.setPrefHeight(25);
@@ -63,7 +61,7 @@ public class AllProductMenuController implements Initializable {
         ingridListView.setItems(ingridLines);
     }
 
-    private void SetIngridInListView(Button btn){
+    private void setIngridInListView(Button btn){
         HBox hBox = (HBox) btn.getParent();
 
         new DBRecConnectProd().DeleteProd(new DBAllProducts().Read(hBox.getChildren().get(0).getId()).id);
@@ -78,7 +76,7 @@ public class AllProductMenuController implements Initializable {
         }
         ingridListView.setItems(ingridLines);
     }
-    private TextField CreateBJU(String name, int wight, ProductPattern prod) {
+    private TextField createBJU(String name, int wight, ProductPattern prod) {
         TextField textField = new TextField();
         textField.setPromptText(name);
         textField.setPrefWidth(wight);
@@ -88,7 +86,7 @@ public class AllProductMenuController implements Initializable {
     }
 
     @FXML
-    void AddAllIngrid(ActionEvent event){
+    void addAllIngrid(ActionEvent event){
         List<ProductPattern> gg = new ArrayList<>();
         for(HBox hbox : ingridLines){
             TextField name = (TextField) hbox.getChildren().get(0);

@@ -139,7 +139,7 @@
             <Font name="Arial Black" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="deleteRecipe" layoutX="531.0" layoutY="8.0" mnemonicParsing="false" onAction="#DeleteDish" prefHeight="45.0" prefWidth="52.0">
+      <Button fx:id="deleteRecipe" layoutX="531.0" layoutY="8.0" mnemonicParsing="false" onAction="#deleteDish" prefHeight="45.0" prefWidth="52.0">
          <styleClass>
             <String fx:value="RedBtn" />
             <String fx:value="mouse-movedNextBtn" />
@@ -152,7 +152,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Button fx:id="rewriteBtn" layoutX="462.0" layoutY="8.0" mnemonicParsing="false" onAction="#RewriteReceipt" prefHeight="45.0" prefWidth="52.0">
+      <Button fx:id="rewriteBtn" layoutX="462.0" layoutY="8.0" mnemonicParsing="false" onAction="#rewriteReceipt" prefHeight="45.0" prefWidth="52.0">
          <styleClass>
             <String fx:value="mouse-movedNextBtn" />
             <String fx:value="mouse-movedRedBtn" />
@@ -160,7 +160,7 @@
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../img/free-icon-glass-transparent-with-drink-and-straw-37427.png" />
+                  <Image url="@../../../img/pencil_1972600.png" />
                </image>
             </ImageView>
          </graphic>
