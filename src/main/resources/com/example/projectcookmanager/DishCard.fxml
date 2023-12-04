@@ -57,7 +57,7 @@
             <Font name="Arial Black" size="17.0" />
          </font>
       </Label>
-      <Button fx:id="likeBtn" layoutX="182.0" layoutY="85.0" mnemonicParsing="false" onAction="#addLikeRecipe" prefHeight="48.0" prefWidth="62.0">
+      <Button fx:id="likeBtn" layoutX="182.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddLikeRecipe" prefHeight="48.0" prefWidth="62.0">
          <graphic>
             <ImageView fx:id="heartImage" fitHeight="40.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -70,7 +70,7 @@
             <String fx:value="mouse-movedNextBtn" />
          </styleClass>
       </Button>
-      <Button fx:id="basketBtn" layoutX="258.0" layoutY="85.0" mnemonicParsing="false" onAction="#addBasketRecipe" prefHeight="48.0" prefWidth="62.0">
+      <Button fx:id="basketBtn" layoutX="258.0" layoutY="85.0" mnemonicParsing="false" onAction="#AddBasketRecipe" prefHeight="48.0" prefWidth="62.0">
          <graphic>
             <ImageView fx:id="basketImage" fitHeight="42.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                <image>
