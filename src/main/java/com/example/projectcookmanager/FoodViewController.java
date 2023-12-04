@@ -79,6 +79,7 @@ public class FoodViewController implements Initializable {
     private void initializeComboBoxes() {
         ObservableList<String> categories = FXCollections.observableArrayList("Новизна", "Время приготовления", "Рейтинг", "Каллорийность");
         ShortBut.setItems(categories);
+        ShortBut.setValue("Новизна");
 
         ObservableList<String> aspects = FXCollections.observableArrayList("Ккал", "Время", "Рейтинг");
         filterAspectBut.setItems(aspects);
@@ -293,6 +294,7 @@ public class FoodViewController implements Initializable {
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
 
+            stage.setOnCloseRequest(e -> updateDishCards());
 
             stage.showAndWait();
         } catch (IOException e) {
@@ -449,7 +451,7 @@ public class FoodViewController implements Initializable {
 
     private void initializeAfterClose() {
         Platform.runLater(() -> {
-            initializeComponents();
+            //initializeComponents();
             handleIngredientsSearchMenu();
             updateDishCards();
         });

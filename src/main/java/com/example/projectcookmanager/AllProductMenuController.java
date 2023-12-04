@@ -42,11 +42,11 @@ public class AllProductMenuController implements Initializable {
         name.setText(String.valueOf(prod.name));
         name.setId(prod.name);
 
-        TextField prot = createBJU("Б", 35, prod);
+        TextField prot = createBJU("Б", 35, prod.getProtein());
 
-        TextField fat = createBJU("Ж", 35, prod);
+        TextField fat = createBJU("Ж", 35, prod.getFat());
 
-        TextField car = createBJU("У", 35, prod);
+        TextField car = createBJU("У", 35, prod.getCarbohydrate());
 
         Button remove = new Button("-");
         remove.setId(String.valueOf(ingridLines.size()));
@@ -76,11 +76,11 @@ public class AllProductMenuController implements Initializable {
         }
         ingridListView.setItems(ingridLines);
     }
-    private TextField createBJU(String name, int wight, ProductPattern prod) {
+    private TextField createBJU(String name, int wight, float value) {
         TextField textField = new TextField();
         textField.setPromptText(name);
         textField.setPrefWidth(wight);
-        textField.setText(String.valueOf(prod.getProtein()));
+        textField.setText(String.valueOf(value));
 
         return textField;
     }
@@ -102,7 +102,7 @@ public class AllProductMenuController implements Initializable {
             gg.add(productNew);
         }
 
-        NewReceiptCardController.newReceiptCardController.HandleIngredientsMenu();
+        NewReceiptCardController.newReceiptCardController.handleIngredientsMenu();
 
         Stage stage = (Stage) ingridListView.getScene().getWindow();
         stage.close();

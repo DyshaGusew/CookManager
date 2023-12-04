@@ -160,7 +160,7 @@
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../img/pencil_1972600.png" />
+                  <Image url="@../../../img/icon-callories.png" />
                </image>
             </ImageView>
          </graphic>

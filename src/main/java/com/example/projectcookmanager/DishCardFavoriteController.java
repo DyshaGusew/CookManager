@@ -104,8 +104,6 @@ public class DishCardFavoriteController extends DishCardController {
     void addBasketRecipe(ActionEvent event) {
         boolean isBasket = isRecipeBasket(thisRecipe);
         updateBasketImage(isBasket);
-
-        FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
     }
 
     private void initializeImageView(String imageUrl, ImageView imageView, double fitWidth, double fitHeight) {
@@ -127,9 +125,7 @@ public class DishCardFavoriteController extends DishCardController {
             new DBFavoritesRecipes().Delete(thisRecipe.id);
             heartImage.setImage(new Image(getClass().getResourceAsStream(ImagesUrl.HEART_BLACK.getUrl())));
         }
-
         favoriteListCardController.initializeFavoriteDishes();
-        FoodViewController.foodViewController.updateScrollPane(FoodViewController.recentlyAdded);
     }
 
     private void updateBasketImage(boolean isBasket) {

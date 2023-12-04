@@ -212,8 +212,8 @@ public class Parser {
             else if(unit.contains("епот")){
                 ingredientsMass.set(i, ingredientsMass.get(i)*3.0f);
             }
-            else if(unit.contains("вкус")){
-                ingredientsMass.set(i, ingredientsMass.get(i)*5.0f);
+            else if(unit.contains("кусу")){
+                ingredientsMass.set(i, 5.0f);
             }
             else if(unit.contains("мил")){
                 ingredientsMass.set(i, ingredientsMass.get(i)*0.8f);

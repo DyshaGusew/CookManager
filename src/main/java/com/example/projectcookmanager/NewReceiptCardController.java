@@ -155,6 +155,7 @@ public class NewReceiptCardController {
 
     @FXML
     void initialize() {
+
         SaveCategoryCondition();
 
         ChooseTimeOfCooking();
@@ -510,7 +511,15 @@ public class NewReceiptCardController {
         dish.setTime(newRecipe.getTimeCooking());
         dish.setImageUrl(newRecipe.getMainImageLink());
         dish.setRatingUrl(newRecipe.getRating());
-        FullReceiptCardController.fullReceiptCardController.setData(dish);
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("FullReceiptCard.fxml"));
+        Parent root = loader.load();
+
+        FullReceiptCardController controller = loader.getController();
+        FullReceiptCardController.fullReceiptCardController = controller;
+
+        controller.setData(dish);
+
         closeWindow();
     }
 

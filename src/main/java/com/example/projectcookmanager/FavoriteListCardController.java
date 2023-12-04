@@ -30,23 +30,20 @@ public class FavoriteListCardController implements Initializable {
         favoriteGridContainer.getChildren().clear();
         List<Recipe> favoriteRecipes = new DBFavoritesRecipes().ReadAllOnFavorite();
 
-        int column = 0;
         int row = 1;
 
         try {
             for (Recipe favoriteRecipe : favoriteRecipes) {
-                addDishCardToGrid(favoriteRecipe, column, row);
-                if (column == 1) {
-                    column = 0;
-                    ++row;
-                }
+                addDishCardToGrid(favoriteRecipe, row);
+                ++row;
+
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private void addDishCardToGrid(Recipe favoriteRecipe, int column, int row) throws IOException {
+    private void addDishCardToGrid(Recipe favoriteRecipe, int row) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("DishCardFavorite.fxml"));
         Pane dishBox = fxmlLoader.load();
         DishCardController dishCardController = fxmlLoader.getController();
@@ -54,7 +51,7 @@ public class FavoriteListCardController implements Initializable {
         DishCard dishCard = createDishCardFromRecipe(favoriteRecipe);
         dishCardController.setData(dishCard, favoriteRecipe);
 
-        favoriteGridContainer.add(dishBox, column++, row);
+        favoriteGridContainer.add(dishBox, 0, row);
         GridPane.setMargin(dishBox, new Insets(5));
     }
 
