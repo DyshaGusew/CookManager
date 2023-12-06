@@ -27,7 +27,7 @@ public class HelloApplication extends Application {
 
     public static void main(String[] args) {
         //https://povar.ru/recipes/pechene_Minutka_bez_margarina-22188.html
-        //https://povar.ru/recipes/sochnye_goryachie_buterbrody-51417.html
+        //https://povar.ru/recipes/goryachie_sendvichi_s_kolbasoi_i_syrom_na_skovorode-90260.html
         launch();
     }
 }
